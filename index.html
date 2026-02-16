@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portail Contrôle Permanent — Déclarations de Caisse | BQ Intranet</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #0D1B2A;
+  --navy-mid:   #152132;
+  --blue:       #1A6FA8;
+  --blue-b:     #2196F3;
+  --blue-pale:  #E3F2FD;
+  --cyan:       #00B4D8;
+  --gold:       #C8961A;
+  --gold-l:     #FFF8E1;
+  --red:        #C62828;
+  --red-l:      #FFEBEE;
+  --green:      #1B5E20;
+  --green-m:    #43A047;
+  --green-l:    #E8F5E9;
+  --orange:     #E65100;
+  --orange-l:   #FFF3E0;
+  --g900: #111827; --g800: #1F2937; --g700: #374151;
+  --g500: #6B7280; --g300: #D1D5DB; --g100: #F3F4F6; --g50: #F9FAFB;
+  --white: #FFFFFF;
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'Lora', serif;
+  --font-m: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--g100);color:var(--g800);min-height:100vh}
+
+/* ── TOPBAR ─────────────────────────────────────── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:var(--navy);
+  border-bottom:2px solid var(--blue);
+  height:56px;display:flex;align-items:center;
+  padding:0 28px;gap:20px;
+  box-shadow:0 2px 24px rgba(0,0,0,0.35);
+}
+.tb-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tb-badge{
+  width:34px;height:34px;background:var(--blue);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:13px;font-weight:800;color:var(--white);
+}
+.tb-name{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--white)}
+.tb-sub{font-size:10px;color:var(--cyan);font-family:var(--font-m)}
+.tb-div{width:1px;height:26px;background:rgba(255,255,255,0.1)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.tb-time{font-family:var(--font-m);font-size:11px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:6px}
+.tb-time #clock{color:var(--cyan);font-weight:600}
+.tb-user{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;padding:4px 12px 4px 6px;cursor:pointer;
+}
+.tb-user-avatar{
+  width:24px;height:24px;background:var(--blue);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:var(--white);font-family:var(--font-d);
+}
+.tb-user-name{font-family:var(--font-d);font-size:11px;font-weight:600;color:rgba(255,255,255,0.8)}
+.tb-role{
+  background:rgba(0,180,216,0.18);border:1px solid rgba(0,180,216,0.3);
+  border-radius:10px;padding:2px 9px;
+  font-family:var(--font-m);font-size:10px;color:var(--cyan);font-weight:600;
+}
+
+/* ── HERO ────────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#1a2f45 100%);
+  padding:96px 48px 48px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 80% 50%,rgba(26,111,168,0.15) 0%,transparent 70%);
+}
+.hero::after{
+  content:'BQ';position:absolute;right:48px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-d);font-size:180px;font-weight:800;
+  color:rgba(255,255,255,0.025);letter-spacing:-10px;line-height:1;
+  pointer-events:none;
+}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{
+  font-family:var(--font-m);font-size:10px;font-weight:600;
+  color:var(--cyan);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:2px;background:var(--cyan)}
+.hero-title{
+  font-family:var(--font-d);font-size:36px;font-weight:800;
+  color:var(--white);line-height:1.1;margin-bottom:12px;
+  letter-spacing:-0.5px;
+}
+.hero-title span{color:var(--cyan)}
+.hero-desc{font-size:15px;color:rgba(255,255,255,0.5);max-width:540px;line-height:1.7;margin-bottom:28px;font-style:italic}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue);color:var(--white);
+  padding:12px 24px;border-radius:8px;
+  font-family:var(--font-d);font-size:13px;font-weight:700;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all 0.2s;box-shadow:0 4px 16px rgba(26,111,168,0.4);
+}
+.btn-primary:hover{background:var(--blue-b);transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,111,168,0.5)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.15);
+  padding:12px 24px;border-radius:8px;
+  font-family:var(--font-d);font-size:13px;font-weight:600;
+  text-decoration:none;cursor:pointer;transition:all 0.2s;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);color:var(--white)}
+.hero-stats{
+  display:flex;gap:0;margin-top:40px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:28px;
+}
+.hero-stat{flex:1;padding:0 24px;border-right:1px solid rgba(255,255,255,0.08)}
+.hero-stat:first-child{padding-left:0}
+.hero-stat:last-child{border-right:none}
+.stat-num{font-family:var(--font-d);font-size:28px;font-weight:800;color:var(--white);line-height:1}
+.stat-num span{font-size:14px;color:var(--cyan);margin-left:2px}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;font-family:var(--font-m)}
+
+/* ── MAIN ────────────────────────────────────────── */
+.main{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+
+/* ── SECTION TITLE ───────────────────────────────── */
+.s-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.s-title{
+  font-family:var(--font-d);font-size:18px;font-weight:800;
+  color:var(--navy);display:flex;align-items:center;gap:10px;
+}
+.s-title::before{
+  content:'';display:block;width:4px;height:20px;
+  background:var(--blue);border-radius:2px;
+}
+.s-link{
+  font-family:var(--font-m);font-size:11px;color:var(--blue);
+  text-decoration:none;border-bottom:1px dashed var(--blue);
+  padding-bottom:1px;transition:all 0.15s;
+}
+.s-link:hover{color:var(--blue-b)}
+
+/* ── KPI CARDS ───────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.kpi{
+  background:var(--white);border:1px solid var(--g300);
+  border-radius:12px;padding:20px;
+  border-top:3px solid var(--blue);
+  display:flex;flex-direction:column;gap:8px;
+  transition:box-shadow 0.2s;
+}
+.kpi:hover{box-shadow:0 4px 20px rgba(0,0,0,0.07)}
+.kpi.red{border-top-color:var(--red)}
+.kpi.green{border-top-color:var(--green-m)}
+.kpi.gold{border-top-color:var(--gold)}
+.kpi.orange{border-top-color:var(--orange)}
+.kpi-label{font-family:var(--font-m);font-size:10px;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:0.8px}
+.kpi-val{font-family:var(--font-d);font-size:32px;font-weight:800;color:var(--navy);line-height:1}
+.kpi-sub{font-size:11px;color:var(--g500);display:flex;align-items:center;gap:5px}
+.kpi-trend{font-family:var(--font-m);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.kpi-trend.up{background:var(--green-l);color:var(--green)}
+.kpi-trend.down{background:var(--red-l);color:var(--red)}
+.kpi-bar{height:4px;background:var(--g100);border-radius:2px;overflow:hidden;margin-top:4px}
+.kpi-bar-fill{height:100%;border-radius:2px;animation:fillBar 1.4s ease both}
+@keyframes fillBar{from{width:0}}
+
+/* ── GRID 2 COL ──────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:36px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}
+
+/* ── TABLE ───────────────────────────────────────── */
+.table-card{background:var(--white);border:1px solid var(--g300);border-radius:12px;overflow:hidden}
+.table-card-head{
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--g100);
+}
+.tc-title{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--navy)}
+.tc-badge{
+  font-family:var(--font-m);font-size:10px;font-weight:600;
+  padding:3px 9px;border-radius:10px;
+}
+.tc-badge.live{background:var(--green-l);color:var(--green);animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.6}}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{
+  background:var(--g50);padding:9px 16px;text-align:left;
+  font-family:var(--font-d);font-size:10px;font-weight:700;
+  color:var(--g500);text-transform:uppercase;letter-spacing:0.5px;
+  border-bottom:1px solid var(--g300);
+}
+td{padding:11px 16px;border-bottom:1px solid var(--g100);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--g50)}
+.td-mono{font-family:var(--font-m);font-size:11px;color:var(--navy);font-weight:600}
+.td-muted{font-size:11px;color:var(--g500)}
+
+/* ── STATUS BADGE ────────────────────────────────── */
+.badge{
+  display:inline-block;border-radius:20px;padding:3px 10px;
+  font-family:var(--font-m);font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.3px;
+}
+.badge.soumis   {background:#EDE7F6;color:#4527A0}
+.badge.en-cours {background:var(--gold-l);color:var(--gold)}
+.badge.valide   {background:var(--green-l);color:var(--green)}
+.badge.cloture  {background:var(--g100);color:var(--g500)}
+.badge.rejete   {background:var(--red-l);color:var(--red)}
+
+/* ── NIVEAU BADGE ────────────────────────────────── */
+.niv{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;font-family:var(--font-d);font-size:11px;font-weight:800}
+.niv.n1{background:var(--green-l);color:var(--green)}
+.niv.n2{background:#FFF9C4;color:#F57F17}
+.niv.n3{background:var(--orange-l);color:var(--orange)}
+.niv.n4{background:var(--red-l);color:var(--red)}
+
+/* ── SIDE WIDGETS ────────────────────────────────── */
+.widget{background:var(--white);border:1px solid var(--g300);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.widget-head{padding:14px 18px;border-bottom:1px solid var(--g100);font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--navy)}
+.widget-body{padding:14px 18px}
+
+/* Alert widget */
+.alert-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--g100);font-size:12px;
+}
+.alert-item:last-child{border-bottom:none;padding-bottom:0}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.ad-red{background:var(--red)} .ad-orange{background:var(--orange)}
+.ad-gold{background:var(--gold)} .ad-green{background:var(--green-m)}
+.alert-info{flex:1}
+.alert-text{color:var(--g700);line-height:1.4}
+.alert-meta{font-family:var(--font-m);font-size:10px;color:var(--g500);margin-top:3px}
+
+/* Quick actions */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qa-btn{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px;border-radius:10px;border:1.5px solid var(--g300);
+  background:var(--g50);cursor:pointer;text-decoration:none;
+  transition:all 0.15s;text-align:center;
+}
+.qa-btn:hover{border-color:var(--blue);background:var(--blue-pale)}
+.qa-icon{font-size:22px}
+.qa-label{font-family:var(--font-d);font-size:11px;font-weight:700;color:var(--navy)}
+
+/* Chart simulation */
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;padding-top:10px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chart-bar{
+  width:100%;border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--blue-b),var(--blue));
+  min-height:4px;animation:growBar 1s ease both;
+}
+@keyframes growBar{from{height:0 !important}}
+.chart-bar.alt{background:linear-gradient(180deg,#EF5350,var(--red))}
+.chart-lbl{font-family:var(--font-m);font-size:9px;color:var(--g500)}
+.chart-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.cl-item{display:flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:10px;color:var(--g500)}
+.cl-dot{width:8px;height:8px;border-radius:2px}
+
+/* ── NIVEAU DISTRIBUTION ─────────────────────────── */
+.niv-dist{display:flex;flex-direction:column;gap:8px}
+.niv-row{display:flex;align-items:center;gap:10px}
+.niv-row-label{font-family:var(--font-m);font-size:11px;color:var(--g700);width:60px;flex-shrink:0}
+.niv-row-bar{flex:1;height:8px;background:var(--g100);border-radius:4px;overflow:hidden}
+.niv-fill{height:100%;border-radius:4px;animation:fillBar 1.2s ease both}
+.niv-fill.n1{background:var(--green-m);width:45%}
+.niv-fill.n2{background:#FFB300;width:30%}
+.niv-fill.n3{background:var(--orange);width:18%}
+.niv-fill.n4{background:var(--red);width:7%}
+.niv-row-count{font-family:var(--font-m);font-size:11px;color:var(--g500);width:30px;text-align:right}
+
+/* ── FOOTER ──────────────────────────────────────── */
+.footer{
+  background:var(--navy);color:rgba(255,255,255,0.35);
+  text-align:center;padding:20px;
+  font-family:var(--font-m);font-size:10px;line-height:1.8;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+/* ── MODAL ───────────────────────────────────────── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(13,27,42,0.65);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--white);border-radius:14px;
+  width:100%;max-width:440px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.3);
+  animation:modalIn 0.25s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(0.93) translateY(12px)}}
+.modal-head{
+  background:var(--navy);padding:20px 24px;
+  display:flex;align-items:center;gap:12px;
+}
+.modal-icon{width:38px;height:38px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.modal-title{font-family:var(--font-d);font-size:15px;font-weight:800;color:var(--white)}
+.modal-sub{font-size:11px;color:var(--cyan);font-family:var(--font-m);margin-top:2px}
+.modal-body{padding:24px}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-family:var(--font-d);font-size:10.5px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.form-field input{
+  width:100%;height:40px;border:1.5px solid var(--g300);border-radius:8px;
+  padding:0 12px;font-family:var(--font-b);font-size:13px;color:var(--g900);
+  background:var(--g50);outline:none;transition:all 0.15s;
+}
+.form-field input:focus{border-color:var(--blue);background:var(--blue-pale);box-shadow:0 0 0 3px rgba(26,111,168,0.1)}
+.form-field input[type="password"]{letter-spacing:3px}
+.modal-footer{padding:0 24px 20px;display:flex;gap:10px}
+.modal-footer .btn-primary{flex:1;justify-content:center}
+.btn-ghost{
+  padding:10px 16px;border-radius:8px;border:1.5px solid var(--g300);
+  background:transparent;color:var(--g700);font-family:var(--font-d);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.btn-ghost:hover{background:var(--g100)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">
+    <div class="tb-badge">BQ</div>
+    <div>
+      <div class="tb-name">Banque — Portail Interne</div>
+      <div class="tb-sub">Direction du Contrôle Permanent</div>
+    </div>
+  </div>
+  <div class="tb-div"></div>
+  <div class="tb-time">Intranet sécurisé &nbsp;·&nbsp; <span id="clock">--:--:--</span></div>
+  <div class="tb-right">
+    <div class="tb-role" id="role-badge">CP CENTRAL</div>
+    <div class="tb-user" onclick="document.getElementById('modal-login').classList.toggle('open')">
+      <div class="tb-user-avatar" id="user-initials">MG</div>
+      <span class="tb-user-name" id="user-name">Mme GHARBI</span>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Contrôle Permanent — Réseau Agences</div>
+    <h1 class="hero-title">Gestion des Déclarations<br>de <span>Différence de Caisse</span></h1>
+    <p class="hero-desc">Plateforme centralisée de déclaration, traitement et archivage des écarts de caisse — conformément aux circulaires BCT et à la politique de contrôle interne.</p>
+    <div class="hero-actions">
+      <a href="formulaire.html" class="btn-primary">📋 Nouvelle Déclaration</a>
+      <a href="docs/api-spec.html" class="btn-secondary">📖 Spécification API</a>
+      <button class="btn-secondary" onclick="document.getElementById('modal-login').classList.add('open')">🔐 Se connecter</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-num" id="stat-total">47<span>ce mois</span></div>
+        <div class="stat-label">Déclarations totales</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num" id="stat-encours" style="color:#FFB300">8<span>actives</span></div>
+        <div class="stat-label">En cours de traitement</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num" id="stat-n4" style="color:var(--red)">3<span>🔴</span></div>
+        <div class="stat-label">Alertes Niveau 4</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num" id="stat-delai" style="color:var(--green-m)">94<span>%</span></div>
+        <div class="stat-label">Conformité délai &lt;1h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- KPI ROW -->
+  <div style="margin-bottom:28px">
+    <div class="s-head">
+      <div class="s-title">Tableau de bord — Mois en cours</div>
+      <span class="td-muted" style="font-family:var(--font-m);font-size:10px;">Données simulées — à connecter à <code>/api/v1/stats</code></span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Déclarations soumises</div>
+        <div class="kpi-val">47</div>
+        <div class="kpi-sub"><span class="kpi-trend up">↑ +12%</span> vs mois précédent</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:78%;background:var(--blue)"></div></div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">Alertes Niveau 4</div>
+        <div class="kpi-val">3</div>
+        <div class="kpi-sub"><span class="kpi-trend down">↑ +1</span> vs mois précédent</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:15%;background:var(--red)"></div></div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">Clôturées</div>
+        <div class="kpi-val">36</div>
+        <div class="kpi-sub"><span class="kpi-trend up">76,5%</span> taux de clôture</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:76%;background:var(--green-m)"></div></div>
+      </div>
+      <div class="kpi gold">
+        <div class="kpi-label">Montant total écarts</div>
+        <div class="kpi-val">12<span style="font-size:14px;color:var(--g500);font-weight:400"> 480 DT</span></div>
+        <div class="kpi-sub"><span class="kpi-trend down">↓ -8%</span> vs mois précédent</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:55%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid-2">
+
+    <!-- RECENT DECLARATIONS TABLE -->
+    <div>
+      <div class="s-head">
+        <div class="s-title">Déclarations récentes</div>
+        <a href="#" class="s-link">Tout voir →</a>
+      </div>
+      <div class="table-card">
+        <div class="table-card-head">
+          <div class="tc-title">Dernières soumissions</div>
+          <span class="tc-badge live">● Temps réel</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Référence</th>
+              <th>Agence</th>
+              <th>Montant</th>
+              <th>Niv.</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-mono">DC-20250214-A056</td>
+              <td>Ariana (056)</td>
+              <td class="td-mono">350,500 DT</td>
+              <td><span class="niv n3">3</span></td>
+              <td><span class="badge en-cours">EN COURS</span></td>
+            </tr>
+            <tr>
+              <td class="td-mono">DC-20250214-A129</td>
+              <td>La Marsa (129)</td>
+              <td class="td-mono">1 250,000 DT</td>
+              <td><span class="niv n4">4</span></td>
+              <td><span class="badge soumis">SOUMIS</span></td>
+            </tr>
+            <tr>
+              <td class="td-mono">DC-20250213-A002</td>
+              <td>Sousse (002)</td>
+              <td class="td-mono">45,200 DT</td>
+              <td><span class="niv n2">2</span></td>
+              <td><span class="badge valide">VALIDÉ</span></td>
+            </tr>
+            <tr>
+              <td class="td-mono">DC-20250213-A038</td>
+              <td>Sfax Zitouna (038)</td>
+              <td class="td-mono">8,000 DT</td>
+              <td><span class="niv n1">1</span></td>
+              <td><span class="badge cloture">CLÔTURÉ</span></td>
+            </tr>
+            <tr>
+              <td class="td-mono">DC-20250213-A100</td>
+              <td>Agence Centrale (100)</td>
+              <td class="td-mono">2 100,000 DT</td>
+              <td><span class="niv n4">4</span></td>
+              <td><span class="badge soumis">SOUMIS</span></td>
+            </tr>
+            <tr>
+              <td class="td-mono">DC-20250212-A060</td>
+              <td>Gare Tunis (060)</td>
+              <td class="td-mono">17,500 DT</td>
+              <td><span class="niv n1">1</span></td>
+              <td><span class="badge cloture">CLÔTURÉ</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SIDEBAR WIDGETS -->
+    <div>
+
+      <!-- Activité chart -->
+      <div class="s-head"><div class="s-title">Activité — 7 jours</div></div>
+      <div class="widget" style="padding:16px 20px 18px;margin-bottom:14px">
+        <div class="chart-bars" id="chart-bars">
+          <!-- Generated by JS -->
+        </div>
+        <div class="chart-legend">
+          <div class="cl-item"><div class="cl-dot" style="background:var(--blue)"></div>Manquant</div>
+          <div class="cl-item"><div class="cl-dot" style="background:var(--red)"></div>Excédent</div>
+        </div>
+      </div>
+
+      <!-- Répartition Niveaux -->
+      <div class="widget">
+        <div class="widget-head">Répartition par Niveau</div>
+        <div class="widget-body">
+          <div class="niv-dist">
+            <div class="niv-row">
+              <span class="niv-row-label">Niveau 1</span>
+              <div class="niv-row-bar"><div class="niv-fill n1"></div></div>
+              <span class="niv-row-count">21</span>
+            </div>
+            <div class="niv-row">
+              <span class="niv-row-label">Niveau 2</span>
+              <div class="niv-row-bar"><div class="niv-fill n2"></div></div>
+              <span class="niv-row-count">14</span>
+            </div>
+            <div class="niv-row">
+              <span class="niv-row-label">Niveau 3</span>
+              <div class="niv-row-bar"><div class="niv-fill n3"></div></div>
+              <span class="niv-row-count">9</span>
+            </div>
+            <div class="niv-row">
+              <span class="niv-row-label">Niveau 4</span>
+              <div class="niv-row-bar"><div class="niv-fill n4"></div></div>
+              <span class="niv-row-count">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alertes -->
+      <div class="widget" style="margin-top:14px">
+        <div class="widget-head" style="display:flex;align-items:center;justify-content:space-between">
+          Alertes actives
+          <span class="tc-badge live" style="font-size:9px">● 3 nouvelles</span>
+        </div>
+        <div class="widget-body">
+          <div class="alert-item">
+            <div class="alert-dot ad-red"></div>
+            <div class="alert-info">
+              <div class="alert-text">Agence Centrale (100) — Écart 2 100 DT — N4</div>
+              <div class="alert-meta">Reçu il y a 23 min · Non pris en charge</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot ad-red"></div>
+            <div class="alert-info">
+              <div class="alert-text">La Marsa (129) — Récidive détectée — N4</div>
+              <div class="alert-meta">Reçu il y a 1h 14min · Assigné à M. BEN AMOR</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot ad-orange"></div>
+            <div class="alert-info">
+              <div class="alert-text">Ariana (056) — En cours &gt; 4h sans MAJ</div>
+              <div class="alert-meta">Reçu hier 14:32 · Rappel envoyé</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot ad-gold"></div>
+            <div class="alert-info">
+              <div class="alert-text">Sfax Port (104) — Délai transmission dépassé</div>
+              <div class="alert-meta">Reçu hier 09:15 · +1h 45min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div>
+    <div class="s-head"><div class="s-title">Accès rapide</div></div>
+    <div class="grid-3">
+      <a href="formulaire.html" class="qa-btn" style="border-color:var(--blue)">
+        <div class="qa-icon">📋</div>
+        <div class="qa-label">Nouvelle Déclaration</div>
+        <div class="td-muted" style="font-size:11px">BQ-CP-CAI-001 v3</div>
+      </a>
+      <a href="docs/api-spec.html" class="qa-btn">
+        <div class="qa-icon">⚙️</div>
+        <div class="qa-label">Spécification API</div>
+        <div class="td-muted" style="font-size:11px">BQ-DSI-API-001</div>
+      </a>
+      <a href="#" class="qa-btn" onclick="showComingSoon('Rapport mensuel','Génération des statistiques CP — tableau récapitulatif mensuel des écarts par agence et par niveau.','📊')">
+        <div class="qa-icon">📊</div>
+        <div class="qa-label">Rapport mensuel</div>
+        <div class="td-muted" style="font-size:11px">Statistiques CP</div>
+      </a>
+      <a href="#" class="qa-btn" onclick="showComingSoon('Recherche déclaration','Moteur de recherche multi-critères : par référence, matricule caissier, agence, période ou montant.','🔍')">
+        <div class="qa-icon">🔍</div>
+        <div class="qa-label">Recherche déclaration</div>
+        <div class="td-muted" style="font-size:11px">Par référence / agence</div>
+      </a>
+      <a href="#" class="qa-btn" onclick="showComingSoon('Archives PDF','Consultation et téléchargement des PDF archivés — conservation réglementaire 10 ans sur NAS sécurisé.','🗄️')">
+        <div class="qa-icon">🗄️</div>
+        <div class="qa-label">Archives PDF</div>
+        <div class="td-muted" style="font-size:11px">Conservation 10 ans</div>
+      </a>
+      <a href="#" class="qa-btn" onclick="showComingSoon('Référentiels agences','Administration du référentiel des 164 agences : ajout, modification, affectation régionale. Accès Admin DSI uniquement.','📁')">
+        <div class="qa-icon">📁</div>
+        <div class="qa-label">Référentiels agences</div>
+        <div class="td-muted" style="font-size:11px">Admin DSI uniquement</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  BQ-CP — Portail Contrôle Permanent — Intranet Sécurisé &nbsp;|&nbsp; Rév. 03 — 2025 &nbsp;|&nbsp; Direction des Systèmes d'Information<br>
+  Accès restreint aux agents habilités — Toute tentative d'accès non autorisé est tracée et peut faire l'objet de poursuites disciplinaires.
+</footer>
+
+<!-- MODAL LOGIN -->
+<div class="modal-overlay" id="modal-login" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-icon">🔐</div>
+      <div>
+        <div class="modal-title">Authentification Intranet</div>
+        <div class="modal-sub">Réseau bancaire sécurisé — LDAP/AD</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Matricule</label>
+        <input type="text" placeholder="MAT-0000" id="login-mat">
+      </div>
+      <div class="form-field">
+        <label>Mot de passe</label>
+        <input type="password" placeholder="••••••••••">
+      </div>
+      <p style="font-size:11px;color:var(--g500);font-family:var(--font-m);margin-top:-8px">Connexion via Active Directory interne. En cas de problème, contacter <strong>dsi@banque.tn</strong>.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="document.getElementById('modal-login').classList.remove('open')">Annuler</button>
+      <button class="btn-primary" onclick="simulateLogin()">Se connecter →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Horloge en temps réel
+function updateClock() {
+  const now = new Date();
+  const p = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent = p(now.getHours())+':'+p(now.getMinutes())+':'+p(now.getSeconds());
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Simulation graphique barres d'activité
+const chartData = [
+  {day:'Lun',man:4,exc:1},{day:'Mar',man:2,exc:3},{day:'Mer',man:6,exc:0},
+  {day:'Jeu',man:3,exc:2},{day:'Ven',man:8,exc:1},{day:'Sam',man:1,exc:0},{day:'Dim',man:0,exc:0}
+];
+const maxVal = Math.max(...chartData.map(d => d.man + d.exc));
+const container = document.getElementById('chart-bars');
+chartData.forEach(d => {
+  const total = d.man + d.exc;
+  const manH = total > 0 ? Math.round((d.man / maxVal) * 70) : 2;
+  const excH = total > 0 ? Math.round((d.exc / maxVal) * 70) : 0;
+  container.innerHTML += `
+    <div class="chart-bar-wrap">
+      <div class="chart-bar alt" style="height:${excH}px;animation-delay:0.1s"></div>
+      <div class="chart-bar" style="height:${manH}px;animation-delay:0.05s"></div>
+      <div class="chart-lbl">${d.day}</div>
+    </div>`;
+});
+
+// ═══════════ TOAST NOTIFICATIONS ════════════════════════════════
+let toastTimeout;
+function showToast(message, type = 'info', duration = 4000) {
+  const existing = document.getElementById('toast-container');
+  if (existing) existing.remove();
+
+  const icon = { info:'ℹ', success:'✓', warn:'⚠', error:'✗' }[type] || 'ℹ';
+  const colors = {
+    info:    { bg:'#E3F2FD', border:'#1A6FA8', text:'#0D47A1', icon:'#1A6FA8' },
+    success: { bg:'#E8F5E9', border:'#43A047', text:'#1B5E20', icon:'#43A047' },
+    warn:    { bg:'#FFF8E1', border:'#C8961A', text:'#5D4037', icon:'#C8961A' },
+    error:   { bg:'#FFEBEE', border:'#C62828', text:'#B71C1C', icon:'#C62828' },
+  }[type] || colors.info;
+
+  const c = colors[type] || { bg:'#E3F2FD', border:'#1A6FA8', text:'#0D47A1', icon:'#1A6FA8' };
+
+  const toast = document.createElement('div');
+  toast.id = 'toast-container';
+  toast.style.cssText = `
+    position:fixed; bottom:28px; right:28px; z-index:9999;
+    background:${c.bg}; border:1.5px solid ${c.border};
+    border-left:4px solid ${c.border}; border-radius:10px;
+    padding:14px 20px; max-width:360px;
+    display:flex; align-items:flex-start; gap:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.14);
+    animation:toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    font-family:'Syne',sans-serif;
+  `;
+  toast.innerHTML = `
+    <div style="width:28px;height:28px;background:${c.icon};border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;color:#fff;font-weight:800;flex-shrink:0;margin-top:1px;">${icon}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700;color:${c.text};line-height:1.4">${message}</div>
+    </div>
+    <div onclick="this.parentElement.remove()" style="cursor:pointer;color:${c.text};opacity:0.5;font-size:16px;line-height:1;margin-top:1px;padding:2px 4px;border-radius:4px;transition:opacity .15s" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">✕</div>
+  `;
+
+  if (!document.getElementById('toast-style')) {
+    const s = document.createElement('style');
+    s.id = 'toast-style';
+    s.textContent = `@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(0.95)}}`;
+    document.head.appendChild(s);
+  }
+
+  document.body.appendChild(toast);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    if (toast.parentNode) {
+      toast.style.animation = 'toastOut 0.25s ease forwards';
+      setTimeout(() => toast.remove(), 250);
+    }
+  }, duration);
+}
+
+// ═══════════ MODALE "EN DÉVELOPPEMENT" ══════════════════════════
+function showComingSoon(titre, description, icon = '🔧') {
+  const existing = document.getElementById('modal-coming-soon');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'modal-coming-soon';
+  overlay.style.cssText = `
+    position:fixed;inset:0;z-index:800;
+    background:rgba(13,27,42,0.6);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    animation:fadeIn .2s ease;
+  `;
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:16px;max-width:420px;width:90%;overflow:hidden;
+      box-shadow:0 24px 80px rgba(0,0,0,0.3);animation:slideUp .25s cubic-bezier(0.34,1.56,0.64,1)">
+      <div style="background:#0D1B2A;padding:22px 26px;display:flex;align-items:center;gap:14px">
+        <div style="width:44px;height:44px;background:rgba(255,255,255,0.08);border-radius:10px;
+          display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff">${titre}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#00B4D8;margin-top:3px">Module en cours de déploiement</div>
+        </div>
+      </div>
+      <div style="padding:24px 26px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:10px;height:10px;background:#C8961A;border-radius:50%;animation:blink 1.5s ease infinite"></div>
+          <span style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#C8961A;text-transform:uppercase;letter-spacing:.5px">En développement</span>
+        </div>
+        <p style="font-size:13px;color:#374151;line-height:1.7;margin-bottom:18px">${description}</p>
+        <div style="background:#F3F4F6;border-radius:8px;padding:12px 16px;
+          font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B7280">
+          <div style="margin-bottom:4px;color:#9CA3AF;font-size:10px;text-transform:uppercase;letter-spacing:.5px">Calendrier prévisionnel</div>
+          Phase de recette UAT — T2 2025
+        </div>
+      </div>
+      <div style="padding:0 26px 22px;display:flex;justify-content:flex-end">
+        <button onclick="document.getElementById('modal-coming-soon').remove()"
+          style="background:#0D1B2A;color:#fff;border:none;border-radius:8px;
+          padding:10px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+          cursor:pointer;transition:background .15s"
+          onmouseenter="this.style.background='#1A6FA8'"
+          onmouseleave="this.style.background='#0D1B2A'">Fermer</button>
+      </div>
+    </div>
+  `;
+
+  if (!document.getElementById('modal-anim-style')) {
+    const s = document.createElement('style');
+    s.id = 'modal-anim-style';
+    s.textContent = `@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideUp{from{opacity:0;transform:scale(0.92) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}`;
+    document.head.appendChild(s);
+  }
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+// ═══════════ SIMULATION LOGIN ════════════════════════════════════
+function simulateLogin() {
+  const mat = document.getElementById('login-mat').value.trim();
+  if (!mat) {
+    showToast('Veuillez saisir votre matricule.', 'warn');
+    document.getElementById('login-mat').focus();
+    return;
+  }
+  document.getElementById('modal-login').classList.remove('open');
+  document.getElementById('user-initials').textContent = mat.slice(-2).toUpperCase();
+  document.getElementById('user-name').textContent = mat;
+  document.getElementById('role-badge').textContent = 'CAISSIER';
+  showToast('Connexion simulée — En production, l\'authentification se fait via LDAP/Active Directory.', 'success', 5000);
+}
+</script>
+</body>
+</html>
