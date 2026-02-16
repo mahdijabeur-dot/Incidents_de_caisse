@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spécification Backend & API — BQ-CP-CAI-001 | DSI Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2F45;
+  --navy-light:  #243B55;
+  --blue:        #1A6FA8;
+  --blue-bright: #2196F3;
+  --blue-pale:   #E3F2FD;
+  --cyan:        #00B4D8;
+  --gold:        #C8961A;
+  --gold-light:  #FFF8E1;
+  --red:         #C62828;
+  --red-light:   #FFEBEE;
+  --green:       #1B5E20;
+  --green-light: #E8F5E9;
+  --green-mid:   #43A047;
+  --orange:      #E65100;
+  --orange-light:#FFF3E0;
+  --gray-950:    #0A0E13;
+  --gray-900:    #111827;
+  --gray-800:    #1F2937;
+  --gray-700:    #374151;
+  --gray-600:    #4B5563;
+  --gray-400:    #9CA3AF;
+  --gray-200:    #E5E7EB;
+  --gray-100:    #F3F4F6;
+  --gray-50:     #F9FAFB;
+  --white:       #FFFFFF;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Lora', serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --sidebar-w:    300px;
+  --topbar-h:     58px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--gray-100);
+  color: var(--gray-800);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ═══════════ TOPBAR ═══════════════════════════════════ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--topbar-h);
+  background: var(--navy);
+  display: flex; align-items: center; gap: 20px;
+  padding: 0 28px;
+  border-bottom: 2px solid var(--blue);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+.topbar-logo {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-logo-badge {
+  width: 36px; height: 36px; background: var(--blue);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 13px; font-weight: 800;
+  color: var(--white); letter-spacing: -0.5px;
+}
+.topbar-title {
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.3px;
+}
+.topbar-subtitle {
+  font-size: 11px; color: var(--cyan); font-family: var(--font-mono);
+}
+.topbar-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.12); margin: 0 4px; }
+.topbar-breadcrumb {
+  font-size: 11.5px; color: rgba(255,255,255,0.5);
+  font-family: var(--font-mono); display: flex; align-items: center; gap: 6px;
+}
+.topbar-breadcrumb span { color: var(--cyan); }
+.topbar-right {
+  margin-left: auto; display: flex; align-items: center; gap: 14px;
+}
+.topbar-badge {
+  background: rgba(26,111,168,0.25); border: 1px solid var(--blue);
+  border-radius: 20px; padding: 3px 12px;
+  font-size: 11px; color: var(--cyan); font-family: var(--font-mono); font-weight: 600;
+}
+.topbar-version {
+  font-size: 10px; color: var(--gray-400); font-family: var(--font-mono);
+}
+.print-btn {
+  background: transparent; border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6); border-radius: 6px;
+  padding: 5px 12px; cursor: pointer; font-size: 11px;
+  font-family: var(--font-display); transition: all 0.2s;
+}
+.print-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+
+/* ═══════════ LAYOUT ═══════════════════════════════════ */
+.layout {
+  display: flex;
+  padding-top: var(--topbar-h);
+  min-height: 100vh;
+}
+
+/* ═══════════ SIDEBAR ══════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--navy-mid);
+  position: fixed;
+  top: var(--topbar-h);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 20px 0 40px;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.nav-section-title {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+  color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 1.5px;
+  padding: 16px 24px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 24px;
+  font-family: var(--font-display); font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer; border-left: 3px solid transparent;
+  transition: all 0.15s; text-decoration: none;
+}
+.nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+.nav-item.active {
+  color: var(--cyan); border-left-color: var(--cyan);
+  background: rgba(0,180,216,0.07);
+}
+.nav-item .nav-num {
+  width: 20px; height: 20px; background: rgba(255,255,255,0.06);
+  border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-family: var(--font-mono); flex-shrink: 0;
+  transition: background 0.15s;
+}
+.nav-item.active .nav-num { background: rgba(0,180,216,0.2); color: var(--cyan); }
+.nav-sub {
+  padding: 6px 24px 6px 57px;
+  font-family: var(--font-display); font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.3); cursor: pointer;
+  transition: color 0.15s; text-decoration: none; display: block;
+}
+.nav-sub:hover { color: rgba(255,255,255,0.7); }
+.nav-sub.active { color: var(--cyan); }
+
+.sidebar-footer {
+  padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 20px;
+}
+.sidebar-footer-label { font-size: 10px; color: rgba(255,255,255,0.2); font-family: var(--font-mono); margin-bottom: 4px; }
+.sidebar-footer-val { font-size: 11px; color: rgba(255,255,255,0.4); font-family: var(--font-mono); }
+
+/* ═══════════ CONTENT ══════════════════════════════════ */
+.content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 40px 48px 80px;
+  max-width: 960px;
+}
+
+/* ═══════════ SECTIONS ═════════════════════════════════ */
+.doc-section {
+  margin-bottom: 64px;
+  animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-anchor { display: block; height: var(--topbar-h); margin-top: calc(-1 * var(--topbar-h)); pointer-events: none; }
+
+.section-eyebrow {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--cyan); text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: 26px; font-weight: 800;
+  color: var(--navy); line-height: 1.1; margin-bottom: 6px;
+  border-bottom: 2px solid var(--blue-pale); padding-bottom: 14px;
+}
+.section-lead {
+  font-size: 15px; color: var(--gray-600); margin-bottom: 28px;
+  font-style: italic; line-height: 1.6;
+}
+
+.subsection { margin-bottom: 36px; }
+.subsection-title {
+  font-family: var(--font-display); font-size: 16px; font-weight: 700;
+  color: var(--navy-mid); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.subsection-title::before {
+  content: ''; display: block; width: 4px; height: 18px;
+  background: var(--blue); border-radius: 2px; flex-shrink: 0;
+}
+
+/* ═══════════ CARDS ════════════════════════════════════ */
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+.card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 10px; padding: 18px 20px;
+  border-top: 3px solid var(--blue);
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+.card.gold  { border-top-color: var(--gold); }
+.card.red   { border-top-color: var(--red); }
+.card.green { border-top-color: var(--green-mid); }
+.card.cyan  { border-top-color: var(--cyan); }
+.card-icon { font-size: 22px; margin-bottom: 10px; }
+.card-title { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.card-body  { font-size: 12px; color: var(--gray-600); line-height: 1.6; }
+.card-tag {
+  display: inline-block; margin-top: 8px;
+  background: var(--gray-100); border-radius: 4px;
+  padding: 2px 8px; font-size: 10px; font-family: var(--font-mono);
+  color: var(--gray-600); font-weight: 600;
+}
+
+/* ═══════════ ALERT BOX ════════════════════════════════ */
+.alert {
+  border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+  font-size: 13px; line-height: 1.6;
+}
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert-body strong { font-family: var(--font-display); font-weight: 700; display: block; margin-bottom: 3px; }
+.alert.warn  { background: var(--gold-light);  border-left: 4px solid var(--gold);  color: #5D4037; }
+.alert.info  { background: var(--blue-pale);   border-left: 4px solid var(--blue);  color: var(--navy-mid); }
+.alert.crit  { background: var(--red-light);   border-left: 4px solid var(--red);   color: #B71C1C; }
+.alert.ok    { background: var(--green-light); border-left: 4px solid var(--green-mid); color: var(--green); }
+
+/* ═══════════ CODE BLOCKS ══════════════════════════════ */
+.code-block {
+  background: var(--gray-950); border-radius: 10px;
+  overflow: hidden; margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.code-header {
+  background: var(--gray-900); padding: 10px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.code-lang {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--cyan); text-transform: uppercase; letter-spacing: 1px;
+}
+.code-label { font-size: 11px; color: var(--gray-400); font-family: var(--font-mono); }
+.code-copy {
+  background: rgba(255,255,255,0.06); border: none; border-radius: 5px;
+  color: var(--gray-400); font-size: 11px; font-family: var(--font-mono);
+  padding: 4px 10px; cursor: pointer; transition: all 0.2s;
+}
+.code-copy:hover { background: rgba(255,255,255,0.12); color: var(--white); }
+.code-body {
+  padding: 18px 20px; overflow-x: auto;
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.8;
+  color: #E2E8F0;
+}
+.code-body::-webkit-scrollbar { height: 4px; }
+.code-body::-webkit-scrollbar-track { background: transparent; }
+.code-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+/* Syntax colors */
+.kw  { color: #C792EA; }   /* keywords */
+.str { color: #A8FF78; }   /* strings */
+.num { color: #FF9D00; }   /* numbers */
+.cmt { color: #546E7A; font-style: italic; } /* comments */
+.key { color: #7CB9E8; }   /* JSON keys */
+.fn  { color: #80CBC4; }   /* function names */
+.typ { color: #FFCB6B; }   /* types */
+.url { color: #82AAFF; }   /* URLs / paths */
+.met { color: #FF5370; }   /* HTTP methods */
+.ok  { color: #A8FF78; }
+.err { color: #FF5370; }
+.hl  { background: rgba(0,180,216,0.08); display: block; margin: 0 -20px; padding: 0 20px; }
+
+/* ═══════════ ENDPOINT CARDS ═══════════════════════════ */
+.endpoint {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 10px; margin-bottom: 16px; overflow: hidden;
+}
+.endpoint-header {
+  padding: 14px 20px; display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: background 0.15s;
+}
+.endpoint-header:hover { background: var(--gray-50); }
+.method {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 5px; flex-shrink: 0; min-width: 58px; text-align: center;
+}
+.method.GET    { background: #E3F2FD; color: #1565C0; }
+.method.POST   { background: #E8F5E9; color: #2E7D32; }
+.method.PUT    { background: #FFF8E1; color: #F57F17; }
+.method.PATCH  { background: #FFF3E0; color: #E65100; }
+.method.DELETE { background: #FFEBEE; color: #C62828; }
+.endpoint-path {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--navy); flex: 1;
+}
+.endpoint-desc { font-size: 12px; color: var(--gray-400); font-style: italic; }
+.endpoint-auth {
+  font-family: var(--font-mono); font-size: 10px;
+  background: var(--gold-light); color: var(--gold);
+  padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(200,150,26,0.3);
+}
+.endpoint-body {
+  display: none; border-top: 1px solid var(--gray-200);
+  padding: 0;
+}
+.endpoint-body.open { display: block; }
+.endpoint-tabs {
+  display: flex; gap: 0; border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-50); padding: 0 20px;
+}
+.ep-tab {
+  padding: 8px 16px; font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  color: var(--gray-400); cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: all 0.15s;
+}
+.ep-tab:hover { color: var(--navy); }
+.ep-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.ep-panel { display: none; padding: 16px 20px; }
+.ep-panel.active { display: block; }
+
+/* ═══════════ TABLE ════════════════════════════════════ */
+.spec-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+.spec-table th {
+  background: var(--navy); color: var(--white);
+  font-family: var(--font-display); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 10px 14px; text-align: left;
+}
+.spec-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table tr:hover td { background: var(--gray-50); }
+.spec-table .mono { font-family: var(--font-mono); font-size: 11.5px; color: var(--navy); }
+.spec-table .req  { color: var(--red); font-weight: 700; font-size: 12px; }
+.spec-table .opt  { color: var(--gray-400); font-size: 11px; }
+.spec-table .type-badge {
+  display: inline-block; background: var(--blue-pale); color: var(--blue);
+  border-radius: 4px; padding: 1px 7px; font-family: var(--font-mono); font-size: 10.5px;
+}
+
+/* ═══════════ SCHEMA DIAGRAM ═══════════════════════════ */
+.db-diagram {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin-bottom: 24px;
+}
+.db-table {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 8px; overflow: hidden;
+}
+.db-table-header {
+  background: var(--navy); padding: 10px 14px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--cyan); display: flex; align-items: center; gap: 6px;
+}
+.db-table-header span { color: rgba(255,255,255,0.4); font-size: 10px; }
+.db-field {
+  padding: 6px 14px; border-bottom: 1px solid var(--gray-100);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 11px; gap: 8px;
+}
+.db-field:last-child { border-bottom: none; }
+.db-field .fname { color: var(--gray-700); }
+.db-field .ftype { color: var(--gray-400); font-size: 10px; }
+.db-field.pk .fname { color: var(--gold); font-weight: 600; }
+.db-field.fk .fname { color: var(--blue); }
+.db-field.nn::after { content: 'NN'; font-size: 9px; color: var(--red); font-weight: 700; }
+
+/* ═══════════ FLOW DIAGRAM ═════════════════════════════ */
+.flow {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 10px; padding: 24px; margin-bottom: 24px;
+}
+.flow-steps { display: flex; flex-direction: column; gap: 0; }
+.flow-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  position: relative;
+}
+.flow-step:not(:last-child)::after {
+  content: ''; position: absolute;
+  left: 17px; top: 40px; bottom: 0; width: 2px;
+  background: linear-gradient(var(--blue-pale), var(--blue));
+  opacity: 0.4;
+}
+.flow-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 13px; font-weight: 800;
+  flex-shrink: 0; z-index: 1; position: relative;
+}
+.flow-content { padding: 6px 0 28px; flex: 1; }
+.flow-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.flow-desc { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+.flow-tag { display: inline-block; margin-top: 6px; font-family: var(--font-mono); font-size: 10px; background: var(--blue-pale); color: var(--blue); padding: 2px 8px; border-radius: 4px; }
+
+/* ═══════════ STATUS BADGES ═══════════════════════════ */
+.status-flow {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.status-node {
+  background: var(--white); border: 2px solid var(--gray-200);
+  border-radius: 8px; padding: 8px 16px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+  transition: all 0.2s;
+}
+.status-node.s1 { border-color: #1565C0; color: #1565C0; background: #E3F2FD; }
+.status-node.s2 { border-color: var(--gold); color: var(--gold); background: var(--gold-light); }
+.status-node.s3 { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+.status-node.s4 { border-color: var(--green-mid); color: var(--green); background: var(--green-light); }
+.status-node.s5 { border-color: var(--red); color: var(--red); background: var(--red-light); }
+.status-arrow { color: var(--gray-400); font-size: 16px; }
+
+/* ═══════════ ROLE TABLE ═══════════════════════════════ */
+.role-matrix { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; margin-bottom: 24px; font-size: 11.5px; }
+.rm-head { background: var(--navy); color: var(--white); font-family: var(--font-display); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; padding: 10px 12px; border-radius: 4px; }
+.rm-role { background: var(--gray-50); border: 1px solid var(--gray-200); padding: 10px 12px; border-radius: 4px; font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--navy); }
+.rm-cell { background: var(--white); border: 1px solid var(--gray-200); padding: 8px; border-radius: 4px; text-align: center; font-size: 16px; }
+.rm-cell.y  { background: var(--green-light); }
+.rm-cell.n  { background: var(--red-light); opacity: 0.5; }
+.rm-cell.r  { background: var(--gold-light); }
+
+/* ═══════════ PROGRESS / SCORE ═════════════════════════ */
+.score-bar-wrap { margin-bottom: 10px; }
+.score-bar-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); margin-bottom: 4px; }
+.score-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 4px; animation: fillBar 1.2s ease both; }
+@keyframes fillBar { from { width: 0; } }
+.fill-90 { width: 90%; background: linear-gradient(90deg, var(--green-mid), #66BB6A); }
+.fill-80 { width: 80%; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+.fill-70 { width: 70%; background: linear-gradient(90deg, var(--gold), #FFB300); }
+.fill-60 { width: 60%; background: linear-gradient(90deg, var(--orange), #FF7043); }
+
+/* ═══════════ PRINT ════════════════════════════════════ */
+@media print {
+  .topbar, .sidebar { display: none; }
+  .content { margin-left: 0; padding: 20px; }
+  .code-block { box-shadow: none; border: 1px solid #ccc; }
+  .endpoint-body { display: block !important; }
+  .ep-panel { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ TOPBAR ══════════════════════════════════ -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-badge">BQ</div>
+    <div>
+      <div class="topbar-title">Direction des Systèmes d'Information</div>
+      <div class="topbar-subtitle">DSI — Intranet Technique</div>
+    </div>
+  </div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-breadcrumb">
+    DSI <span>›</span> Contrôle Permanent <span>›</span> BQ-CP-CAI-001 <span>›</span> Backend & API
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-badge">CONFIDENTIEL DSI</div>
+    <div class="topbar-version">v3.0 — Fév. 2025</div>
+    <button class="print-btn" onclick="window.print()">🖨 Imprimer</button>
+  </div>
+</div>
+
+<!-- ═══════════ LAYOUT ═══════════════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section-title">Vue générale</div>
+    <a href="#overview"  class="nav-item active"><span class="nav-num">01</span>Architecture globale</a>
+    <a href="#stack"     class="nav-item"><span class="nav-num">02</span>Stack technologique</a>
+
+    <div class="nav-section-title">Sécurité & Accès</div>
+    <a href="#auth"      class="nav-item"><span class="nav-num">03</span>Authentification</a>
+    <a href="#authz"     class="nav-item"><span class="nav-num">04</span>Autorisation & Rôles</a>
+
+    <div class="nav-section-title">API REST</div>
+    <a href="#api-intro" class="nav-item"><span class="nav-num">05</span>Conventions & Standards</a>
+    <a href="#api-decl"  class="nav-item"><span class="nav-num">06</span>Déclarations</a>
+    <a class="nav-sub" href="#ep-create">POST /declarations</a>
+    <a class="nav-sub" href="#ep-list">GET /declarations</a>
+    <a class="nav-sub" href="#ep-get">GET /declarations/:id</a>
+    <a class="nav-sub" href="#ep-update">PATCH /declarations/:id</a>
+    <a href="#api-ref"   class="nav-item"><span class="nav-num">07</span>Référentiels</a>
+    <a href="#api-notif" class="nav-item"><span class="nav-num">08</span>Notifications</a>
+    <a href="#api-audit" class="nav-item"><span class="nav-num">09</span>Audit & Journaux</a>
+
+    <div class="nav-section-title">Base de données</div>
+    <a href="#schema"    class="nav-item"><span class="nav-num">10</span>Schéma relationnel</a>
+    <a href="#workflow"  class="nav-item"><span class="nav-num">11</span>Workflow & Statuts</a>
+
+    <div class="nav-section-title">Déploiement</div>
+    <a href="#deploy"    class="nav-item"><span class="nav-num">12</span>Configuration intranet</a>
+    <a href="#errors"    class="nav-item"><span class="nav-num">13</span>Gestion des erreurs</a>
+    <a href="#perf"      class="nav-item"><span class="nav-num">14</span>Performance & SLA</a>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label">Référence</div>
+      <div class="sidebar-footer-val">BQ-DSI-API-001</div>
+      <div class="sidebar-footer-label" style="margin-top:8px;">Rédacteur</div>
+      <div class="sidebar-footer-val">Direction Contrôle Permanent</div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 01 — ARCHITECTURE GLOBALE             -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="overview"></span>
+      <div class="section-eyebrow">01 — Vue d'ensemble</div>
+      <h1 class="section-title">Architecture Backend & API</h1>
+      <p class="section-lead">Spécification technique complète du système de traitement des déclarations de différence de caisse — formulaire BQ-CP-CAI-001. Contexte : intranet bancaire, réseau isolé, accès authentifié.</p>
+
+      <div class="alert info">
+        <span class="alert-icon">ℹ</span>
+        <div class="alert-body">
+          <strong>Périmètre du document</strong>
+          Ce document couvre exclusivement la couche Backend & API REST. Les spécifications de sécurité réseau (firewall, DMZ, VPN) et la couche frontend sont documentées séparément dans les dossiers <code style="font-family:var(--font-mono);font-size:11px;">BQ-DSI-SEC-001</code> et <code style="font-family:var(--font-mono);font-size:11px;">BQ-DSI-FRONT-001</code>.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pattern architectural — N-Tiers</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🌐</div>
+            <div class="card-title">Couche Présentation</div>
+            <div class="card-body">Formulaire HTML5 (BQ-CP-CAI-001 v3) servi statiquement depuis le serveur web. Aucune logique métier côté client.</div>
+            <span class="card-tag">Nginx / IIS</span>
+          </div>
+          <div class="card gold">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">Couche Applicative</div>
+            <div class="card-body">API REST sécurisée. Validation, règles métier, orchestration des notifications et génération PDF.</div>
+            <span class="card-tag">Node.js / Spring Boot</span>
+          </div>
+          <div class="card green">
+            <div class="card-icon">🗄️</div>
+            <div class="card-title">Couche Données</div>
+            <div class="card-body">Base de données relationnelle + stockage fichiers archivés. Journalisation immuable des événements.</div>
+            <span class="card-tag">PostgreSQL / Oracle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Flux de données — Parcours d'une déclaration</div>
+        <div class="flow">
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <div class="flow-title">Saisie & Soumission frontend</div>
+                <div class="flow-desc">Le caissier remplit le formulaire HTML. Validation côté client (JS). Au clic "Valider", une requête <code style="font-family:var(--font-mono);font-size:11px;">POST /api/v1/declarations</code> est émise avec le JSON complet.</div>
+                <span class="flow-tag">HTTPS — JWT Bearer</span>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <div class="flow-title">Validation & Enrichissement API</div>
+                <div class="flow-desc">Le middleware valide le token JWT, applique les règles métier (montant ≥ 0, date ≤ aujourd'hui, agence existante), enrichit la déclaration avec horodatage serveur et identifiant unique.</div>
+                <span class="flow-tag">Middleware Auth + Validator</span>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <div class="flow-title">Persistance & Audit</div>
+                <div class="flow-desc">La déclaration est insérée en base. Un événement d'audit est écrit simultanément dans la table <code style="font-family:var(--font-mono);font-size:11px;">audit_log</code> (non modifiable). Statut initial : <code style="font-family:var(--font-mono);font-size:11px;">SOUMIS</code>.</div>
+                <span class="flow-tag">Transaction ACID</span>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">4</div>
+              <div class="flow-content">
+                <div class="flow-title">Notification automatique</div>
+                <div class="flow-desc">Le moteur de notification envoie un e-mail au Contrôle Permanent Central (CP) et en copie au Directeur d'Agence. Le corps du mail est généré depuis un template Handlebars.</div>
+                <span class="flow-tag">SMTP relay interne</span>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-num">5</div>
+              <div class="flow-content">
+                <div class="flow-title">Génération & Archivage PDF</div>
+                <div class="flow-desc">Un PDF canonique est généré (Puppeteer/wkhtmltopdf), signé électroniquement et archivé sur le NAS selon la règle de conservation : <strong>10 ans</strong>.</div>
+                <span class="flow-tag">NAS chiffré AES-256</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 02 — STACK TECHNOLOGIQUE              -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="stack"></span>
+      <div class="section-eyebrow">02 — Infrastructure</div>
+      <h2 class="section-title">Stack Technologique Recommandée</h2>
+      <p class="section-lead">Sélection basée sur la compatibilité avec l'infrastructure intranet bancaire tunisienne, la facilité de maintenance et les exigences de sécurité.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🟢</div>
+          <div class="card-title">Runtime — Node.js 20 LTS</div>
+          <div class="card-body">Framework Express.js 4.x ou Fastify 4.x. Performance élevée, écosystème npm mature, support long terme garanti.</div>
+          <span class="card-tag">Option A — recommandée</span>
+        </div>
+        <div class="card gold">
+          <div class="card-icon">☕</div>
+          <div class="card-title">Runtime — Java 17 LTS</div>
+          <div class="card-body">Spring Boot 3.x. Si la DSI dispose déjà d'une JVM standardisée. Plus verbeux mais excellent support entreprise.</div>
+          <span class="card-tag">Option B — alternative</span>
+        </div>
+        <div class="card cyan">
+          <div class="card-icon">🐘</div>
+          <div class="card-title">Base de données — PostgreSQL 15</div>
+          <div class="card-body">SGBDR open-source robuste, support JSONB, Row-Level Security, audit triggers natifs. Gratuit et certifié.</div>
+          <span class="card-tag">Recommandé</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">📧</div>
+          <div class="card-title">Messagerie — Nodemailer</div>
+          <div class="card-body">Relay via SMTP interne de la banque. Support TLS/STARTTLS. Templates HTML Handlebars.</div>
+          <span class="card-tag">node-mailer / JavaMail</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <div class="card-title">PDF — Puppeteer</div>
+          <div class="card-body">Génération PDF haute fidélité depuis le formulaire HTML. Headless Chrome. Alternative : wkhtmltopdf.</div>
+          <span class="card-tag">Headless Chrome</span>
+        </div>
+        <div class="card red">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Auth — JWT + Sessions</div>
+          <div class="card-body">Tokens JWT RS256 (clé asymétrique), sessions serveur Redis. Intégration LDAP/Active Directory banque.</div>
+          <span class="card-tag">jsonwebtoken / passport-ldap</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 03 — AUTHENTIFICATION                 -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="auth"></span>
+      <div class="section-eyebrow">03 — Sécurité</div>
+      <h2 class="section-title">Authentification</h2>
+      <p class="section-lead">Toutes les routes API (sauf <code style="font-family:var(--font-mono)">/health</code>) requièrent un token JWT valide obtenu via le SSO interne ou l'Active Directory de la banque.</p>
+
+      <div class="alert crit">
+        <span class="alert-icon">🔴</span>
+        <div class="alert-body">
+          <strong>Règle absolue — Aucune donnée non authentifiée</strong>
+          Toute requête sans header <code style="font-family:var(--font-mono);font-size:11px;">Authorization: Bearer &lt;token&gt;</code> valide retourne systématiquement une réponse <code style="font-family:var(--font-mono);font-size:11px;">401 Unauthorized</code>. La page de formulaire elle-même ne doit pas être servie sans authentification préalable.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Flux d'authentification — LDAP/AD + JWT</div>
+        <div class="code-block">
+          <div class="code-header">
+            <div>
+              <span class="code-lang">HTTP</span>
+              <span class="code-label" style="margin-left:10px;">Étape 1 — Connexion & obtention du token</span>
+            </div>
+            <button class="code-copy" onclick="copyCode(this)">Copier</button>
+          </div>
+          <div class="code-body"><span class="met">POST</span> <span class="url">/api/v1/auth/login</span>
+<span class="cmt">Content-Type: application/json</span>
+
+<span class="cmt">// Corps de la requête</span>
+{
+  <span class="key">"matricule"</span>: <span class="str">"MAT-0042"</span>,
+  <span class="key">"password"</span>:  <span class="str">"••••••••"</span>
+}
+
+<span class="cmt">// Réponse 200 OK</span>
+{
+  <span class="key">"access_token"</span>: <span class="str">"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+  <span class="key">"token_type"</span>:   <span class="str">"Bearer"</span>,
+  <span class="key">"expires_in"</span>:   <span class="num">28800</span>,  <span class="cmt">// 8 heures (journée de travail)</span>
+  <span class="key">"user"</span>: {
+    <span class="key">"matricule"</span>: <span class="str">"MAT-0042"</span>,
+    <span class="key">"nom"</span>:       <span class="str">"BEN SALAH Mehdi"</span>,
+    <span class="key">"role"</span>:      <span class="str">"CAISSIER"</span>,
+    <span class="key">"agence"</span>:   <span class="str">"056"</span>
+  }
+}</div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div>
+              <span class="code-lang">HTTP</span>
+              <span class="code-label" style="margin-left:10px;">Étape 2 — Utilisation du token sur toutes les requêtes</span>
+            </div>
+            <button class="code-copy" onclick="copyCode(this)">Copier</button>
+          </div>
+          <div class="code-body"><span class="met">POST</span> <span class="url">/api/v1/declarations</span>
+<span class="kw">Authorization</span>: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+<span class="kw">Content-Type</span>: application/json
+<span class="kw">X-Request-ID</span>: &lt;UUID-v4 généré côté client&gt;
+<span class="kw">X-Agent-Code</span>: <span class="str">056</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Payload JWT — Structure</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON</span>
+            <button class="code-copy" onclick="copyCode(this)">Copier</button>
+          </div>
+          <div class="code-body">{
+  <span class="cmt">// En-tête</span>
+  <span class="key">"alg"</span>: <span class="str">"RS256"</span>,   <span class="cmt">// Signature asymétrique obligatoire (pas HS256)</span>
+  <span class="key">"typ"</span>: <span class="str">"JWT"</span>,
+
+  <span class="cmt">// Payload</span>
+  <span class="key">"sub"</span>: <span class="str">"MAT-0042"</span>,           <span class="cmt">// Matricule agent</span>
+  <span class="key">"iat"</span>: <span class="num">1708894800</span>,          <span class="cmt">// Issued At</span>
+  <span class="key">"exp"</span>: <span class="num">1708923600</span>,          <span class="cmt">// Expiry (8h)</span>
+  <span class="key">"jti"</span>: <span class="str">"a3f2-9c1b-..."</span>,       <span class="cmt">// JWT ID unique (anti-replay)</span>
+  <span class="key">"role"</span>: <span class="str">"CAISSIER"</span>,           <span class="cmt">// CAISSIER | SUPERVISEUR | DIRECTEUR | CP | ADMIN</span>
+  <span class="key">"agence"</span>: <span class="str">"056"</span>,             <span class="cmt">// Code agence de rattachement</span>
+  <span class="key">"region"</span>: <span class="str">"Grand Tunis"</span>      <span class="cmt">// Région (pour filtrage CP)</span>
+}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 04 — AUTORISATION & RÔLES            -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="authz"></span>
+      <div class="section-eyebrow">04 — Contrôle d'accès</div>
+      <h2 class="section-title">Autorisation & Matrice des Rôles</h2>
+      <p class="section-lead">Modèle RBAC (Role-Based Access Control) à 5 rôles. Les droits sont vérifiés au niveau du middleware avant toute exécution de logique métier.</p>
+
+      <div class="role-matrix">
+        <div class="rm-head">Action</div>
+        <div class="rm-head">Caissier</div>
+        <div class="rm-head">Superviseur</div>
+        <div class="rm-head">Directeur</div>
+        <div class="rm-head">CP Central</div>
+        <div class="rm-head">Admin DSI</div>
+
+        <div class="rm-role">Créer déclaration</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Voir décl. propre agence</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Voir toutes déclarations</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Modifier déclaration</div>
+        <div class="rm-cell r">⚠ SOUMIS seul.</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell y">✓</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Changer statut</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell r">⚠ → EN_COURS</div>
+        <div class="rm-cell r">⚠ → VALIDÉ</div>
+        <div class="rm-cell y">✓ Tous</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Accès journaux audit</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell y">✓ Lecture</div>
+        <div class="rm-cell y">✓</div>
+
+        <div class="rm-role">Gérer référentiels</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell n">—</div>
+        <div class="rm-cell y">✓</div>
+      </div>
+
+      <div class="alert warn">
+        <span class="alert-icon">⚠</span>
+        <div class="alert-body">
+          <strong>Séparation des fonctions — Principe 4 yeux</strong>
+          Un caissier ne peut pas valider sa propre déclaration. Le système rejette toute requête de modification dont le champ <code style="font-family:var(--font-mono);font-size:11px;">validateur_matricule === declarant_matricule</code>.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 05 — CONVENTIONS API                  -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="api-intro"></span>
+      <div class="section-eyebrow">05 — API REST</div>
+      <h2 class="section-title">Conventions & Standards</h2>
+      <p class="section-lead">L'API suit les principes REST niveau 2 (Richardson Maturity Model). Toutes les réponses sont en JSON. Encodage UTF-8. Base URL intranet : <code style="font-family:var(--font-mono);">https://intranet.banque.tn/api/v1</code></p>
+
+      <div class="subsection">
+        <div class="subsection-title">Structure de réponse standard</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON</span>
+            <span class="code-label" style="margin-left:10px;">Enveloppe de réponse unifiée</span>
+            <button class="code-copy" onclick="copyCode(this)">Copier</button>
+          </div>
+          <div class="code-body"><span class="cmt">// Succès</span>
+{
+  <span class="key">"success"</span>:   <span class="kw">true</span>,
+  <span class="key">"data"</span>:     { <span class="cmt">/* objet ou tableau */</span> },
+  <span class="key">"meta"</span>:     {
+    <span class="key">"timestamp"</span>:  <span class="str">"2025-02-14T09:32:15.000Z"</span>,
+    <span class="key">"request_id"</span>: <span class="str">"a3f2-9c1b-4d5e-8f7a"</span>,
+    <span class="key">"version"</span>:    <span class="str">"1.0"</span>
+  }
+}
+
+<span class="cmt">// Erreur</span>
+{
+  <span class="key">"success"</span>:   <span class="kw">false</span>,
+  <span class="key">"error"</span>: {
+    <span class="key">"code"</span>:    <span class="str">"VALIDATION_ERROR"</span>,    <span class="cmt">// Code machine</span>
+    <span class="key">"message"</span>: <span class="str">"Montant invalide"</span>,    <span class="cmt">// Message lisible</span>
+    <span class="key">"details"</span>: [ <span class="cmt">/* champs en erreur */</span> ]
+  },
+  <span class="key">"meta"</span>: { <span class="cmt">/* idem */</span> }
+}</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Codes HTTP utilisés</div>
+        <table class="spec-table">
+          <thead><tr><th>Code</th><th>Signification</th><th>Usage</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">200 OK</td><td>Succès</td><td>GET, PATCH réussis</td></tr>
+            <tr><td class="mono">201 Created</td><td>Ressource créée</td><td>POST /declarations réussi</td></tr>
+            <tr><td class="mono">400 Bad Request</td><td>Données invalides</td><td>Validation métier échouée</td></tr>
+            <tr><td class="mono">401 Unauthorized</td><td>Non authentifié</td><td>Token absent ou expiré</td></tr>
+            <tr><td class="mono">403 Forbidden</td><td>Non autorisé</td><td>Rôle insuffisant</td></tr>
+            <tr><td class="mono">404 Not Found</td><td>Ressource absente</td><td>ID déclaration inconnu</td></tr>
+            <tr><td class="mono">409 Conflict</td><td>Conflit d'état</td><td>Déclaration déjà clôturée</td></tr>
+            <tr><td class="mono">422 Unprocessable</td><td>Règle métier</td><td>Montant = 0, date future…</td></tr>
+            <tr><td class="mono">500 Server Error</td><td>Erreur interne</td><td>Exception non gérée (loggée)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 06 — ENDPOINTS DÉCLARATIONS           -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="api-decl"></span>
+      <div class="section-eyebrow">06 — Ressource principale</div>
+      <h2 class="section-title">API Déclarations</h2>
+      <p class="section-lead">Ressource centrale de l'application. Toutes les opérations CRUD sur les déclarations de différence de caisse.</p>
+
+      <!-- POST /declarations -->
+      <span class="section-anchor" id="ep-create"></span>
+      <div class="endpoint">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+          <span class="method POST">POST</span>
+          <span class="endpoint-path">/api/v1/declarations</span>
+          <span class="endpoint-desc">Créer une nouvelle déclaration</span>
+          <span class="endpoint-auth">🔐 CAISSIER+</span>
+          <span style="margin-left:auto;color:var(--gray-400);font-size:18px;transition:transform 0.2s;" class="ep-toggle">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="endpoint-tabs">
+            <div class="ep-tab active" onclick="switchTab(this,'req')">Corps requête</div>
+            <div class="ep-tab" onclick="switchTab(this,'res')">Réponse 201</div>
+            <div class="ep-tab" onclick="switchTab(this,'rules')">Règles métier</div>
+          </div>
+          <div class="ep-panel active" data-panel="req">
+            <div class="code-block" style="margin-bottom:0">
+              <div class="code-header">
+                <span class="code-lang">JSON</span>
+                <button class="code-copy" onclick="copyCode(this)">Copier</button>
+              </div>
+              <div class="code-body">{
+  <span class="key">"agence"</span>: {
+    <span class="key">"code"</span>:   <span class="str">"056"</span>,       <span class="cmt">// <span class="req">*</span> Code agence (3 chiffres)</span>
+    <span class="key">"region"</span>: <span class="str">"Grand Tunis"</span>  <span class="cmt">// auto-rempli si omis</span>
+  },
+  <span class="key">"caissier"</span>: {
+    <span class="key">"matricule"</span>: <span class="str">"MAT-0042"</span>,     <span class="cmt">// <span class="req">*</span></span>
+    <span class="key">"nom"</span>:       <span class="str">"BEN SALAH Mehdi"</span>, <span class="cmt">// <span class="req">*</span></span>
+    <span class="key">"grade"</span>:     <span class="str">"Rédacteur"</span>,
+    <span class="key">"fonction"</span>:  <span class="str">"Caissier Principal"</span>  <span class="cmt">// <span class="req">*</span></span>
+  },
+  <span class="key">"ecart"</span>: {
+    <span class="key">"date_constat"</span>: <span class="str">"2025-02-14"</span>,  <span class="cmt">// <span class="req">*</span> ISO 8601, ≤ today</span>
+    <span class="key">"heure_constat"</span>: <span class="str">"14:32"</span>,       <span class="cmt">// <span class="req">*</span> HH:MM</span>
+    <span class="key">"heure_arrete"</span>:  <span class="str">"17:00"</span>,
+    <span class="key">"montant_dt"</span>:    <span class="num">350</span>,           <span class="cmt">// <span class="req">*</span> entier, > 0</span>
+    <span class="key">"montant_mm"</span>:    <span class="num">500</span>,           <span class="cmt">// 0–999</span>
+    <span class="key">"nature"</span>:        <span class="str">"MANQUANT"</span>,    <span class="cmt">// <span class="req">*</span> MANQUANT | EXCEDENT</span>
+    <span class="key">"type_caisse"</span>:   <span class="str">"Caisse DT Principale"</span>  <span class="cmt">// <span class="req">*</span></span>
+  },
+  <span class="key">"niveau"</span>: <span class="num">3</span>,  <span class="cmt">// <span class="req">*</span> 1–4 (peut être auto-calculé)</span>
+  <span class="key">"circonstances"</span>: {
+    <span class="key">"declaration_caissier"</span>: <span class="str">"Lors de..."</span>,  <span class="cmt">// <span class="req">*</span> min 20 chars</span>
+    <span class="key">"observations_sup"</span>:     <span class="str">"Après contre-comptage..."</span>,  <span class="cmt">// <span class="req">*</span></span>
+    <span class="key">"causes"</span>: [<span class="str">"Erreur de comptage"</span>]  <span class="cmt">// <span class="req">*</span> ≥ 1 élément</span>
+  },
+  <span class="key">"mesures"</span>: {
+    <span class="key">"actions"</span>: [<span class="str">"Contre-comptage effectué"</span>, <span class="str">"Entretien avec le caissier"</span>]
+  },
+  <span class="key">"recidive"</span>: {
+    <span class="key">"oui"</span>: <span class="kw">false</span>,
+    <span class="key">"nb_ecarts"</span>: <span class="kw">null</span>
+  },
+  <span class="key">"ref_client"</span>: <span class="str">"DC-20250214-143022-ABC-AG056"</span>  <span class="cmt">// N° généré côté client</span>
+}</div>
+            </div>
+          </div>
+          <div class="ep-panel" data-panel="res">
+            <div class="code-block" style="margin-bottom:0">
+              <div class="code-header">
+                <span class="code-lang">JSON</span>
+                <span class="code-label" style="margin-left:10px;">201 Created</span>
+                <button class="code-copy" onclick="copyCode(this)">Copier</button>
+              </div>
+              <div class="code-body">{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"id"</span>:            <span class="str">"decl_8f3a2b1c"</span>,    <span class="cmt">// ID serveur (UUID)</span>
+    <span class="key">"ref"</span>:           <span class="str">"DC-20250214-143022-ABC-AG056"</span>,
+    <span class="key">"statut"</span>:        <span class="str">"SOUMIS"</span>,
+    <span class="key">"niveau"</span>:        <span class="num">3</span>,
+    <span class="key">"horodatage_srv"</span>: <span class="str">"2025-02-14T14:32:05.000Z"</span>,  <span class="cmt">// Horodatage SERVEUR</span>
+    <span class="key">"pdf_url"</span>:       <span class="str">"/api/v1/declarations/decl_8f3a2b1c/pdf"</span>,
+    <span class="key">"notification"</span>: {
+      <span class="key">"envoyee"</span>: <span class="kw">true</span>,
+      <span class="key">"destinataires"</span>: [<span class="str">"cp.central@banque.tn"</span>, <span class="str">"dir.056@banque.tn"</span>]
+    }
+  },
+  <span class="key">"meta"</span>: { <span class="key">"timestamp"</span>: <span class="str">"2025-02-14T14:32:05.123Z"</span>, <span class="key">"request_id"</span>: <span class="str">"..."</span> }
+}</div>
+            </div>
+          </div>
+          <div class="ep-panel" data-panel="rules">
+            <table class="spec-table" style="margin-bottom:0">
+              <thead><tr><th>Règle</th><th>Condition</th><th>Erreur</th></tr></thead>
+              <tbody>
+                <tr><td>Agence valide</td><td>code ∈ référentiel AGENCES</td><td>422 AGENCE_INCONNUE</td></tr>
+                <tr><td>Date ≤ aujourd'hui</td><td>date_constat ≤ now()</td><td>422 DATE_FUTURE</td></tr>
+                <tr><td>Montant > 0</td><td>montant_dt > 0 OU montant_mm > 0</td><td>422 MONTANT_NUL</td></tr>
+                <tr><td>Auto-niveau</td><td>&lt;20 → N1, 20–200 → N2, 200–1000 → N3, &gt;1000 → N4</td><td>Recalcul automatique</td></tr>
+                <tr><td>Récidive → N4</td><td>recidive.oui === true → niveau forcé à 4</td><td>— (override)</td></tr>
+                <tr><td>Séparation des fonctions</td><td>déclarant ≠ superviseur</td><td>403 CONFLIT_IDENTITE</td></tr>
+                <tr><td>Déclaration &lt; 1h</td><td>heure_constat + 60 min ≥ heure_soumission</td><td>Avertissement (non bloquant)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- GET /declarations -->
+      <span class="section-anchor" id="ep-list"></span>
+      <div class="endpoint">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/declarations</span>
+          <span class="endpoint-desc">Lister les déclarations (filtrées par rôle)</span>
+          <span class="endpoint-auth">🔐 SUPERVISEUR+</span>
+          <span style="margin-left:auto;color:var(--gray-400);font-size:18px;" class="ep-toggle">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="endpoint-tabs">
+            <div class="ep-tab active" onclick="switchTab(this,'params')">Paramètres</div>
+            <div class="ep-tab" onclick="switchTab(this,'res')">Réponse 200</div>
+          </div>
+          <div class="ep-panel active" data-panel="params">
+            <table class="spec-table" style="margin-bottom:0">
+              <thead><tr><th>Paramètre</th><th>Type</th><th>Défaut</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">agence</td><td><span class="type-badge">string</span></td><td><span class="opt">propre agence</span></td><td>Filtrer par code agence (CP uniquement peut passer n'importe quel code)</td></tr>
+                <tr><td class="mono">statut</td><td><span class="type-badge">string</span></td><td><span class="opt">tous</span></td><td>SOUMIS | EN_COURS | VALIDE | CLOTURE | REJETE</td></tr>
+                <tr><td class="mono">niveau</td><td><span class="type-badge">integer</span></td><td><span class="opt">tous</span></td><td>1, 2, 3 ou 4</td></tr>
+                <tr><td class="mono">date_debut</td><td><span class="type-badge">date</span></td><td><span class="opt">-30j</span></td><td>ISO 8601 — borne inférieure</td></tr>
+                <tr><td class="mono">date_fin</td><td><span class="type-badge">date</span></td><td><span class="opt">today</span></td><td>ISO 8601 — borne supérieure</td></tr>
+                <tr><td class="mono">page</td><td><span class="type-badge">integer</span></td><td>1</td><td>Pagination</td></tr>
+                <tr><td class="mono">limit</td><td><span class="type-badge">integer</span></td><td>20</td><td>Résultats par page (max 100)</td></tr>
+                <tr><td class="mono">sort</td><td><span class="type-badge">string</span></td><td>-created_at</td><td>Champ de tri (-date = décroissant)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="res">
+            <div class="code-block" style="margin-bottom:0">
+              <div class="code-header"><span class="code-lang">JSON</span><button class="code-copy" onclick="copyCode(this)">Copier</button></div>
+              <div class="code-body">{
+  <span class="key">"success"</span>: <span class="kw">true</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>:        <span class="str">"decl_8f3a2b1c"</span>,
+      <span class="key">"ref"</span>:       <span class="str">"DC-20250214-143022-ABC-AG056"</span>,
+      <span class="key">"agence"</span>:    { <span class="key">"code"</span>: <span class="str">"056"</span>, <span class="key">"nom"</span>: <span class="str">"ARIANA"</span> },
+      <span class="key">"caissier"</span>:  { <span class="key">"matricule"</span>: <span class="str">"MAT-0042"</span>, <span class="key">"nom"</span>: <span class="str">"BEN SALAH Mehdi"</span> },
+      <span class="key">"montant"</span>:   <span class="str">"350,500 DT"</span>,
+      <span class="key">"nature"</span>:    <span class="str">"MANQUANT"</span>,
+      <span class="key">"niveau"</span>:    <span class="num">3</span>,
+      <span class="key">"statut"</span>:    <span class="str">"EN_COURS"</span>,
+      <span class="key">"created_at"</span>: <span class="str">"2025-02-14T14:32:05.000Z"</span>
+    }
+  ],
+  <span class="key">"pagination"</span>: {
+    <span class="key">"total"</span>: <span class="num">47</span>, <span class="key">"page"</span>: <span class="num">1</span>, <span class="key">"limit"</span>: <span class="num">20</span>, <span class="key">"pages"</span>: <span class="num">3</span>
+  }
+}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GET /declarations/:id -->
+      <span class="section-anchor" id="ep-get"></span>
+      <div class="endpoint">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/declarations/:id</span>
+          <span class="endpoint-desc">Détail complet d'une déclaration</span>
+          <span class="endpoint-auth">🔐 Voir matrice</span>
+          <span style="margin-left:auto;color:var(--gray-400);font-size:18px;" class="ep-toggle">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="ep-panel active" style="display:block;padding:16px 20px;">
+            <p style="font-size:13px;color:var(--gray-600);">Retourne l'objet déclaration complet (identique au body POST) + champs serveur : <code style="font-family:var(--font-mono);font-size:11px;">statut</code>, <code style="font-family:var(--font-mono);font-size:11px;">historique_statuts</code>, <code style="font-family:var(--font-mono);font-size:11px;">pdf_url</code>, <code style="font-family:var(--font-mono);font-size:11px;">traite_par</code>. Un caissier ne peut voir que ses propres déclarations ; un Directeur uniquement celles de son agence.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATCH /declarations/:id -->
+      <span class="section-anchor" id="ep-update"></span>
+      <div class="endpoint">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+          <span class="method PATCH">PATCH</span>
+          <span class="endpoint-path">/api/v1/declarations/:id</span>
+          <span class="endpoint-desc">Mettre à jour le statut ou les champs CP</span>
+          <span class="endpoint-auth">🔐 SUPERVISEUR+</span>
+          <span style="margin-left:auto;color:var(--gray-400);font-size:18px;" class="ep-toggle">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="ep-panel active" style="display:block;padding:16px 20px;">
+            <div class="code-block" style="margin-bottom:0">
+              <div class="code-header"><span class="code-lang">JSON</span><button class="code-copy" onclick="copyCode(this)">Copier</button></div>
+              <div class="code-body">{
+  <span class="key">"statut"</span>: <span class="str">"VALIDE"</span>,  <span class="cmt">// Transition d'état</span>
+  <span class="key">"cp_central"</span>: {
+    <span class="key">"traite_par"</span>:  <span class="str">"Mme GHARBI"</span>,
+    <span class="key">"n_dossier"</span>:   <span class="str">"CP-2025-00142"</span>,
+    <span class="key">"commentaire"</span>: <span class="str">"Dossier transmis à l'inspection."</span>
+  }
+}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Autres endpoints rapides -->
+      <div class="endpoint">
+        <div class="endpoint-header" style="cursor:default;">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/declarations/:id/pdf</span>
+          <span class="endpoint-desc">Télécharger le PDF archivé (Content-Type: application/pdf)</span>
+          <span class="endpoint-auth">🔐 CAISSIER+</span>
+        </div>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-header" style="cursor:default;">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/declarations/:id/audit</span>
+          <span class="endpoint-desc">Historique complet des événements de la déclaration</span>
+          <span class="endpoint-auth">🔐 CP+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 07 — RÉFÉRENTIELS                     -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="api-ref"></span>
+      <div class="section-eyebrow">07 — Référentiels</div>
+      <h2 class="section-title">API Référentiels</h2>
+      <p class="section-lead">Données de référence (agences, régions, causes, types de caisse) servies depuis la base. Mise en cache côté client : 24h.</p>
+
+      <div class="endpoint">
+        <div class="endpoint-header" style="cursor:default;">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/referentiels/agences</span>
+          <span class="endpoint-desc">Liste des agences avec codes et régions — Cache 24h</span>
+          <span class="endpoint-auth">🔐 Tous</span>
+        </div>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-header" style="cursor:default;">
+          <span class="method GET">GET</span>
+          <span class="endpoint-path">/api/v1/referentiels/causes</span>
+          <span class="endpoint-desc">Causes probables disponibles</span>
+          <span class="endpoint-auth">🔐 Tous</span>
+        </div>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-header" style="cursor:default;">
+          <span class="method POST">POST</span>
+          <span class="endpoint-path">/api/v1/referentiels/agences</span>
+          <span class="endpoint-desc">Ajouter/modifier une agence — invalide le cache</span>
+          <span class="endpoint-auth">🔐 ADMIN DSI</span>
+        </div>
+      </div>
+
+      <div class="alert ok" style="margin-top:16px;">
+        <span class="alert-icon">✅</span>
+        <div class="alert-body">
+          <strong>Remplacement du fichier statique</strong>
+          Le tableau <code style="font-family:var(--font-mono);font-size:11px;">AGENCES</code> actuellement hardcodé dans le HTML v3 doit être remplacé par un appel à <code style="font-family:var(--font-mono);font-size:11px;">GET /api/v1/referentiels/agences</code> au chargement de la page. Cela permet des mises à jour sans redéployer le formulaire.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 08 — NOTIFICATIONS                    -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="api-notif"></span>
+      <div class="section-eyebrow">08 — Notifications</div>
+      <h2 class="section-title">Moteur de Notification</h2>
+      <p class="section-lead">Remplacement du <code style="font-family:var(--font-mono)">mailto:</code> du formulaire actuel par un vrai système transactionnel avec templates, relance et traçabilité.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Déclencheurs automatiques</div>
+        <table class="spec-table">
+          <thead><tr><th>Événement</th><th>Destinataire</th><th>Délai</th><th>Template</th></tr></thead>
+          <tbody>
+            <tr><td>Déclaration SOUMISE</td><td>CP Central + Directeur Agence</td><td>Immédiat</td><td class="mono">decl-nouvelle.html</td></tr>
+            <tr><td>Niveau 4 détecté</td><td>CP Central + Direction Générale</td><td>Immédiat</td><td class="mono">alerte-niveau4.html</td></tr>
+            <tr><td>Déclaration VALIDÉE</td><td>Caissier + Superviseur</td><td>Immédiat</td><td class="mono">decl-validee.html</td></tr>
+            <tr><td>Déclaration REJETÉE</td><td>Caissier + Superviseur</td><td>Immédiat</td><td class="mono">decl-rejetee.html</td></tr>
+            <tr><td>Rappel non-traité</td><td>CP Central + Directeur</td><td>+4h si statut SOUMIS</td><td class="mono">rappel-traitement.html</td></tr>
+            <tr><td>Récidive détectée</td><td>CP Central + DG + RH</td><td>Immédiat</td><td class="mono">alerte-recidive.html</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Configuration SMTP intranet</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JavaScript</span>
+            <span class="code-label" style="margin-left:10px;">config/mailer.js</span>
+            <button class="code-copy" onclick="copyCode(this)">Copier</button>
+          </div>
+          <div class="code-body"><span class="kw">const</span> nodemailer = <span class="fn">require</span>(<span class="str">'nodemailer'</span>);
+
+<span class="kw">const</span> transporter = nodemailer.<span class="fn">createTransport</span>({
+  <span class="key">host</span>:   <span class="str">'smtp.intranet.banque.tn'</span>,  <span class="cmt">// Relay SMTP interne</span>
+  <span class="key">port</span>:   <span class="num">587</span>,                      <span class="cmt">// STARTTLS</span>
+  <span class="key">secure</span>: <span class="kw">false</span>,                   <span class="cmt">// true pour 465</span>
+  <span class="key">auth</span>: {
+    <span class="key">user</span>: <span class="str">'noreply-cp@banque.tn'</span>,
+    <span class="key">pass</span>: process.env.<span class="url">SMTP_PASSWORD</span> <span class="cmt">// Variable d'environnement — JAMAIS en dur</span>
+  },
+  <span class="key">tls</span>: { <span class="key">rejectUnauthorized</span>: <span class="kw">true</span> }  <span class="cmt">// Vérifier certificat serveur mail</span>
+});
+
+<span class="cmt">// Expéditeur standard</span>
+<span class="kw">const</span> FROM = <span class="str">'"Contrôle Permanent BQ" &lt;noreply-cp@banque.tn&gt;'</span>;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 09 — AUDIT                            -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="api-audit"></span>
+      <div class="section-eyebrow">09 — Traçabilité</div>
+      <h2 class="section-title">Journal d'Audit</h2>
+      <p class="section-lead">Toute action sur une déclaration génère un enregistrement immuable dans la table <code style="font-family:var(--font-mono)">audit_log</code>. Exigence réglementaire : conservation 10 ans.</p>
+
+      <div class="alert warn">
+        <span class="alert-icon">⚠</span>
+        <div class="alert-body">
+          <strong>Immuabilité des journaux</strong>
+          La table <code style="font-family:var(--font-mono);font-size:11px;">audit_log</code> ne doit autoriser que les opérations <code style="font-family:var(--font-mono);font-size:11px;">INSERT</code>. Aucun <code style="font-family:var(--font-mono);font-size:11px;">UPDATE</code> ni <code style="font-family:var(--font-mono);font-size:11px;">DELETE</code> — y compris pour les administrateurs. Implémenter via trigger PostgreSQL ou Row-Level Security (RLS).
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">SQL</span>
+          <span class="code-label" style="margin-left:10px;">Structure audit_log — PostgreSQL</span>
+          <button class="code-copy" onclick="copyCode(this)">Copier</button>
+        </div>
+        <div class="code-body"><span class="kw">CREATE TABLE</span> audit_log (
+  id              <span class="typ">UUID</span>         <span class="kw">PRIMARY KEY DEFAULT</span> gen_random_uuid(),
+  declaration_id  <span class="typ">UUID</span>         <span class="kw">REFERENCES</span> declarations(id),
+  timestamp_srv   <span class="typ">TIMESTAMPTZ</span>  <span class="kw">NOT NULL DEFAULT</span> now(),
+  acteur_matricule <span class="typ">VARCHAR(20)</span> <span class="kw">NOT NULL</span>,
+  acteur_role     <span class="typ">VARCHAR(20)</span>  <span class="kw">NOT NULL</span>,
+  action          <span class="typ">VARCHAR(50)</span>  <span class="kw">NOT NULL</span>,  <span class="cmt">-- CREATION | MODIFICATION | CHANGEMENT_STATUT | CONSULTATION | NOTIFICATION_MAIL</span>
+  ancien_statut   <span class="typ">VARCHAR(20)</span>,
+  nouveau_statut  <span class="typ">VARCHAR(20)</span>,
+  ip_address      <span class="typ">INET</span>         <span class="kw">NOT NULL</span>,
+  user_agent      <span class="typ">TEXT</span>,
+  payload_hash    <span class="typ">CHAR(64)</span>,     <span class="cmt">-- SHA-256 du JSON soumis (intégrité)</span>
+  details         <span class="typ">JSONB</span>
+);
+
+<span class="cmt">-- Interdire DELETE et UPDATE via trigger</span>
+<span class="kw">CREATE RULE</span> audit_no_update <span class="kw">AS ON UPDATE TO</span> audit_log <span class="kw">DO INSTEAD NOTHING</span>;
+<span class="kw">CREATE RULE</span> audit_no_delete <span class="kw">AS ON DELETE TO</span> audit_log <span class="kw">DO INSTEAD NOTHING</span>;</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 10 — SCHÉMA BDD                       -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="schema"></span>
+      <div class="section-eyebrow">10 — Base de données</div>
+      <h2 class="section-title">Schéma Relationnel</h2>
+      <p class="section-lead">Modèle normalisé PostgreSQL 15. 6 tables principales. Toutes les tables sensibles activent Row-Level Security (RLS).</p>
+
+      <div class="db-diagram">
+        <div class="db-table">
+          <div class="db-table-header">🟡 declarations <span>TABLE PRINCIPALE</span></div>
+          <div class="db-field pk"><span class="fname">id</span><span class="ftype">UUID PK</span></div>
+          <div class="db-field nn"><span class="fname">ref</span><span class="ftype">VARCHAR(40)</span></div>
+          <div class="db-field nn"><span class="fname">statut</span><span class="ftype">ENUM</span></div>
+          <div class="db-field nn"><span class="fname">niveau</span><span class="ftype">SMALLINT</span></div>
+          <div class="db-field fk"><span class="fname">agence_code</span><span class="ftype">FK →agences</span></div>
+          <div class="db-field fk"><span class="fname">caissier_mat</span><span class="ftype">FK →agents</span></div>
+          <div class="db-field nn"><span class="fname">date_constat</span><span class="ftype">DATE</span></div>
+          <div class="db-field nn"><span class="fname">montant_dt</span><span class="ftype">INTEGER</span></div>
+          <div class="db-field"><span class="fname">montant_mm</span><span class="ftype">SMALLINT</span></div>
+          <div class="db-field nn"><span class="fname">nature</span><span class="ftype">ENUM</span></div>
+          <div class="db-field"><span class="fname">type_caisse</span><span class="ftype">VARCHAR(40)</span></div>
+          <div class="db-field"><span class="fname">decl_caissier</span><span class="ftype">TEXT</span></div>
+          <div class="db-field"><span class="fname">obs_superviseur</span><span class="ftype">TEXT</span></div>
+          <div class="db-field"><span class="fname">recidive</span><span class="ftype">BOOLEAN</span></div>
+          <div class="db-field nn"><span class="fname">created_at</span><span class="ftype">TIMESTAMPTZ</span></div>
+          <div class="db-field"><span class="fname">pdf_path</span><span class="ftype">TEXT</span></div>
+        </div>
+
+        <div class="db-table">
+          <div class="db-table-header">🔵 agences</div>
+          <div class="db-field pk"><span class="fname">code</span><span class="ftype">CHAR(3) PK</span></div>
+          <div class="db-field nn"><span class="fname">nom</span><span class="ftype">VARCHAR(80)</span></div>
+          <div class="db-field fk"><span class="fname">region_id</span><span class="ftype">FK →regions</span></div>
+          <div class="db-field"><span class="fname">dir_email</span><span class="ftype">VARCHAR(100)</span></div>
+          <div class="db-field"><span class="fname">actif</span><span class="ftype">BOOLEAN</span></div>
+
+          <div class="db-table-header" style="margin-top:14px;">🔵 regions</div>
+          <div class="db-field pk"><span class="fname">id</span><span class="ftype">SERIAL PK</span></div>
+          <div class="db-field nn"><span class="fname">nom</span><span class="ftype">VARCHAR(50)</span></div>
+          <div class="db-field"><span class="fname">cp_email</span><span class="ftype">VARCHAR(100)</span></div>
+
+          <div class="db-table-header" style="margin-top:14px;">🔵 agents</div>
+          <div class="db-field pk"><span class="fname">matricule</span><span class="ftype">VARCHAR(20) PK</span></div>
+          <div class="db-field nn"><span class="fname">nom_prenom</span><span class="ftype">VARCHAR(100)</span></div>
+          <div class="db-field"><span class="fname">grade</span><span class="ftype">VARCHAR(40)</span></div>
+          <div class="db-field nn"><span class="fname">role</span><span class="ftype">ENUM</span></div>
+          <div class="db-field fk"><span class="fname">agence_code</span><span class="ftype">FK →agences</span></div>
+          <div class="db-field"><span class="fname">actif</span><span class="ftype">BOOLEAN</span></div>
+        </div>
+
+        <div class="db-table">
+          <div class="db-table-header">🟠 audit_log <span>IMMUABLE</span></div>
+          <div class="db-field pk"><span class="fname">id</span><span class="ftype">UUID PK</span></div>
+          <div class="db-field fk"><span class="fname">declaration_id</span><span class="ftype">FK →decl</span></div>
+          <div class="db-field nn"><span class="fname">timestamp_srv</span><span class="ftype">TIMESTAMPTZ</span></div>
+          <div class="db-field nn"><span class="fname">acteur_matricule</span><span class="ftype">VARCHAR</span></div>
+          <div class="db-field nn"><span class="fname">action</span><span class="ftype">VARCHAR(50)</span></div>
+          <div class="db-field"><span class="fname">ancien_statut</span><span class="ftype">VARCHAR</span></div>
+          <div class="db-field"><span class="fname">nouveau_statut</span><span class="ftype">VARCHAR</span></div>
+          <div class="db-field nn"><span class="fname">ip_address</span><span class="ftype">INET</span></div>
+          <div class="db-field"><span class="fname">payload_hash</span><span class="ftype">CHAR(64)</span></div>
+          <div class="db-field"><span class="fname">details</span><span class="ftype">JSONB</span></div>
+
+          <div class="db-table-header" style="margin-top:14px;">🟣 decl_causes</div>
+          <div class="db-field pk"><span class="fname">id</span><span class="ftype">SERIAL PK</span></div>
+          <div class="db-field fk"><span class="fname">declaration_id</span><span class="ftype">FK →decl</span></div>
+          <div class="db-field nn"><span class="fname">cause</span><span class="ftype">VARCHAR(60)</span></div>
+
+          <div class="db-table-header" style="margin-top:14px;">🟣 decl_mesures</div>
+          <div class="db-field pk"><span class="fname">id</span><span class="ftype">SERIAL PK</span></div>
+          <div class="db-field fk"><span class="fname">declaration_id</span><span class="ftype">FK →decl</span></div>
+          <div class="db-field nn"><span class="fname">mesure</span><span class="ftype">VARCHAR(60)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 11 — WORKFLOW                         -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="workflow"></span>
+      <div class="section-eyebrow">11 — États</div>
+      <h2 class="section-title">Workflow & Transitions de Statut</h2>
+      <p class="section-lead">Automate à états finis. Chaque transition est validée côté serveur selon le rôle de l'acteur.</p>
+
+      <div class="status-flow">
+        <div class="status-node s1">SOUMIS</div>
+        <span class="status-arrow">→</span>
+        <div class="status-node s2">EN_COURS</div>
+        <span class="status-arrow">→</span>
+        <div class="status-node s3">EN_ENQUETE</div>
+        <span class="status-arrow">→</span>
+        <div class="status-node s4">VALIDE</div>
+        <span class="status-arrow">→</span>
+        <div class="status-node s4">CLOTURE</div>
+      </div>
+      <div class="status-flow">
+        <div class="status-node s2">EN_COURS</div>
+        <span class="status-arrow">→</span>
+        <div class="status-node s5">REJETE</div>
+        <span class="status-arrow" style="color:transparent">→</span>
+        <div class="status-node" style="border-color:var(--gray-300);color:var(--gray-400);">ARCHIVE</div>
+        <span style="font-size:12px;color:var(--gray-400);align-self:center;margin-left:6px;">(automatique après 10 ans)</span>
+      </div>
+
+      <table class="spec-table">
+        <thead><tr><th>Transition</th><th>Rôle requis</th><th>Condition</th></tr></thead>
+        <tbody>
+          <tr><td>→ SOUMIS</td><td>CAISSIER, SUPERVISEUR</td><td>Création initiale</td></tr>
+          <tr><td>SOUMIS → EN_COURS</td><td>SUPERVISEUR, CP</td><td>Prise en charge du dossier</td></tr>
+          <tr><td>EN_COURS → EN_ENQUETE</td><td>CP</td><td>Niveau ≥ 3 ou suspicion fraude</td></tr>
+          <tr><td>EN_COURS / EN_ENQUETE → VALIDE</td><td>DIRECTEUR, CP</td><td>Enquête terminée, conclusions acceptées</td></tr>
+          <tr><td>VALIDE → CLOTURE</td><td>CP</td><td>Mesures correctives appliquées</td></tr>
+          <tr><td>EN_COURS → REJETE</td><td>CP</td><td>Déclaration incohérente ou doublon</td></tr>
+          <tr><td>REJETE → SOUMIS</td><td>CAISSIER</td><td>Correction et resoumission (dans les 24h)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 12 — DÉPLOIEMENT INTRANET             -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="deploy"></span>
+      <div class="section-eyebrow">12 — Déploiement</div>
+      <h2 class="section-title">Configuration Intranet</h2>
+      <p class="section-lead">Configuration Nginx en frontal, application Node.js en backend sur port interne, PostgreSQL sur serveur dédié réseau isolé.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">Nginx</span>
+          <span class="code-label" style="margin-left:10px;">/etc/nginx/sites-available/cp-caisse.conf</span>
+          <button class="code-copy" onclick="copyCode(this)">Copier</button>
+        </div>
+        <div class="code-body"><span class="kw">server</span> {
+  <span class="fn">listen</span> <span class="num">443</span> ssl http2;
+  <span class="fn">server_name</span> <span class="url">cp-caisse.intranet.banque.tn</span>;
+
+  <span class="cmt"># Certificat TLS interne (PKI banque)</span>
+  <span class="fn">ssl_certificate</span>     /etc/ssl/banque/cp-caisse.crt;
+  <span class="fn">ssl_certificate_key</span> /etc/ssl/banque/cp-caisse.key;
+  <span class="fn">ssl_protocols</span>       TLSv1.2 TLSv1.3;
+  <span class="fn">ssl_ciphers</span>         HIGH:!aNULL:!MD5;
+
+  <span class="cmt"># En-têtes de sécurité obligatoires</span>
+  <span class="fn">add_header</span> X-Frame-Options          <span class="str">"DENY"</span> always;
+  <span class="fn">add_header</span> X-Content-Type-Options    <span class="str">"nosniff"</span> always;
+  <span class="fn">add_header</span> X-XSS-Protection         <span class="str">"1; mode=block"</span> always;
+  <span class="fn">add_header</span> Strict-Transport-Security <span class="str">"max-age=31536000"</span> always;
+  <span class="fn">add_header</span> Referrer-Policy          <span class="str">"no-referrer"</span> always;
+  <span class="fn">add_header</span> Content-Security-Policy
+    <span class="str">"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';"</span> always;
+
+  <span class="cmt"># Fichiers statiques (formulaire HTML)</span>
+  <span class="fn">location</span> / {
+    <span class="fn">root</span> /var/www/cp-caisse;
+    <span class="fn">try_files</span> $uri $uri/ =<span class="num">404</span>;
+    <span class="fn">auth_request</span> /auth/verify;  <span class="cmt"># Vérification SSO avant servir le HTML</span>
+  }
+
+  <span class="cmt"># Proxy vers l'API Node.js</span>
+  <span class="fn">location</span> /api/ {
+    <span class="fn">proxy_pass</span> <span class="url">http://127.0.0.1:3000</span>;
+    <span class="fn">proxy_set_header</span> X-Real-IP $remote_addr;
+    <span class="fn">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;
+    <span class="fn">proxy_set_header</span> Host $host;
+    <span class="fn">client_max_body_size</span> <span class="num">2M</span>;
+  }
+
+  <span class="cmt"># Redirection HTTP → HTTPS</span>
+  <span class="fn">if</span> ($scheme != <span class="str">"https"</span>) { <span class="fn">return</span> <span class="num">301</span> https://$host$request_uri; }
+}</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">ENV</span>
+          <span class="code-label" style="margin-left:10px;">.env — Variables d'environnement (NE PAS VERSIONNER)</span>
+          <button class="code-copy" onclick="copyCode(this)">Copier</button>
+        </div>
+        <div class="code-body"><span class="cmt"># Serveur</span>
+NODE_ENV=production
+PORT=3000
+BASE_URL=https://cp-caisse.intranet.banque.tn
+
+<span class="cmt"># Base de données</span>
+DB_HOST=pgsql01.intranet.banque.tn
+DB_PORT=5432
+DB_NAME=cp_declarations
+DB_USER=cp_app
+DB_PASSWORD=<span class="str">••••••••••••••••</span>
+DB_SSL=true
+
+<span class="cmt"># JWT — Clé privée RS256 (générer avec openssl)</span>
+JWT_PRIVATE_KEY_PATH=/etc/keys/jwt-private.pem
+JWT_PUBLIC_KEY_PATH=/etc/keys/jwt-public.pem
+JWT_EXPIRES_IN=8h
+
+<span class="cmt"># LDAP / Active Directory</span>
+LDAP_URL=ldap://ad.banque.tn:389
+LDAP_BASE_DN=DC=banque,DC=tn
+LDAP_BIND_DN=CN=svc-cp-app,OU=ServiceAccounts,DC=banque,DC=tn
+LDAP_BIND_PASSWORD=<span class="str">••••••••••••••••</span>
+
+<span class="cmt"># SMTP interne</span>
+SMTP_HOST=smtp.intranet.banque.tn
+SMTP_PORT=587
+SMTP_USER=noreply-cp@banque.tn
+SMTP_PASSWORD=<span class="str">••••••••••••••••</span>
+
+<span class="cmt"># Archivage PDF</span>
+PDF_ARCHIVE_PATH=/mnt/nas-cp/declarations
+PDF_RETENTION_YEARS=10</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 13 — GESTION DES ERREURS             -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="errors"></span>
+      <div class="section-eyebrow">13 — Robustesse</div>
+      <h2 class="section-title">Gestion des Erreurs</h2>
+      <p class="section-lead">Codes d'erreur machine standardisés. Le frontend doit implémenter un handler universel pour afficher des messages lisibles à l'utilisateur.</p>
+
+      <table class="spec-table">
+        <thead><tr><th>Code Erreur</th><th>HTTP</th><th>Description</th><th>Action recommandée</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">TOKEN_EXPIRED</td><td>401</td><td>Token JWT expiré</td><td>Rediriger vers login</td></tr>
+          <tr><td class="mono">TOKEN_INVALID</td><td>401</td><td>Token malformé ou signature invalide</td><td>Vider session, login</td></tr>
+          <tr><td class="mono">ROLE_INSUFFICIENT</td><td>403</td><td>Rôle insuffisant pour cette action</td><td>Afficher message utilisateur</td></tr>
+          <tr><td class="mono">AGENCE_INCONNUE</td><td>422</td><td>Code agence non présent dans le référentiel</td><td>Recharger le référentiel</td></tr>
+          <tr><td class="mono">DATE_FUTURE</td><td>422</td><td>Date du constat dans le futur</td><td>Afficher le champ en erreur</td></tr>
+          <tr><td class="mono">MONTANT_NUL</td><td>422</td><td>Montant = 0 DT et 0 Millimes</td><td>Afficher le champ en erreur</td></tr>
+          <tr><td class="mono">CONFLIT_IDENTITE</td><td>403</td><td>Déclarant = Validateur (même matricule)</td><td>Avertir l'utilisateur</td></tr>
+          <tr><td class="mono">STATUT_INCOMPATIBLE</td><td>409</td><td>Transition de statut non autorisée</td><td>Recharger la déclaration</td></tr>
+          <tr><td class="mono">PDF_GENERATION_FAILED</td><td>500</td><td>Échec génération PDF (non bloquant)</td><td>Retry automatique x3</td></tr>
+          <tr><td class="mono">MAIL_SEND_FAILED</td><td>500</td><td>Échec envoi mail (non bloquant)</td><td>Mise en file d'attente + retry</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- 14 — PERFORMANCE                      -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="doc-section">
+      <span class="section-anchor" id="perf"></span>
+      <div class="section-eyebrow">14 — SLA & Performance</div>
+      <h2 class="section-title">Objectifs de Performance</h2>
+      <p class="section-lead">Cibles de service pour un déploiement intranet standard. À monitorer avec Prometheus + Grafana ou solution équivalente DSI.</p>
+
+      <div class="score-bar-wrap">
+        <div class="score-bar-label"><span>POST /declarations — Temps de réponse cible</span><span>&lt; 500 ms (p95)</span></div>
+        <div class="score-bar"><div class="score-bar-fill fill-90"></div></div>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-label"><span>GET /declarations — Liste paginée</span><span>&lt; 200 ms (p95)</span></div>
+        <div class="score-bar"><div class="score-bar-fill fill-80"></div></div>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-label"><span>Génération PDF</span><span>&lt; 3 secondes</span></div>
+        <div class="score-bar"><div class="score-bar-fill fill-70"></div></div>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-label"><span>Envoi notification mail</span><span>&lt; 5 secondes (asynchrone)</span></div>
+        <div class="score-bar"><div class="score-bar-fill fill-60"></div></div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <div class="card-grid card-grid-2">
+          <div class="card green">
+            <div class="card-icon">🟢</div>
+            <div class="card-title">Disponibilité cible</div>
+            <div class="card-body">99,5 % sur les heures ouvrées (8h–18h, jours ouvrables). Maintenance planifiée le week-end uniquement.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">💾</div>
+            <div class="card-title">Sauvegarde BDD</div>
+            <div class="card-body">Sauvegarde complète quotidienne (1h00), incrémentale toutes les 4h. Rétention 90 jours + archivage annuel.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert ok" style="margin-top:16px;">
+        <span class="alert-icon">📋</span>
+        <div class="alert-body">
+          <strong>Prochaines étapes recommandées</strong>
+          Après validation de cette spécification par la DSI et la Direction du Contrôle Permanent : (1) Recette de validation (UAT) avec un pilote de 5 agences, (2) Formation des utilisateurs, (3) Déploiement progressif par région, (4) Mise en production nationale.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ═══ NAVIGATION ACTIVE ════════════════════════════════════
+const sections = document.querySelectorAll('.doc-section');
+const navItems = document.querySelectorAll('.nav-item, .nav-sub');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.querySelector('.section-anchor')?.id;
+      if (!id) return;
+      navItems.forEach(n => {
+        n.classList.toggle('active', n.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ═══ ENDPOINT TOGGLE ══════════════════════════════════════
+function toggleEndpoint(header) {
+  const body   = header.nextElementSibling;
+  const toggle = header.querySelector('.ep-toggle');
+  if (!body) return;
+  const isOpen = body.classList.toggle('open');
+  if (toggle) toggle.style.transform = isOpen ? 'rotate(180deg)' : '';
+}
+
+// ═══ ENDPOINT TABS ════════════════════════════════════════
+function switchTab(tab, panelName) {
+  const endpoint = tab.closest('.endpoint-body');
+  endpoint.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+  endpoint.querySelectorAll('.ep-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  const panel = endpoint.querySelector('[data-panel="' + panelName + '"]');
+  if (panel) panel.classList.add('active');
+}
+
+// ═══ COPY CODE ════════════════════════════════════════════
+function copyCode(btn) {
+  const codeBody = btn.closest('.code-block').querySelector('.code-body');
+  const text = codeBody.innerText || codeBody.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copié !';
+    btn.style.color = '#A8FF78';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  });
+}
+
+// ═══ ANIMATIONS STAGGERED ═════════════════════════════════
+const sectionsAnimate = document.querySelectorAll('.doc-section');
+const animObserver = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationDelay = '0s';
+      entry.target.style.animationPlayState = 'running';
+      animObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.05 });
+sectionsAnimate.forEach(s => {
+  s.style.animationPlayState = 'paused';
+  animObserver.observe(s);
+});
+</script>
+
+</body>
+</html>
