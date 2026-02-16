@@ -591,22 +591,22 @@ tr:hover td{background:var(--g50)}
         <div class="qa-label">Spécification API</div>
         <div class="td-muted" style="font-size:11px">BQ-DSI-API-001</div>
       </a>
-      <a href="#" class="qa-btn" onclick="alert('Module en cours de déploiement')">
+      <a href="#" class="qa-btn" onclick="showComingSoon('Rapport mensuel','Génération des statistiques CP — tableau récapitulatif mensuel des écarts par agence et par niveau.','📊')">
         <div class="qa-icon">📊</div>
         <div class="qa-label">Rapport mensuel</div>
         <div class="td-muted" style="font-size:11px">Statistiques CP</div>
       </a>
-      <a href="#" class="qa-btn" onclick="alert('Module en cours de déploiement')">
+      <a href="#" class="qa-btn" onclick="showComingSoon('Recherche déclaration','Moteur de recherche multi-critères : par référence, matricule caissier, agence, période ou montant.','🔍')">
         <div class="qa-icon">🔍</div>
         <div class="qa-label">Recherche déclaration</div>
         <div class="td-muted" style="font-size:11px">Par référence / agence</div>
       </a>
-      <a href="#" class="qa-btn" onclick="alert('Module en cours de déploiement')">
+      <a href="#" class="qa-btn" onclick="showComingSoon('Archives PDF','Consultation et téléchargement des PDF archivés — conservation réglementaire 10 ans sur NAS sécurisé.','🗄️')">
         <div class="qa-icon">🗄️</div>
         <div class="qa-label">Archives PDF</div>
         <div class="td-muted" style="font-size:11px">Conservation 10 ans</div>
       </a>
-      <a href="#" class="qa-btn" onclick="alert('Module en cours de déploiement')">
+      <a href="#" class="qa-btn" onclick="showComingSoon('Référentiels agences','Administration du référentiel des 164 agences : ajout, modification, affectation régionale. Accès Admin DSI uniquement.','📁')">
         <div class="qa-icon">📁</div>
         <div class="qa-label">Référentiels agences</div>
         <div class="td-muted" style="font-size:11px">Admin DSI uniquement</div>
@@ -679,14 +679,135 @@ chartData.forEach(d => {
     </div>`;
 });
 
-// Simulation login
+// ═══════════ TOAST NOTIFICATIONS ════════════════════════════════
+let toastTimeout;
+function showToast(message, type = 'info', duration = 4000) {
+  const existing = document.getElementById('toast-container');
+  if (existing) existing.remove();
+
+  const icon = { info:'ℹ', success:'✓', warn:'⚠', error:'✗' }[type] || 'ℹ';
+  const colors = {
+    info:    { bg:'#E3F2FD', border:'#1A6FA8', text:'#0D47A1', icon:'#1A6FA8' },
+    success: { bg:'#E8F5E9', border:'#43A047', text:'#1B5E20', icon:'#43A047' },
+    warn:    { bg:'#FFF8E1', border:'#C8961A', text:'#5D4037', icon:'#C8961A' },
+    error:   { bg:'#FFEBEE', border:'#C62828', text:'#B71C1C', icon:'#C62828' },
+  }[type] || colors.info;
+
+  const c = colors[type] || { bg:'#E3F2FD', border:'#1A6FA8', text:'#0D47A1', icon:'#1A6FA8' };
+
+  const toast = document.createElement('div');
+  toast.id = 'toast-container';
+  toast.style.cssText = `
+    position:fixed; bottom:28px; right:28px; z-index:9999;
+    background:${c.bg}; border:1.5px solid ${c.border};
+    border-left:4px solid ${c.border}; border-radius:10px;
+    padding:14px 20px; max-width:360px;
+    display:flex; align-items:flex-start; gap:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.14);
+    animation:toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    font-family:'Syne',sans-serif;
+  `;
+  toast.innerHTML = `
+    <div style="width:28px;height:28px;background:${c.icon};border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;color:#fff;font-weight:800;flex-shrink:0;margin-top:1px;">${icon}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700;color:${c.text};line-height:1.4">${message}</div>
+    </div>
+    <div onclick="this.parentElement.remove()" style="cursor:pointer;color:${c.text};opacity:0.5;font-size:16px;line-height:1;margin-top:1px;padding:2px 4px;border-radius:4px;transition:opacity .15s" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">✕</div>
+  `;
+
+  if (!document.getElementById('toast-style')) {
+    const s = document.createElement('style');
+    s.id = 'toast-style';
+    s.textContent = `@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(0.95)}}`;
+    document.head.appendChild(s);
+  }
+
+  document.body.appendChild(toast);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    if (toast.parentNode) {
+      toast.style.animation = 'toastOut 0.25s ease forwards';
+      setTimeout(() => toast.remove(), 250);
+    }
+  }, duration);
+}
+
+// ═══════════ MODALE "EN DÉVELOPPEMENT" ══════════════════════════
+function showComingSoon(titre, description, icon = '🔧') {
+  const existing = document.getElementById('modal-coming-soon');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'modal-coming-soon';
+  overlay.style.cssText = `
+    position:fixed;inset:0;z-index:800;
+    background:rgba(13,27,42,0.6);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    animation:fadeIn .2s ease;
+  `;
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:16px;max-width:420px;width:90%;overflow:hidden;
+      box-shadow:0 24px 80px rgba(0,0,0,0.3);animation:slideUp .25s cubic-bezier(0.34,1.56,0.64,1)">
+      <div style="background:#0D1B2A;padding:22px 26px;display:flex;align-items:center;gap:14px">
+        <div style="width:44px;height:44px;background:rgba(255,255,255,0.08);border-radius:10px;
+          display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff">${titre}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#00B4D8;margin-top:3px">Module en cours de déploiement</div>
+        </div>
+      </div>
+      <div style="padding:24px 26px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:10px;height:10px;background:#C8961A;border-radius:50%;animation:blink 1.5s ease infinite"></div>
+          <span style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#C8961A;text-transform:uppercase;letter-spacing:.5px">En développement</span>
+        </div>
+        <p style="font-size:13px;color:#374151;line-height:1.7;margin-bottom:18px">${description}</p>
+        <div style="background:#F3F4F6;border-radius:8px;padding:12px 16px;
+          font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B7280">
+          <div style="margin-bottom:4px;color:#9CA3AF;font-size:10px;text-transform:uppercase;letter-spacing:.5px">Calendrier prévisionnel</div>
+          Phase de recette UAT — T2 2025
+        </div>
+      </div>
+      <div style="padding:0 26px 22px;display:flex;justify-content:flex-end">
+        <button onclick="document.getElementById('modal-coming-soon').remove()"
+          style="background:#0D1B2A;color:#fff;border:none;border-radius:8px;
+          padding:10px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+          cursor:pointer;transition:background .15s"
+          onmouseenter="this.style.background='#1A6FA8'"
+          onmouseleave="this.style.background='#0D1B2A'">Fermer</button>
+      </div>
+    </div>
+  `;
+
+  if (!document.getElementById('modal-anim-style')) {
+    const s = document.createElement('style');
+    s.id = 'modal-anim-style';
+    s.textContent = `@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideUp{from{opacity:0;transform:scale(0.92) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}`;
+    document.head.appendChild(s);
+  }
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+// ═══════════ SIMULATION LOGIN ════════════════════════════════════
 function simulateLogin() {
   const mat = document.getElementById('login-mat').value.trim();
-  if (!mat) { alert('Veuillez saisir votre matricule.'); return; }
+  if (!mat) {
+    showToast('Veuillez saisir votre matricule.', 'warn');
+    document.getElementById('login-mat').focus();
+    return;
+  }
   document.getElementById('modal-login').classList.remove('open');
   document.getElementById('user-initials').textContent = mat.slice(-2).toUpperCase();
   document.getElementById('user-name').textContent = mat;
-  alert('✓ Connecté — En production, l\'authentification se fait via LDAP/Active Directory.');
+  document.getElementById('role-badge').textContent = 'CAISSIER';
+  showToast('Connexion simulée — En production, l\'authentification se fait via LDAP/Active Directory.', 'success', 5000);
 }
 </script>
 </body>
