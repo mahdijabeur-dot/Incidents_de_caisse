@@ -1,0 +1,4377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de Déclaration de Différence de Caisse </title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:        #1F3864;
+    --blue:        #2E75B6;
+    --blue-light:  #EBF3FB;
+    --blue-mid:    #D0E4F5;
+    --red:         #C62828;
+    --red-light:   #FFF5F5;
+    --red-mid:     #FFCDD2;
+    --green:       #1B5E20;
+    --green-light: #F1F8E9;
+    --green-mid:   #C8E6C9;
+    --orange:      #E65100;
+    --orange-light:#FFF8F0;
+    --orange-mid:  #FFE0B2;
+    --yellow:      #F57F17;
+    --yellow-light:#FFFDE7;
+    --gray-900:    #1A1A2E;
+    --gray-700:    #374151;
+    --gray-500:    #6B7280;
+    --gray-300:    #D1D5DB;
+    --gray-100:    #F9FAFB;
+    --gray-50:     #FCFDFE;
+    --white:       #FFFFFF;
+    --font: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: #F0F4F8;
+    color: var(--gray-700);
+    min-height: 100vh;
+    padding: 20px;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .page-wrapper { max-width: 900px; margin: 0 auto; }
+
+  /* ─── EN-TÊTE ─────────────────────────────────────────────── */
+  .form-header {
+    background: var(--navy);
+    border-radius: 12px 12px 0 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .form-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(180deg, #4FC3F7 0%, #2E75B6 50%, #1F3A6B 100%);
+  }
+  .header-inner {
+    padding: 24px 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .form-title {
+    font-size: 22px; font-weight: 700;
+    color: var(--white); letter-spacing: -0.3px; line-height: 1.1;
+  }
+  .form-subtitle {
+    font-size: 13px; font-weight: 400;
+    color: #90CAF9; margin-top: 5px; letter-spacing: 0.2px;
+  }
+  .form-meta { font-size: 11px; color: #78909C; margin-top: 8px; }
+  .header-right {
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 8px; flex-shrink: 0;
+  }
+  .form-ref {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px; padding: 6px 14px; text-align: center;
+  }
+  .form-ref-label {
+    font-size: 9px; color: #90CAF9; text-transform: uppercase;
+    letter-spacing: 1px; display: block;
+  }
+  .form-ref-code {
+    font-family: var(--mono); font-size: 13px;
+    font-weight: 500; color: var(--white); display: block;
+  }
+  .logo-badge {
+    width: 48px; height: 48px; background: var(--blue);
+    border-radius: 50%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+  .logo-badge span:first-child { font-size: 14px; font-weight: 700; color: var(--white); line-height: 1; }
+  .logo-badge span:last-child  { font-size: 7px; color: #90CAF9; letter-spacing: 1.5px; }
+  .header-stripe {
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue) 0%, #4FC3F7 60%, var(--blue) 100%);
+  }
+
+  /* ─── BANDE N° DÉCLARATION ────────────────────────────────── */
+  .ref-bar {
+    background: #EBF3FB;
+    border-bottom: 1px solid var(--blue-mid);
+    padding: 8px 24px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .ref-bar-label { font-size: 10px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+  .ref-bar-value { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--navy); }
+
+  /* ─── BANDE ALERTE NIVEAU ──────────────────────────────────── */
+  .alert-band {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-right: 1px solid var(--blue-mid);
+    padding: 14px 20px;
+  }
+  .alert-band-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
+  }
+  .alert-band-title {
+    font-size: 10px; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  /* Barre de statut niveau */
+  .niveau-status-bar {
+    display: flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: 10px; color: var(--gray-500);
+  }
+  .niveau-status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray-300); flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .niveau-status-dot.auto   { background: var(--blue-mid); }
+  .niveau-status-dot.manual { background: var(--orange); }
+  .niveau-status-dot.locked { background: var(--red); }
+  .niveau-status-dot.empty  { background: var(--gray-300); }
+  .niveau-status-text { font-size: 10px; }
+  .niveau-calculated-badge {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    background: rgba(0,0,0,0.08); color: var(--gray-600);
+  }
+  /* Grille niveau */
+  .levels-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .level-card {
+    border-radius: 8px; padding: 10px 12px;
+    display: flex; align-items: flex-start; gap: 9px;
+    border: 1.5px solid transparent; cursor: pointer;
+    transition: all 0.15s ease; position: relative;
+  }
+  .level-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .level-card.lv1 { background: var(--green-light); border-color: var(--blue-mid); }
+  .level-card.lv2 { background: var(--yellow-light); border-color: #FFE082; }
+  .level-card.lv3 { background: var(--orange-light); border-color: var(--orange-mid); }
+  .level-card.lv4 { background: var(--red-light); border-color: var(--red-mid); }
+  /* État actif (sélectionné) */
+  .level-card.lv1.active { box-shadow: 0 0 0 2px var(--green); transform: translateY(-2px); }
+  .level-card.lv2.active { box-shadow: 0 0 0 2px var(--yellow); transform: translateY(-2px); }
+  .level-card.lv3.active { box-shadow: 0 0 0 2px var(--orange); transform: translateY(-2px); }
+  .level-card.lv4.active { box-shadow: 0 0 0 2px var(--red); transform: translateY(-2px); }
+  /* Niveau verrouillé (récidive) */
+  .level-card.locked { opacity: 0.45; pointer-events: none; cursor: not-allowed; }
+  .level-card.lv4.locked-active { box-shadow: 0 0 0 3px var(--red); transform: translateY(-2px); opacity: 1; pointer-events: none; }
+  .level-card input[type="radio"] { display: none; }
+  .level-check {
+    width: 16px; height: 16px; border-radius: 50%; border: 2px solid;
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; cursor: pointer;
+  }
+  .lv1 .level-check { border-color: var(--green); }
+  .lv2 .level-check { border-color: var(--yellow); }
+  .lv3 .level-check { border-color: var(--orange); }
+  .lv4 .level-check { border-color: var(--red); }
+  .level-card input[type="radio"]:checked + .level-check::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; display: block;
+  }
+  .lv1 input[type="radio"]:checked + .level-check::after { background: var(--green); }
+  .lv2 input[type="radio"]:checked + .level-check::after { background: var(--yellow); }
+  .lv3 input[type="radio"]:checked + .level-check::after { background: var(--orange); }
+  .lv4 input[type="radio"]:checked + .level-check::after { background: var(--red); }
+  .level-name { font-size: 11px; font-weight: 700; line-height: 1.2; }
+  .lv1 .level-name { color: var(--green); }
+  .lv2 .level-name { color: var(--yellow); }
+  .lv3 .level-name { color: var(--orange); }
+  .lv4 .level-name { color: var(--red); }
+  .level-seuil { font-size: 10px; margin-top: 2px; color: var(--gray-500); font-family: var(--mono); }
+  .level-desc  { font-size: 10px; color: var(--gray-500); margin-top: 2px; line-height: 1.3; }
+  /* Tag AUTO sur la carte calculée */
+  .level-auto-tag {
+    position: absolute; top: 5px; right: 6px;
+    font-family: var(--mono); font-size: 8px; font-weight: 700;
+    background: rgba(0,0,0,0.12); color: rgba(0,0,0,0.5);
+    padding: 1px 5px; border-radius: 4px; letter-spacing: 0.5px;
+  }
+  .level-lock-icon {
+    position: absolute; top: 5px; right: 6px; font-size: 12px; cursor: default;
+  }
+  /* Alerte sous-classification — BLOQUANT */
+  .niveau-downgrade-alert {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 10px; padding: 10px 14px;
+    background: var(--red-light); border: 1.5px solid var(--red);
+    border-radius: 8px; font-size: 12px;
+    animation: alertShake 0.35s ease;
+  }
+  @keyframes alertShake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-4px)}
+    40%{transform:translateX(4px)}
+    60%{transform:translateX(-3px)}
+    80%{transform:translateX(3px)}
+  }
+  .ndga-icon { font-size: 18px; flex-shrink: 0; }
+  .ndga-body { flex: 1; color: var(--red); line-height: 1.4; }
+  .ndga-body strong { display: block; font-size: 12px; font-weight: 700; }
+  .ndga-body span { font-size: 11px; color: #7f1d1d; }
+  .ndga-btn-restore {
+    background: var(--red); color: var(--white); border: none;
+    border-radius: 6px; padding: 6px 12px; cursor: pointer;
+    font-family: var(--font); font-size: 11px; font-weight: 700;
+    white-space: nowrap; flex-shrink: 0; transition: background 0.15s;
+  }
+  .ndga-btn-restore:hover { background: #b71c1c; }
+  /* Avertissement sur-classification */
+  .niveau-upgrade-warn {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-top: 10px; padding: 10px 14px;
+    background: var(--orange-light); border: 1.5px solid var(--orange);
+    border-radius: 8px; font-size: 12px;
+  }
+  .nugw-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .nugw-body { color: var(--orange); line-height: 1.5; }
+  .nugw-body strong { display: block; font-size: 12px; font-weight: 700; }
+  .nugw-body span { font-size: 11px; color: #6d2a00; }
+
+  /* ─── CORPS DU FORMULAIRE ──────────────────────────────────── */
+  .form-body { background: var(--white); padding: 0 0 28px; }
+
+  /* ─── SECTION ─────────────────────────────────────────────── */
+  .section { margin: 0 24px; padding-top: 24px; }
+  .section + .section { border-top: 1px solid var(--gray-100); }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .section-num {
+    width: 26px; height: 26px; background: var(--navy);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--white); flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 12px; font-weight: 700; color: var(--navy);
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+
+  /* ─── GRID / CHAMPS ───────────────────────────────────────── */
+  .row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 0; }
+  .field.fixed-sm { flex: 0 0 90px; }
+  .field.fixed-md { flex: 0 0 160px; }
+  .field.fixed-lg { flex: 0 0 220px; }
+  .field.full { flex: 0 0 100%; }
+  .field.f2 { flex: 2; }
+  .field.f3 { flex: 3; }
+
+  .field-label {
+    font-size: 10.5px; font-weight: 600; color: var(--gray-500);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .required { color: var(--red); font-weight: 700; font-size: 12px; }
+  .field-hint { font-size: 10px; color: var(--gray-300); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+  .field-input {
+    height: 38px;
+    border: 1.5px solid var(--gray-400);
+    border-radius: 7px;
+    padding: 0 12px;
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    outline: none;
+    transition: all 0.15s ease;
+    width: 100%;
+  }
+  .field-input:focus {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(46,117,182,0.12);
+  }
+  .field-input.error { border-color: var(--red) !important; background: var(--red-light) !important; }
+  .field-input::placeholder { color: var(--gray-300); font-size: 12px; }
+  .field-input.mono { font-family: var(--mono); letter-spacing: 0.5px; }
+  textarea.field-input { height: auto; min-height: 72px; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+
+  /* ─── DATE PICKER CUSTOM ──────────────────────────────────── */
+  .date-row  { display: flex; gap: 6px; align-items: center; }
+  .date-part { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .date-part input {
+    width: 54px; height: 38px; text-align: center;
+    border: 1.5px solid var(--gray-300); border-radius: 7px;
+    font-family: var(--mono); font-size: 14px; font-weight: 500;
+    color: var(--gray-900); background: var(--gray-50); outline: none;
+  }
+  .date-part input:focus { border-color: var(--blue); background: var(--blue-light); }
+  .date-part input.year { width: 72px; }
+  .date-sep { font-size: 18px; font-weight: 300; color: var(--gray-300); margin-top: -14px; }
+  .date-sublabel { font-size: 9px; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.5px; }
+  .time-row { display: flex; gap: 6px; align-items: center; }
+  .time-sep { font-size: 20px; font-weight: 700; color: var(--gray-500); margin-top: -16px; }
+
+  /* ─── MONTANT ─────────────────────────────────────────────── */
+  .montant-block {
+    background: var(--blue-light); border: 2px solid var(--blue);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .montant-block .field-label { color: var(--blue); }
+  .montant-row { display: flex; gap: 10px; align-items: flex-end; margin-top: 8px; }
+  .montant-input-wrap { position: relative; flex: 1; }
+  .montant-input-wrap input {
+    height: 46px; font-family: var(--mono); font-size: 20px; font-weight: 700;
+    letter-spacing: 1px; color: var(--navy); background: var(--white);
+    border: 2px solid var(--blue); border-radius: 8px;
+    padding: 0 50px 0 14px; width: 100%; outline: none;
+  }
+  .montant-input-wrap input:focus { box-shadow: 0 0 0 3px rgba(46,117,182,0.2); }
+  .montant-currency {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 13px; font-weight: 700; color: var(--blue);
+  }
+  .montant-millimes { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+  .montant-millimes input {
+    width: 80px; height: 46px; text-align: center; font-family: var(--mono);
+    font-size: 16px; font-weight: 600; color: var(--gray-700);
+    border: 1.5px solid var(--gray-300); border-radius: 8px;
+    background: var(--white); outline: none; padding: 0 8px;
+  }
+  .montant-millimes input:focus { border-color: var(--blue); background: var(--blue-light); }
+  .montant-lettres-row { margin-top: 10px; }
+  .montant-lettres-label {
+    font-size: 9.5px; color: var(--blue); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 3px; display: block;
+  }
+  #montant-lettres {
+    font-style: italic; color: var(--navy); font-weight: 500;
+    height: 36px; width: 100%;
+    border: 1.5px solid var(--blue-mid); border-radius: 7px;
+    padding: 0 12px; font-family: var(--font); font-size: 12px;
+    background: #f0f4ff; outline: none; cursor: default;
+  }
+  #montant-lettres::placeholder { font-style: italic; color: var(--gray-300); font-weight: 400; }
+  #montant-lettres:focus { border-color: var(--blue); background: var(--blue-light); }
+
+  /* ─── NATURE ÉCART ────────────────────────────────────────── */
+  .nature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .nature-card {
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid transparent; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .nature-card.manquant { background: var(--red-light); border-color: var(--red-mid); }
+  .nature-card.excedent { background: var(--green-light); border-color: var(--green-mid); }
+  .nature-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+  .nature-card input { display: none; }
+  .nature-radio {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s;
+  }
+  .nature-card.manquant .nature-radio { border-color: var(--red); }
+  .nature-card.excedent .nature-radio { border-color: var(--green); }
+  .nature-card input:checked + .nature-radio::after {
+    content: ''; width: 10px; height: 10px; border-radius: 50%; display: block;
+  }
+  .nature-card.manquant input:checked + .nature-radio::after { background: var(--red); }
+  .nature-card.excedent input:checked + .nature-radio::after { background: var(--green); }
+  .nature-main { font-size: 13px; font-weight: 700; }
+  .nature-card.manquant .nature-main { color: var(--red); }
+  .nature-card.excedent .nature-main { color: var(--green); }
+  .nature-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+  /* ─── CHECKBOXES ──────────────────────────────────────────── */
+  .check-group { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .check-item {
+    display: flex; align-items: center; gap: 7px; cursor: pointer;
+    padding: 6px 10px; border-radius: 6px;
+    border: 1.5px solid var(--gray-100); background: var(--gray-50);
+    transition: all 0.12s; user-select: none;
+  }
+  .check-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .check-item input { display: none; }
+  .check-box {
+    width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.12s;
+  }
+  .check-item input:checked ~ .check-label { color: var(--navy); font-weight: 600; }
+  .check-item input:checked + .check-box { background: var(--navy); border-color: var(--navy); }
+  .check-item input:checked + .check-box::after {
+    content: ''; width: 8px; height: 5px;
+    border: 2px solid var(--white); border-top: none; border-right: none;
+    transform: rotate(-45deg) translateY(-1px); display: block;
+  }
+  .check-label { font-size: 12px; color: var(--gray-700); }
+
+  /* ─── CAUSES ──────────────────────────────────────────────── */
+  .cause-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .cause-item {
+    display: flex; align-items: center; gap: 7px; cursor: pointer;
+    padding: 9px 11px; border-radius: 7px; border: 1.5px solid var(--gray-100);
+    background: var(--gray-50); transition: all 0.12s; user-select: none;
+  }
+  .cause-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .cause-item input { display: none; }
+  .cause-item input:checked ~ .cause-text { color: var(--navy); font-weight: 600; }
+  .cause-item input:checked + .check-box { background: var(--navy); border-color: var(--navy); }
+  .cause-text { font-size: 11.5px; color: var(--gray-700); line-height: 1.3; }
+
+  /* ─── MESURES ─────────────────────────────────────────────── */
+  .mesures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  /* ─── RÉCIDIVE ────────────────────────────────────────────── */
+  .recidive-block {
+    background: var(--red-light);
+    border: 1.5px solid var(--red-mid);
+    border-left: 4px solid var(--red);
+    border-radius: 8px; padding: 16px 18px; margin: 0 24px;
+  }
+  .recidive-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .recidive-num {
+    width: 24px; height: 24px; background: var(--red);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--white);
+  }
+  .recidive-title { font-size: 11px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.8px; }
+  .recidive-content { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .recidive-question { font-size: 13px; color: var(--gray-700); flex: 1; }
+  .radio-group { display: flex; gap: 12px; }
+  .radio-item {
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+    padding: 7px 14px; border-radius: 6px; border: 1.5px solid var(--gray-300);
+    background: var(--white); transition: all 0.12s; user-select: none;
+  }
+  .radio-item:hover { border-color: var(--red); }
+  .radio-item input { display: none; }
+  .radio-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .radio-item input:checked + .radio-dot { border-color: var(--red); }
+  .radio-item input:checked + .radio-dot::after {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: block;
+  }
+  .radio-item input:checked ~ .radio-label { color: var(--red); font-weight: 600; }
+  .radio-label { font-size: 13px; color: var(--gray-700); }
+  .recidive-count { display: flex; align-items: center; gap: 8px; }
+  .recidive-count label { font-size: 12px; color: var(--gray-500); white-space: nowrap; }
+  .recidive-count input {
+    width: 60px; height: 34px; text-align: center;
+    border: 1.5px solid var(--gray-300); border-radius: 7px;
+    font-family: var(--mono); font-size: 14px; font-weight: 600;
+    background: var(--white); outline: none;
+  }
+  .recidive-count input:focus { border-color: var(--red); background: var(--red-light); }
+  /* Masquer le compteur récidive par défaut */
+  #recidive-count-block { display: none; }
+  #recidive-count-block.visible { display: flex; }
+
+  /* ─── SIGNATURES ──────────────────────────────────────────── */
+  .signatures-section { margin: 0 24px; padding-top: 24px; border-top: 1px solid var(--gray-100); }
+  .sig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
+  .sig-card { border: 1.5px solid var(--gray-300); border-radius: 10px; overflow: hidden; }
+  .sig-header { background: var(--navy); padding: 10px 14px; text-align: center; }
+  .sig-header.green-bg { background: #1B5E20; }
+  .sig-title { font-size: 10px; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 0.5px; }
+  .sig-subtitle { font-size: 9px; color: #90CAF9; margin-top: 2px; }
+  .sig-body { padding: 12px 14px; background: var(--gray-50); }
+  .sig-field { margin-bottom: 10px; }
+  .sig-field label { font-size: 10px; color: var(--gray-500); text-transform: uppercase; font-weight: 600; letter-spacing: 0.4px; display: block; margin-bottom: 4px; }
+  .sig-field input {
+    width: 100%; height: 32px; border: 1px solid var(--gray-300); border-radius: 6px;
+    padding: 0 9px; font-family: var(--font); font-size: 12px;
+    background: var(--white); outline: none; color: var(--gray-900);
+  }
+  .sig-field input:focus { border-color: var(--blue); background: var(--blue-light); }
+  .sig-zone {
+    border-top: 1px dashed var(--gray-300); margin-top: 6px; padding-top: 10px;
+    min-height: 52px; display: flex; align-items: flex-end;
+  }
+  .sig-zone-label { font-size: 9px; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ─── BLOC CP CENTRAL ─────────────────────────────────────── */
+  .cp-block {
+    background: var(--blue-light); border: 1.5px solid var(--blue-mid);
+    border-left: 4px solid var(--blue); border-radius: 8px;
+    padding: 14px 18px; margin: 0 24px; margin-top: 14px;
+  }
+  .cp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .cp-badge {
+    background: var(--blue); color: var(--white); font-size: 9px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .cp-title { font-size: 11px; font-weight: 600; color: var(--blue); }
+  .cp-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cp-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 100px; }
+  .cp-field label { font-size: 10px; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .cp-field input {
+    height: 32px; border: 1px solid var(--blue-mid); border-radius: 6px;
+    padding: 0 9px; font-family: var(--font); font-size: 12px;
+    background: var(--white); outline: none;
+  }
+  .cp-field input:focus { border-color: var(--blue); }
+
+  /* ─── SECTION RÉCUPÉRATION ────────────────────────────────── */
+  .recup-block {
+    background: #F0FFF4;
+    border: 1.5px solid var(--green-mid);
+    border-left: 4px solid var(--green);
+    border-radius: 8px; padding: 16px 18px; margin: 0 24px;
+  }
+  .recup-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .recup-num {
+    width: 24px; height: 24px; background: var(--green);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--white);
+  }
+  .recup-title { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.8px; }
+  .recup-deadline-bar {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    background: var(--white); border: 1px solid var(--green-mid);
+    border-radius: 7px; padding: 10px 14px; margin-bottom: 14px;
+  }
+  .recup-deadline-label { font-size: 10.5px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.4px; }
+  .recup-deadline-value { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--navy); }
+  .recup-deadline-remaining { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
+  .recup-deadline-remaining.ok     { background: var(--green-mid);  color: var(--green); }
+  .recup-deadline-remaining.warn   { background: var(--orange-mid); color: var(--orange); }
+  .recup-deadline-remaining.expired{ background: var(--red-mid);    color: var(--red); }
+
+  /* Statut récupération */
+  .recup-statut-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .recup-statut-card {
+    border-radius: 8px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 9px;
+    border: 2px solid transparent; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .recup-statut-card input { display: none; }
+  .recup-statut-radio {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .recup-statut-card input:checked + .recup-statut-radio::after {
+    content: ''; width: 9px; height: 9px; border-radius: 50%; display: block;
+  }
+  .recup-statut-card.en-cours   { background: var(--orange-light); border-color: var(--orange-mid); }
+  .recup-statut-card.total      { background: var(--green-light);  border-color: var(--green-mid);  }
+  .recup-statut-card.sanction   { background: var(--red-light);    border-color: var(--red-mid);    }
+  .recup-statut-card.en-cours .recup-statut-radio   { border-color: var(--orange); }
+  .recup-statut-card.total .recup-statut-radio       { border-color: var(--green); }
+  .recup-statut-card.sanction .recup-statut-radio    { border-color: var(--red); }
+  .recup-statut-card.en-cours input:checked + .recup-statut-radio::after   { background: var(--orange); }
+  .recup-statut-card.total input:checked + .recup-statut-radio::after       { background: var(--green); }
+  .recup-statut-card.sanction input:checked + .recup-statut-radio::after    { background: var(--red); }
+  .recup-statut-card.en-cours.active   { box-shadow: 0 0 0 2px var(--orange); }
+  .recup-statut-card.total.active      { box-shadow: 0 0 0 2px var(--green); }
+  .recup-statut-card.sanction.active   { box-shadow: 0 0 0 2px var(--red); }
+  .recup-statut-name { font-size: 12px; font-weight: 700; }
+  .recup-statut-card.en-cours .recup-statut-name  { color: var(--orange); }
+  .recup-statut-card.total .recup-statut-name      { color: var(--green); }
+  .recup-statut-card.sanction .recup-statut-name   { color: var(--red); }
+  .recup-statut-sub { font-size: 10px; color: var(--gray-500); margin-top: 2px; line-height: 1.3; }
+
+  /* Tableau lignes de récupération */
+  .recup-lignes-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .recup-lignes-title { font-size: 10.5px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.4px; }
+  .btn-add-ligne {
+    background: var(--green); color: var(--white);
+    border: none; border-radius: 6px; padding: 5px 12px;
+    font-size: 11px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; gap: 5px; transition: background 0.15s;
+  }
+  .btn-add-ligne:hover { background: var(--green-light); color: var(--green); border: 1px solid var(--green); }
+
+  .recup-lignes-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 12px; }
+  .recup-lignes-table thead th {
+    background: var(--green); color: var(--white);
+    padding: 7px 10px; text-align: left; font-size: 10px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .recup-lignes-table thead th:first-child { border-radius: 6px 0 0 0; }
+  .recup-lignes-table thead th:last-child  { border-radius: 0 6px 0 0; }
+  .recup-lignes-table tbody tr { border-bottom: 1px solid var(--green-mid); transition: background 0.1s; }
+  .recup-lignes-table tbody tr:hover { background: var(--green-light); }
+  .recup-lignes-table td { padding: 6px 8px; vertical-align: middle; }
+  .recup-lignes-table td input {
+    height: 32px; border: 1px solid var(--gray-300); border-radius: 5px;
+    padding: 0 8px; font-family: var(--font); font-size: 12px;
+    background: var(--white); outline: none; width: 100%;
+  }
+  .recup-lignes-table td input:focus { border-color: var(--green); background: var(--green-light); }
+  .recup-lignes-table td input.mono { font-family: var(--mono); font-weight: 600; text-align: right; }
+  .btn-del-ligne {
+    background: var(--red-light); color: var(--red);
+    border: 1px solid var(--red-mid); border-radius: 5px;
+    width: 28px; height: 28px; cursor: pointer; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+  }
+  .btn-del-ligne:hover { background: var(--red); color: var(--white); }
+  #recup-tbody tr td:first-child { width: 32px; text-align: center; color: var(--gray-500); font-family: var(--mono); font-size: 10px; }
+
+  /* Totaux récupération */
+  .recup-totaux {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    background: var(--white); border: 1px solid var(--green-mid);
+    border-radius: 7px; padding: 10px 14px; margin-bottom: 12px;
+  }
+  .recup-total-item { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 120px; }
+  .recup-total-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-500); }
+  .recup-total-value { font-family: var(--mono); font-size: 16px; font-weight: 700; }
+  .recup-total-item.initial .recup-total-value { color: var(--navy); }
+  .recup-total-item.recupere .recup-total-value { color: var(--green); }
+  .recup-total-item.solde .recup-total-value { color: var(--red); }
+  .recup-total-item.solde.zero .recup-total-value { color: var(--green); }
+  .recup-progress-bar {
+    height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; margin-top: 5px;
+  }
+  .recup-progress-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; background: var(--green); }
+
+  /* Alerte sanction */
+  .sanction-alert {
+    display: none; align-items: center; gap: 12px;
+    background: var(--red-light); border: 2px solid var(--red);
+    border-radius: 8px; padding: 12px 16px; margin-top: 10px;
+    animation: alertShake 0.35s ease;
+  }
+  .sanction-alert.visible { display: flex; }
+  .sanction-alert-icon { font-size: 22px; flex-shrink: 0; }
+  .sanction-alert-body { flex: 1; }
+  .sanction-alert-body strong { display: block; color: var(--red); font-size: 13px; font-weight: 700; }
+  .sanction-alert-body span { display: block; color: #7f1d1d; font-size: 11px; margin-top: 3px; line-height: 1.4; }
+
+  /* Alerte récupération totale */
+  .recup-success-alert {
+    display: none; align-items: center; gap: 12px;
+    background: var(--green-light); border: 2px solid var(--green);
+    border-radius: 8px; padding: 12px 16px; margin-top: 10px;
+  }
+  .recup-success-alert.visible { display: flex; }
+  .recup-success-alert-icon { font-size: 22px; flex-shrink: 0; }
+  .recup-success-alert-body strong { display: block; color: var(--green); font-size: 13px; font-weight: 700; }
+  .recup-success-alert-body span { display: block; color: #1b5e20; font-size: 11px; margin-top: 3px; }
+
+  /* ─── PIED DE PAGE ────────────────────────────────────────── */
+  .form-footer {
+    background: var(--gray-900); border-radius: 0 0 12px 12px;
+    padding: 14px 28px; display: flex; justify-content: space-between;
+    align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .footer-ref { font-size: 11px; color: #90CAF9; font-family: var(--mono); margin-bottom: 4px; }
+  .footer-note { font-size: 10.5px; color: #78909C; line-height: 1.5; }
+  .footer-right { text-align: right; }
+  .footer-required { display: flex; align-items: center; gap: 5px; justify-content: flex-end; margin-bottom: 5px; }
+  .footer-required .required { font-size: 14px; }
+  .footer-required span { font-size: 11px; color: #90CAF9; }
+  .footer-urgence { font-size: 10.5px; color: #78909C; }
+
+  /* ─── BOUTONS D'ACTION ────────────────────────────────────── */
+  .action-bar { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 0 0; }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; border: none;
+    font-family: var(--font); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1.5px solid var(--gray-300); }
+  .btn-secondary:hover { background: var(--gray-300); }
+  .btn-primary { background: var(--navy); color: var(--white); box-shadow: 0 2px 8px rgba(31,56,100,0.3); }
+  .btn-primary:hover { background: var(--blue); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(31,56,100,0.35); }
+  .btn-print { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+  .btn-print:hover { background: var(--blue-light); }
+
+  /* ─── MODAL ENVOI MAIL ────────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,20,50,0.55); backdrop-filter: blur(3px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal-box {
+    background: var(--white); border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    width: 100%; max-width: 500px; overflow: hidden;
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform: scale(0.93) translateY(10px); } to { opacity:1; transform: none; } }
+  .modal-header {
+    background: var(--navy); padding: 18px 22px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .modal-icon {
+    width: 38px; height: 38px; background: var(--blue); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .modal-header-text {}
+  .modal-title { font-size: 15px; font-weight: 700; color: var(--white); }
+  .modal-subtitle { font-size: 11px; color: #90CAF9; margin-top: 2px; }
+  .modal-body { padding: 22px 24px; }
+  .modal-saved-badge {
+    background: var(--green-light); border: 1px solid var(--green-mid);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 18px;
+    font-size: 12px; color: var(--green); font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-ref-line {
+    background: var(--blue-light); border: 1px solid var(--blue-mid);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 18px;
+    font-size: 11px; color: var(--gray-700);
+    display: flex; flex-wrap: wrap; gap: 14px;
+  }
+  .modal-ref-line span { color: var(--gray-500); }
+  .modal-ref-line strong { font-family: var(--mono); color: var(--navy); font-size: 13px; }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label {
+    display: block; font-size: 10.5px; font-weight: 700; color: var(--gray-500);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .modal-field input, .modal-field textarea {
+    width: 100%; border: 1.5px solid var(--gray-300); border-radius: 7px;
+    padding: 0 12px; height: 38px; font-family: var(--font); font-size: 13px;
+    color: var(--gray-900); background: var(--gray-50); outline: none; transition: all 0.15s;
+  }
+  .modal-field textarea { height: 70px; padding: 9px 12px; resize: vertical; line-height: 1.5; }
+  .modal-field input:focus, .modal-field textarea:focus {
+    border-color: var(--blue); background: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(46,117,182,0.12);
+  }
+  .modal-field input.auto-filled { background: #EBF3FB; color: var(--navy); font-style: italic; }
+  .cc-list { display: flex; flex-direction: column; gap: 6px; }
+  .cc-row { display: flex; gap: 6px; }
+  .cc-row input { flex: 1; }
+  .btn-del-cc {
+    width: 38px; height: 38px; border-radius: 7px;
+    border: 1.5px solid var(--red-mid); background: var(--red-light);
+    color: var(--red); font-size: 18px; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+  }
+  .btn-del-cc:hover { background: var(--red-mid); }
+  .btn-add-cc {
+    margin-top: 5px; padding: 6px 14px; border-radius: 6px;
+    border: 1.5px dashed var(--blue-mid); background: transparent;
+    color: var(--blue); font-size: 11px; font-weight: 600;
+    cursor: pointer; font-family: var(--font); transition: all 0.12s;
+  }
+  .btn-add-cc:hover { background: var(--blue-light); }
+  .modal-send-status {
+    padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    margin-top: 12px; display: none; line-height: 1.5;
+  }
+  .modal-send-status.sending { background: var(--blue-light); color: var(--blue); border: 1px solid var(--blue-mid); display: flex; align-items: center; gap: 8px; }
+  .modal-send-status.sent    { background: var(--green-light); color: var(--green); border: 1px solid var(--green-mid); display: flex; align-items: center; gap: 8px; }
+  .modal-send-status.failed  { background: var(--red-light); color: var(--red); border: 1px solid var(--red-mid); display: flex; align-items: center; gap: 8px; }
+  .spinner {
+    width: 16px; height: 16px; border: 2.5px solid currentColor; border-top-color: transparent;
+    border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-footer {
+    border-top: 1px solid var(--gray-100); padding: 14px 24px;
+    display: flex; justify-content: flex-end; gap: 10px;
+  }
+
+  /* ─── MODAL PDF STEPS ────────────────────────────────────── */
+  .modal-box { max-width: 560px !important; }
+  .pdf-steps-wrap { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+  .pdf-step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--gray-50); border: 1.5px solid var(--gray-200);
+    border-radius: 10px; padding: 14px 16px; transition: all 0.2s;
+  }
+  .pdf-step.active { background: var(--blue-light); border-color: var(--blue-mid); }
+  .pdf-step.done   { background: var(--green-light); border-color: var(--green-mid); }
+  .pdf-step-num {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: var(--navy); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; margin-top: 2px;
+  }
+  .pdf-step.done .pdf-step-num { background: var(--green); }
+  .pdf-step-body { flex: 1; min-width: 0; }
+  .pdf-step-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .pdf-step-desc  { font-size: 11px; color: var(--gray-500); line-height: 1.5; }
+  .pdf-step-arrow {
+    text-align: center; font-size: 20px; color: var(--gray-300);
+    padding: 4px 0; line-height: 1;
+  }
+  /* Barre de prévisualisation du PDF généré */
+  .pdf-preview-bar {
+    display: flex; align-items: center; gap: 8px; margin-top: 10px;
+    background: var(--white); border: 1.5px solid var(--green-mid);
+    border-radius: 7px; padding: 7px 12px; font-size: 12px;
+  }
+  .pdf-file-icon { font-size: 16px; flex-shrink: 0; }
+  .pdf-filename  { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--navy); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pdf-filesize  { font-size: 10px; color: var(--gray-500); flex-shrink: 0; }
+  .pdf-regen-btn {
+    font-size: 10px; font-weight: 700; color: var(--blue); background: transparent;
+    border: 1px solid var(--blue-mid); border-radius: 5px; padding: 3px 9px;
+    cursor: pointer; flex-shrink: 0; transition: all 0.12s;
+  }
+  .pdf-regen-btn:hover { background: var(--blue-light); }
+  /* Statut génération PDF */
+  .pdf-gen-status {
+    margin-top: 8px; font-size: 11px; font-weight: 600; min-height: 0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pdf-gen-status.generating { color: var(--blue); }
+  .pdf-gen-status.ok  { color: var(--green); }
+  .pdf-gen-status.err { color: var(--red); }
+  /* Bouton Générer PDF */
+  .btn-pdf {
+    background: var(--navy); color: var(--white); border: none;
+    border-radius: 8px; padding: 9px 16px; cursor: pointer;
+    font-family: var(--font); font-size: 12px; font-weight: 700;
+    white-space: nowrap; flex-shrink: 0; align-self: flex-start;
+    transition: background 0.15s; margin-top: 4px;
+  }
+  .btn-pdf:hover { background: var(--blue); }
+  .btn-pdf:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* Note intranet */
+  .pdf-intranet-note {
+    margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+    background: var(--yellow-light); border: 1px solid #FFE082;
+    font-size: 11px; color: #5D4037; line-height: 1.6;
+  }
+  .pdf-intranet-note strong { color: #3E2723; }
+
+  /* ─── TOAST VALIDATION ────────────────────────────────────── */
+  .toast {
+    display: none; position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: var(--red); color: var(--white); border-radius: 10px;
+    padding: 14px 20px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2); max-width: 360px; line-height: 1.5;
+  }
+  .toast.success { background: var(--green); }
+  .toast.visible { display: block; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ─── SEPARATEUR SECTION ──────────────────────────────────── */
+  .section-divider { height: 1px; background: var(--gray-100); margin: 0 24px; }
+
+  /* ─── TABLEAU DE BORD DÉCLARATIONS ────────────────────────── */
+  .dashboard-wrapper {
+    max-width: 900px; margin: 28px auto 40px;
+    background: var(--white); border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10); overflow: hidden;
+  }
+  .dashboard-header {
+    background: var(--navy); padding: 0; border-radius: 12px 12px 0 0; overflow: hidden; position: relative;
+  }
+  .dashboard-header::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(180deg, #4FC3F7 0%, #F57F17 50%, #C62828 100%);
+  }
+  .dashboard-header-inner {
+    padding: 18px 24px 16px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .dashboard-title {
+    font-size: 17px; font-weight: 700; color: var(--white); letter-spacing: -0.3px;
+  }
+  .dashboard-subtitle { font-size: 11px; color: #90CAF9; margin-top: 4px; }
+  .dashboard-header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .dashboard-stats {
+    display: flex; gap: 8px;
+  }
+  .dash-stat {
+    text-align: center; background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 7px;
+    padding: 6px 14px; min-width: 56px;
+  }
+  .dash-stat-num { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--white); line-height: 1; }
+  .dash-stat-label { font-size: 9px; color: #90CAF9; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .dash-stat.warn .dash-stat-num { color: #FFB74D; }
+  .dash-stat.danger .dash-stat-num { color: #EF9A9A; }
+  .dash-stat.ok .dash-stat-num { color: #A5D6A7; }
+
+  /* Filtres */
+  .dashboard-filters {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 12px 20px; background: var(--blue-light); border-bottom: 1px solid var(--blue-mid);
+  }
+  .dash-filter-label { font-size: 10px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+  .dash-filter-btn {
+    padding: 5px 14px; border-radius: 20px; border: 1.5px solid transparent;
+    font-family: var(--font); font-size: 11px; font-weight: 600; cursor: pointer;
+    transition: all 0.12s;
+  }
+  .dash-filter-btn[data-filter="all"]      { background: var(--navy);   color: var(--white); }
+  .dash-filter-btn[data-filter="EN_COURS"] { background: var(--orange-light); color: var(--orange); border-color: var(--orange-mid); }
+  .dash-filter-btn[data-filter="SANCTION"] { background: var(--red-light);    color: var(--red);    border-color: var(--red-mid); }
+  .dash-filter-btn[data-filter="RECUPERE"] { background: var(--green-light);  color: var(--green);  border-color: var(--green-mid); }
+  .dash-filter-btn.active { box-shadow: 0 0 0 2.5px currentColor; }
+  .dash-search {
+    margin-left: auto; height: 32px; border: 1.5px solid var(--blue-mid);
+    border-radius: 20px; padding: 0 14px 0 10px; font-family: var(--font);
+    font-size: 12px; outline: none; background: var(--white); min-width: 180px;
+  }
+  .dash-search:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(46,117,182,0.15); }
+  .dash-btn-new {
+    margin-left: 6px; height: 32px; background: var(--blue); color: var(--white);
+    border: none; border-radius: 20px; padding: 0 16px;
+    font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font);
+    white-space: nowrap; transition: background 0.15s;
+  }
+  .dash-btn-new:hover { background: var(--navy); }
+
+  /* Table */
+  .dashboard-table-wrap { overflow-x: auto; }
+  .dashboard-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .dashboard-table thead th {
+    background: #F4F7FC; color: var(--gray-500); font-size: 10px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 9px 14px; text-align: left; border-bottom: 2px solid var(--gray-100);
+    white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  .dashboard-table thead th:hover { background: var(--blue-light); color: var(--blue); }
+  .dashboard-table tbody tr {
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.1s; cursor: default;
+  }
+  .dashboard-table tbody tr:hover { background: var(--blue-light); }
+  .dashboard-table tbody tr.row-editing { background: #FFFDE7; border-left: 4px solid var(--yellow); }
+  .dashboard-table td { padding: 11px 14px; vertical-align: middle; }
+  .dash-ref { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--navy); }
+  .dash-caissier { font-weight: 600; color: var(--gray-900); }
+  .dash-agence { font-size: 11px; color: var(--gray-500); }
+  .dash-montant { font-family: var(--mono); font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .dash-date { font-family: var(--mono); font-size: 11px; color: var(--gray-500); }
+
+  /* Badges statut */
+  .dash-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;
+    white-space: nowrap;
+  }
+  .dash-badge.EN_COURS   { background: var(--orange-light); color: var(--orange); border: 1px solid var(--orange-mid); }
+  .dash-badge.RECUPERE   { background: var(--green-light);  color: var(--green);  border: 1px solid var(--green-mid); }
+  .dash-badge.SANCTION   { background: var(--red-light);    color: var(--red);    border: 1px solid var(--red-mid); }
+  .dash-badge.BROUILLON  { background: var(--blue-light);   color: var(--blue);   border: 1px solid var(--blue-mid); }
+
+  /* Badge délai */
+  .dash-delai {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 9.5px; font-weight: 700; white-space: nowrap;
+  }
+  .dash-delai.ok      { background: var(--green-mid); color: var(--green); }
+  .dash-delai.warn    { background: var(--orange-mid); color: var(--orange); }
+  .dash-delai.expired { background: var(--red-mid); color: var(--red); }
+  .dash-delai.closed  { background: var(--gray-100); color: var(--gray-500); }
+
+  /* Actions */
+  .dash-actions { display: flex; gap: 6px; white-space: nowrap; }
+  .dash-btn {
+    height: 28px; border-radius: 6px; border: 1.5px solid;
+    font-size: 10px; font-weight: 700; cursor: pointer;
+    padding: 0 10px; font-family: var(--font); transition: all 0.12s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .dash-btn.edit   { background: var(--blue-light); color: var(--blue);  border-color: var(--blue-mid); }
+  .dash-btn.edit:hover { background: var(--blue); color: var(--white); }
+  .dash-btn.del    { background: var(--red-light);  color: var(--red);   border-color: var(--red-mid); }
+  .dash-btn.del:hover  { background: var(--red); color: var(--white); }
+  .dash-btn.close  { background: var(--green-light); color: var(--green); border-color: var(--green-mid); }
+  .dash-btn.close:hover { background: var(--green); color: var(--white); }
+
+  /* Ligne récupération partielle (sous-ligne) */
+  .dash-recup-bar {
+    height: 5px; background: var(--gray-100); border-radius: 3px; margin-top: 4px;
+    min-width: 80px; overflow: hidden;
+  }
+  .dash-recup-fill { height: 100%; background: var(--green); border-radius: 3px; }
+
+  /* Empty state */
+  .dashboard-empty {
+    padding: 40px 24px; text-align: center; color: var(--gray-500);
+  }
+  .dashboard-empty-icon { font-size: 36px; margin-bottom: 12px; }
+  .dashboard-empty-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 6px; }
+  .dashboard-empty-sub { font-size: 12px; color: var(--gray-300); }
+
+  /* Footer tableau */
+  .dashboard-footer {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    padding: 10px 20px; background: var(--gray-50); border-top: 1px solid var(--gray-100);
+    font-size: 11px; color: var(--gray-500);
+  }
+  .dashboard-footer strong { color: var(--navy); font-family: var(--mono); }
+
+  /* ─── BARRE DE PROGRESSION ────────────────────────────────── */
+  .progress-bar-wrap {
+    background: var(--gray-100); height: 5px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--blue) 0%, #4FC3F7 100%);
+    transition: width 0.4s ease; width: 0%;
+  }
+  .progress-label {
+    position: absolute; right: 10px; top: -18px;
+    font-size: 10px; font-weight: 700; color: var(--blue);
+    font-family: var(--mono); opacity: 0.8;
+  }
+
+  /* ─── AUTOSAVE INDICATOR ──────────────────────────────────── */
+  .autosave-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gray-300); margin-left: 8px; vertical-align: middle;
+    transition: background 0.3s;
+  }
+  .autosave-dot.saving { background: var(--yellow); animation: pulse 0.6s ease infinite alternate; }
+  .autosave-dot.saved  { background: var(--green); }
+  @keyframes pulse { from { opacity:1; } to { opacity:0.4; } }
+
+  /* ─── VALIDATION TEMPS RÉEL ───────────────────────────────── */
+  .field-input.valid { border-color: var(--green) !important; }
+  .field-error-msg { font-size: 10px; color: var(--red); margin-top: 3px; display: none; }
+  .field-input.error ~ .field-error-msg { display: block; }
+
+  /* ─── AGENCE BADGE ────────────────────────────────────────── */
+  .select-wrap { position: relative; }
+  .select-wrap .select-arrow {
+    position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--blue); font-size: 11px; pointer-events: none;
+  }
+  .field-select {
+    appearance: none; -webkit-appearance: none;
+    cursor: pointer; padding-right: 30px;
+    background: var(--gray-50); color: var(--gray-900);
+  }
+  .field-select:focus { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 3px rgba(46,117,182,0.12); }
+  .field-select option { font-family: var(--font); font-size: 13px; }
+  .agence-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--navy); color: white;
+    padding: 4px 12px 4px 8px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; margin: 6px 0 0 0;
+    opacity: 0; transition: all 0.25s; transform: translateY(5px);
+  }
+  .agence-badge.visible { opacity: 1; transform: translateY(0); }
+  .agence-badge .badge-code { font-family: var(--mono); background: rgba(255,255,255,0.2); padding: 1px 7px; border-radius: 10px; margin-right: 2px; }
+
+  /* ─── PRINT ───────────────────────────────────────────────── */
+  @media print {
+    body { background: white; padding: 0; }
+    .page-wrapper { max-width: 100%; }
+    .action-bar, .toast { display: none; }
+    .form-header, .form-footer { border-radius: 0; }
+  }
+</style>
+<!-- PDF Generation libs (CDN — remplacer par hébergement local en production intranet) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- EN-TÊTE -->
+  <div class="form-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="form-title">FORMULAIRE DE DÉCLARATION</div>
+        <div class="form-subtitle">Différence de Caisse — Réseau Agences</div>
+        <div class="form-meta">Direction du Contrôle Permanent &nbsp;|&nbsp; Usage Interne — Confidentiel</div>
+      </div>
+      <div class="header-right">
+        <div class="logo-badge">
+          <span>BQ</span>
+          <span>BANQUE</span>
+        </div>
+        <div class="form-ref">
+          <span class="form-ref-label">Direction du Contrôle Permanent</span>
+          <span class="form-ref-code"></span>
+        </div>
+      </div>
+    </div>
+    <div class="header-stripe"></div>
+  </div>
+
+  <!-- BARRE DE PROGRESSION -->
+  <div class="progress-bar-wrap" title="Complétion du formulaire">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+    <span class="progress-label" id="progress-label">0 %</span>
+  </div>
+
+  <!-- BARRE N° DÉCLARATION AUTO-GÉNÉRÉ -->
+  <div class="ref-bar">
+    <span class="ref-bar-label">N° Déclaration</span>
+    <span class="ref-bar-value" id="ref-declaration">— en attente —</span>
+    <span class="ref-bar-label" style="margin-left:24px;">Date de création</span>
+    <span class="ref-bar-value" id="ref-date">—</span>
+    <span class="autosave-dot" id="autosave-dot" title="Sauvegarde automatique"></span>
+    <span style="font-size:10px; color:var(--gray-500); margin-left:2px;" id="autosave-label">Brouillon non sauvegardé</span>
+  </div>
+
+  <!-- BANDE NIVEAU D'ALERTE -->
+  <div class="alert-band" id="alert-band-wrap">
+    <div class="alert-band-header">
+      <div class="alert-band-title">⚠ Niveau d'alerte BCT</div>
+      <div class="niveau-status-bar">
+        <span class="niveau-status-dot" id="niveau-status-dot"></span>
+        <span class="niveau-status-text" id="niveau-status-text">Saisir le montant pour calcul automatique</span>
+        <span class="niveau-calculated-badge" id="niveau-calc-badge" style="display:none"></span>
+      </div>
+    </div>
+
+    <div class="levels-grid">
+      <label class="level-card lv1" id="lv-card-1">
+        <input type="radio" name="niveau" value="1" id="niveau1">
+        <div class="level-check"></div>
+        <div class="level-info">
+          <div class="level-name">NIVEAU 1</div>
+          <div class="level-seuil">&lt; 20 DT</div>
+          <div class="level-desc">Déclaration interne agence</div>
+        </div>
+        <div class="level-auto-tag" id="lv-auto-1" style="display:none">AUTO</div>
+      </label>
+      <label class="level-card lv2" id="lv-card-2">
+        <input type="radio" name="niveau" value="2" id="niveau2">
+        <div class="level-check"></div>
+        <div class="level-info">
+          <div class="level-name">NIVEAU 2</div>
+          <div class="level-seuil">20 — 100 DT</div>
+          <div class="level-desc">Transmission CP Central</div>
+        </div>
+        <div class="level-auto-tag" id="lv-auto-2" style="display:none">AUTO</div>
+      </label>
+      <label class="level-card lv3" id="lv-card-3">
+        <input type="radio" name="niveau" value="3" id="niveau3">
+        <div class="level-check"></div>
+        <div class="level-info">
+          <div class="level-name">NIVEAU 3</div>
+          <div class="level-seuil">100 — 300 DT</div>
+          <div class="level-desc">Alerte CP — Enquête systématique</div>
+        </div>
+        <div class="level-auto-tag" id="lv-auto-3" style="display:none">AUTO</div>
+      </label>
+      <label class="level-card lv4" id="lv-card-4">
+        <input type="radio" name="niveau" value="4" id="niveau4">
+        <div class="level-check"></div>
+        <div class="level-info">
+          <div class="level-name">NIVEAU 4</div>
+          <div class="level-seuil">&gt;300 DT / Récidive</div>
+          <div class="level-desc">Alerte DG — Inspection</div>
+        </div>
+        <div class="level-auto-tag" id="lv-auto-4" style="display:none">AUTO</div>
+        <div class="level-lock-icon" id="lv-lock-4" style="display:none" title="Verrouillé — Récidive détectée">🔒</div>
+      </label>
+    </div>
+
+    <!-- Alerte de sous-classification (niveau manuel < niveau calculé) -->
+    <div class="niveau-downgrade-alert" id="niveau-downgrade-alert" style="display:none">
+      <span class="ndga-icon">🚫</span>
+      <div class="ndga-body">
+        <strong>Niveau inférieur au montant déclaré</strong>
+        <span id="niveau-downgrade-msg"></span>
+      </div>
+      <button type="button" class="ndga-btn-restore" onclick="restoreCalculatedNiveau()">Restaurer le niveau calculé</button>
+    </div>
+
+    <!-- Avertissement de sur-classification (niveau manuel > niveau calculé) -->
+    <div class="niveau-upgrade-warn" id="niveau-upgrade-warn" style="display:none">
+      <span class="nugw-icon">⚠</span>
+      <div class="nugw-body">
+        <strong id="niveau-upgrade-title">Niveau supérieur au montant</strong>
+        <span id="niveau-upgrade-msg"></span>
+      </div>
+    </div>
+
+    <!-- Champ de justification (obligatoire si niveau ≠ niveau calculé) -->
+    <div id="niveau-justif-block" style="display:none;margin-top:10px;">
+      <label class="field-label" for="niveau-justification">
+        Justification de la modification du niveau
+        <span class="required">*</span>
+        <span class="field-hint">Obligatoire si le niveau sélectionné diffère du niveau calculé selon le montant</span>
+      </label>
+      <textarea id="niveau-justification" class="field-input"
+        style="height:60px;resize:vertical;padding-top:8px;font-size:12px;"
+        placeholder="Expliquer la raison de cette modification de niveau (ex : montant exact non encore connu, accord superviseur…)"></textarea>
+    </div>
+  </div>
+
+  <div class="form-body">
+
+    <!-- SECTION 1 : IDENTIFICATION AGENCE -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Identification de l'Agence</div>
+      </div>
+      <div class="row">
+        <div class="field fixed-md">
+          <label class="field-label">Code Agence <span class="required">*</span></label>
+          <div class="select-wrap">
+            <select class="field-input field-select mono" id="sel-code" onchange="syncAgence('code')">
+              <option value="">— Code —</option>
+            </select>
+            <span class="select-arrow">&#9660;</span>
+          </div>
+        </div>
+        <div class="field f3">
+          <label class="field-label">Désignation de l'Agence <span class="required">*</span></label>
+          <div class="select-wrap">
+            <select class="field-input field-select" id="sel-nom" onchange="syncAgence('nom')">
+              <option value="">— Sélectionner l'agence —</option>
+            </select>
+            <span class="select-arrow">&#9660;</span>
+          </div>
+        </div>
+        <div class="field f2">
+          <label class="field-label">Région / Direction Réseau</label>
+          <input class="field-input" id="region-input" type="text" placeholder="Ex : Grand Tunis, Sfax...">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 2 : IDENTIFICATION CAISSIER -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Identification du Caissier Déclarant</div>
+      </div>
+      <div class="row">
+        <div class="field fixed-md">
+          <label class="field-label">Matricule <span class="required">*</span></label>
+          <input class="field-input mono" id="caissier-matricule" type="text" placeholder="MAT-0000" maxlength="12">
+        </div>
+        <div class="field f3">
+          <label class="field-label">Nom et Prénom complets <span class="required">*</span></label>
+          <input class="field-input" id="caissier-nom" type="text" placeholder="Nom de famille, Prénom(s)">
+        </div>
+        <div class="field f2">
+          <label class="field-label">Catégorie / Grade</label>
+          <input class="field-input" id="caissier-grade" type="text" placeholder="Ex : Rédacteur, Cadre...">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">Fonction exercée <span class="required">*</span></label>
+          <div class="check-group">
+            <label class="check-item">
+              <input type="radio" name="fonction" value="Caissier Principal"><div class="check-box"></div>
+              <span class="check-label">Caissier Principal</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="fonction" value="Caissier Adjoint"><div class="check-box"></div>
+              <span class="check-label">Caissier Adjoint</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="fonction" value="Stagiaire Caissier"><div class="check-box"></div>
+              <span class="check-label">Stagiaire Caissier</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="fonction" value="Autre"><div class="check-box"></div>
+              <span class="check-label">Autre (préciser)</span>
+            </label>
+            <input class="field-input" id="fonction-autre" style="flex:1; min-width:160px; height:36px;" type="text" placeholder="Préciser si Autre...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 3 : DÉTAILS DE L'ÉCART -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Détails de l'Écart Constaté</div>
+      </div>
+
+      <!-- Date / Heures -->
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Date du Constat <span class="required">*</span></label>
+          <div class="date-row">
+            <div class="date-part">
+              <input type="text" id="date-jour" placeholder="JJ" maxlength="2">
+              <span class="date-sublabel">Jour</span>
+            </div>
+            <span class="date-sep">/</span>
+            <div class="date-part">
+              <input type="text" id="date-mois" placeholder="MM" maxlength="2">
+              <span class="date-sublabel">Mois</span>
+            </div>
+            <span class="date-sep">/</span>
+            <div class="date-part">
+              <input type="text" id="date-annee" class="year" placeholder="AAAA" maxlength="4">
+              <span class="date-sublabel">Année</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Heure du Constat <span class="required">*</span></label>
+          <div class="time-row">
+            <div class="date-part">
+              <input type="text" id="heure-hh" placeholder="HH" maxlength="2">
+              <span class="date-sublabel">Heures</span>
+            </div>
+            <span class="time-sep">:</span>
+            <div class="date-part">
+              <input type="text" id="heure-mm" placeholder="MM" maxlength="2">
+              <span class="date-sublabel">Minutes</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Heure Arrêté de Caisse</label>
+          <div class="time-row">
+            <div class="date-part">
+              <input type="text" id="arrete-hh" placeholder="HH" maxlength="2">
+              <span class="date-sublabel">Heures</span>
+            </div>
+            <span class="time-sep">:</span>
+            <div class="date-part">
+              <input type="text" id="arrete-mm" placeholder="MM" maxlength="2">
+              <span class="date-sublabel">Minutes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Montant + Nature -->
+      <div class="row" style="align-items: flex-start;">
+        <div class="field f2">
+          <div class="montant-block">
+            <label class="field-label">Montant de l'Écart <span class="required">*</span></label>
+            <div class="montant-row">
+              <div class="montant-input-wrap">
+                <input type="text" class="mono" placeholder="0" id="montant-chiffres">
+                <span class="montant-currency">DT</span>
+              </div>
+              <div class="montant-millimes">
+                <input type="text" class="mono" placeholder="000" maxlength="3" id="montant-millimes" title="Millimes">
+                <span class="date-sublabel" style="text-align:center">Millimes</span>
+              </div>
+            </div>
+            <div class="montant-lettres-row">
+              <span class="montant-lettres-label">En toutes lettres</span>
+              <input type="text" id="montant-lettres" placeholder="Montant en toutes lettres (dinars tunisiens)..." readonly>
+            </div>
+          </div>
+        </div>
+        <div class="field f2">
+          <label class="field-label">Nature de l'Écart <span class="required">*</span></label>
+          <div class="nature-grid">
+            <label class="nature-card manquant">
+              <input type="radio" name="nature" value="DÉFICIT">
+              <div class="nature-radio"></div>
+              <div class="nature-label">
+                <div class="nature-main">▼ DÉFICIT</div>
+                <div class="nature-sub">Déficit — Solde physique inférieur</div>
+              </div>
+            </label>
+            <label class="nature-card excedent">
+              <input type="radio" name="nature" value="EXCÉDENT">
+              <div class="nature-radio"></div>
+              <div class="nature-label">
+                <div class="nature-main">▲ EXCÉDENT</div>
+                <div class="nature-sub">Surplus — Solde physique supérieur</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Type de caisse -->
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">Type de Caisse Concernée <span class="required">*</span></label>
+          <div class="check-group">
+            <label class="check-item">
+              <input type="radio" name="type_caisse" value="Caisse DT Principale"><div class="check-box"></div>
+              <span class="check-label">Caisse DT Principale</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="type_caisse" value="Caisse Devises"><div class="check-box"></div>
+              <span class="check-label">Caisse Devises</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="type_caisse" value="Caisse GAB/DAB"><div class="check-box"></div>
+              <span class="check-label">Caisse GAB / DAB</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="type_caisse" value="Caisse Secondaire"><div class="check-box"></div>
+              <span class="check-label">Caisse Secondaire</span>
+            </label>
+            <label class="check-item">
+              <input type="radio" name="type_caisse" value="Autre"><div class="check-box"></div>
+              <span class="check-label">Autre</span>
+            </label>
+            <input class="field-input" id="caisse-autre" style="flex:1; min-width:160px; height:36px;" type="text" placeholder="Préciser le type si Autre...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 4 : CIRCONSTANCES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">Circonstances et Explications</div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">A. Déclaration du Caissier <span class="required">*</span> <span class="field-hint">— Description circonstanciée des faits</span></label>
+          <textarea class="field-input" id="declaration-caissier" rows="4" placeholder="Décrire avec précision les circonstances ayant pu causer l'écart : opérations effectuées, incidents survenus, observations particulières sur le déroulement de la journée..."></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">B. Observations du Superviseur de Caisse <span class="required">*</span></label>
+          <textarea class="field-input" id="observations-superviseur" rows="3" placeholder="Observations et commentaires du superviseur : résultat du contre-comptage, cohérence des explications du caissier, anomalies constatées..."></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">Cause Probable Retenue <span class="required">*</span></label>
+          <div class="cause-grid">
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Erreur de comptage"><div class="check-box"></div>
+              <span class="cause-text">Erreur de comptage</span>
+            </label>
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Erreur de rendu client"><div class="check-box"></div>
+              <span class="cause-text">Erreur de rendu monnaie</span>
+            </label>
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Oubli d'encaissement"><div class="check-box"></div>
+              <span class="cause-text">Oubli d'encaissement</span>
+            </label>
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Défaillance système"><div class="check-box"></div>
+              <span class="cause-text">Défaillance système / informatique</span>
+            </label>
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Suspicion de fraude interne"><div class="check-box"></div>
+              <span class="cause-text">Suspicion de fraude interne</span>
+            </label>
+            <label class="cause-item">
+              <input type="checkbox" name="cause" value="Autre / Cause indéterminée"><div class="check-box"></div>
+              <span class="cause-text">Autre / Cause indéterminée</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 5 : MESURES IMMÉDIATES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Mesures Immédiates Prises</div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">Actions conservatoires engagées après constat</label>
+          <div class="mesures-grid">
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Contre-comptage effectué"><div class="check-box"></div>
+              <span class="check-label">Contre-comptage effectué</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Isolement de la caisse"><div class="check-box"></div>
+              <span class="check-label">Isolement de la caisse</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Visionnage des caméras"><div class="check-box"></div>
+              <span class="check-label">Visionnage des caméras</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Entretien avec le caissier"><div class="check-box"></div>
+              <span class="check-label">Entretien avec le caissier</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Mise en suspens comptable"><div class="check-box"></div>
+              <span class="check-label">Mise en suspens comptable</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="mesure" value="Information Contrôle Permanent"><div class="check-box"></div>
+              <span class="check-label">Information Contrôle Permanent</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field full">
+          <label class="field-label">Autres mesures / Précisions complémentaires</label>
+          <input class="field-input" id="autres-mesures" type="text" placeholder="Décrire toute autre mesure prise...">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SECTION 6 : RÉCIDIVE (intégrée dans form-body) -->
+    <div class="section" style="padding-bottom: 24px;">
+      <div class="recidive-block">
+        <div class="recidive-header">
+          <div class="recidive-num">6</div>
+          <div class="recidive-title">Antécédents et Récidive</div>
+        </div>
+        <div class="recidive-content">
+          <div class="recidive-question">Ce caissier a-t-il fait l'objet d'écarts déclarés au cours des <strong>30 derniers jours</strong> ?</div>
+          <div class="radio-group">
+            <label class="radio-item">
+              <input type="radio" name="recidive" value="OUI" id="recidive-oui"><div class="radio-dot"></div>
+              <span class="radio-label">OUI</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="recidive" value="NON" id="recidive-non"><div class="radio-dot"></div>
+              <span class="radio-label">NON</span>
+            </label>
+          </div>
+          <div class="recidive-count" id="recidive-count-block">
+            <label for="nb-ecarts">Si OUI, nombre d'écarts :</label>
+            <input type="number" id="nb-ecarts" min="1" max="150" placeholder="—">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin form-body -->
+
+  <!-- SECTION 7 : SUIVI DE RÉCUPÉRATION -->
+  <div class="form-body" style="padding: 0 0 24px;">
+    <div class="section" style="padding-top:24px; padding-bottom:0; border-top: 1px solid var(--gray-100); margin-top: -1px;">
+      <div class="section-header">
+        <div class="section-num" style="background:var(--green);">7</div>
+        <div class="section-title" style="color:var(--green);">Suivi de Récupération de la Différence</div>
+      </div>
+    </div>
+    <div class="recup-block">
+
+      <!-- Date limite calculée -->
+      <div class="recup-deadline-bar">
+        <span class="recup-deadline-label">📅 Date limite de récupération (J+7)</span>
+        <span class="recup-deadline-value" id="recup-date-limite">— / — / ——</span>
+        <span class="recup-deadline-remaining" id="recup-remaining-badge" style="display:none">—</span>
+        <span style="flex:1;"></span>
+        <span style="font-size:10px;color:var(--gray-500);">⚠ Au-delà, sanction disciplinaire applicable au caissier</span>
+      </div>
+
+      <!-- Statut de récupération -->
+      <div style="margin-bottom:12px;">
+        <label class="field-label" style="color:var(--green);margin-bottom:8px;display:block;">Statut de récupération <span class="required">*</span></label>
+        <div class="recup-statut-grid">
+          <label class="recup-statut-card en-cours" id="recup-card-encours">
+            <input type="radio" name="recup_statut" value="EN_COURS" id="recup-encours">
+            <div class="recup-statut-radio"></div>
+            <div>
+              <div class="recup-statut-name">⏳ EN COURS</div>
+              <div class="recup-statut-sub">Récupération partielle ou en attente — délai non écoulé</div>
+            </div>
+          </label>
+          <label class="recup-statut-card total" id="recup-card-total">
+            <input type="radio" name="recup_statut" value="RECUPERE" id="recup-total">
+            <div class="recup-statut-radio"></div>
+            <div>
+              <div class="recup-statut-name">✅ TOTALEMENT RÉCUPÉRÉ</div>
+              <div class="recup-statut-sub">Différence intégralement couverte dans le délai</div>
+            </div>
+          </label>
+          <label class="recup-statut-card sanction" id="recup-card-sanction">
+            <input type="radio" name="recup_statut" value="SANCTION" id="recup-sanction">
+            <div class="recup-statut-radio"></div>
+            <div>
+              <div class="recup-statut-name">🔴 NON RÉCUPÉRÉ — SANCTION</div>
+              <div class="recup-statut-sub">Délai de 7 jours dépassé sans recouvrement total</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Lignes de versements partiels -->
+      <div id="recup-versements-block">
+        <div class="recup-lignes-header">
+          <span class="recup-lignes-title">📋 Historique des versements / récupérations</span>
+          <button type="button" class="btn-add-ligne" id="btn-add-recup-ligne">＋ Ajouter un versement</button>
+        </div>
+        <table class="recup-lignes-table" id="recup-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date du versement</th>
+              <th>Montant récupéré (DT)</th>
+              <th>Millimes</th>
+              <th>Mode de récupération</th>
+              <th>Observations</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="recup-tbody">
+            <!-- Lignes ajoutées dynamiquement -->
+          </tbody>
+        </table>
+
+        <!-- Totaux -->
+        <div class="recup-totaux">
+          <div class="recup-total-item initial">
+            <span class="recup-total-label">Montant initial de l'écart</span>
+            <span class="recup-total-value" id="recup-montant-initial">0,000 DT</span>
+          </div>
+          <div class="recup-total-item recupere">
+            <span class="recup-total-label">Total récupéré</span>
+            <span class="recup-total-value" id="recup-montant-recupere">0,000 DT</span>
+            <div class="recup-progress-bar"><div class="recup-progress-fill" id="recup-progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="recup-total-item solde" id="recup-solde-item">
+            <span class="recup-total-label">Solde restant à récupérer</span>
+            <span class="recup-total-value" id="recup-montant-solde">0,000 DT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerte sanction -->
+      <div class="sanction-alert" id="sanction-alert">
+        <span class="sanction-alert-icon">🚨</span>
+        <div class="sanction-alert-body">
+          <strong>SANCTION DISCIPLINAIRE — Délai de récupération dépassé</strong>
+          <span id="sanction-alert-msg">Le caissier n'a pas régularisé sa situation dans le délai réglementaire de 7 jours. Une procédure disciplinaire doit être engagée conformément au règlement intérieur. Le dossier est à transmettre à la Direction des Ressources Humaines et au Contrôle Permanent.</span>
+        </div>
+      </div>
+
+      <!-- Alerte récupération totale -->
+      <div class="recup-success-alert" id="recup-success-alert">
+        <span class="recup-success-alert-icon">✅</span>
+        <div class="recup-success-alert-body">
+          <strong>Différence intégralement récupérée</strong>
+          <span id="recup-success-msg">La totalité de l'écart a été régularisée dans le délai réglementaire de 7 jours. Aucune sanction n'est applicable.</span>
+        </div>
+      </div>
+
+      <!-- Observations de suivi -->
+      <div style="margin-top:14px;">
+        <label class="field-label" style="color:var(--green);margin-bottom:6px;display:block;">Observations de suivi du Contrôle Permanent</label>
+        <textarea class="field-input" id="recup-observations" rows="3"
+          placeholder="Commentaires sur le suivi de la récupération, actions engagées, résultats des investigations, décisions prises..."></textarea>
+      </div>
+
+    </div><!-- fin recup-block -->
+  </div><!-- fin section 7 -->
+
+  <!-- SECTION 8 : SIGNATURES -->
+  <div class="signatures-section" style="background: var(--white);">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">Signatures et Validations Obligatoires</div>
+    </div>
+    <div class="sig-grid">
+      <div class="sig-card">
+        <div class="sig-header">
+          <div class="sig-title">Caissier Déclarant</div>
+          <div class="sig-subtitle">Signature obligatoire</div>
+        </div>
+        <div class="sig-body">
+          <div class="sig-field">
+            <label>Nom & Prénom <span style="font-size:9px;color:#90CAF9;font-weight:400;text-transform:none;">(repris §2)</span></label>
+            <input type="text" id="sig-caissier-nom" placeholder="Automatique — saisir §2">
+          </div>
+          <div class="sig-field">
+            <label>Matricule <span style="font-size:9px;color:#90CAF9;font-weight:400;text-transform:none;">(repris §2)</span></label>
+            <input type="text" id="sig-caissier-mat" placeholder="Automatique — saisir §2">
+          </div>
+          <div class="sig-field">
+            <label>Date</label>
+            <input type="text" id="sig-caissier-date" placeholder="JJ / MM / AAAA">
+          </div>
+          <div class="sig-zone">
+            <span class="sig-zone-label">Signature</span>
+          </div>
+        </div>
+      </div>
+      <div class="sig-card">
+        <div class="sig-header">
+          <div class="sig-title">Superviseur de Caisse</div>
+          <div class="sig-subtitle">Validation hiérarchique N+1</div>
+        </div>
+        <div class="sig-body">
+          <div class="sig-field">
+            <label>Nom & Prénom</label>
+            <input type="text" id="sig-sup-nom" placeholder="Nom Prénom">
+          </div>
+          <div class="sig-field">
+            <label>Matricule</label>
+            <input type="text" id="sig-sup-mat" placeholder="MAT-0000" style="font-family: var(--mono);">
+          </div>
+          <div class="sig-field">
+            <label>Date</label>
+            <input type="text" id="sig-sup-date" placeholder="JJ / MM / AAAA">
+          </div>
+          <div class="sig-zone">
+            <span class="sig-zone-label">Signature</span>
+          </div>
+        </div>
+      </div>
+      <div class="sig-card">
+        <div class="sig-header green-bg">
+          <div class="sig-title">Directeur d'Agence</div>
+          <div class="sig-subtitle">Validation finale + Cachet</div>
+        </div>
+        <div class="sig-body">
+          <div class="sig-field">
+            <label>Nom & Prénom</label>
+            <input type="text" id="sig-dir-nom" placeholder="Nom Prénom">
+          </div>
+          <div class="sig-field">
+            <label>Date & Heure de réception</label>
+            <input type="text" id="sig-dir-date" placeholder="JJ/MM/AAAA — HH:MM">
+          </div>
+          <div class="sig-field">
+            <label>Délai de transmission respecté ?</label>
+            <div class="radio-group" style="margin-top:2px;">
+              <label class="radio-item" style="padding: 5px 10px;">
+                <input type="radio" name="delai" value="Oui"><div class="radio-dot"></div>
+                <span class="radio-label" style="font-size:11px;">Oui (&lt;1h)</span>
+              </label>
+              <label class="radio-item" style="padding: 5px 10px;">
+                <input type="radio" name="delai" value="Non"><div class="radio-dot"></div>
+                <span class="radio-label" style="font-size:11px;">Non (motif)</span>
+              </label>
+            </div>
+          </div>
+          <div class="sig-zone">
+            <span class="sig-zone-label">Signature & Cachet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CP CENTRAL -->
+    <div class="cp-block">
+      <div class="cp-header">
+        <span class="cp-badge">Réservé CP</span>
+        <span class="cp-title">Contrôle Permanent Central — Réception, Traitement et Suivi de Récupération</span>
+      </div>
+      <div class="cp-grid">
+        <div class="cp-field">
+          <label for="cp-recu-le">Reçu le</label>
+          <input type="text" id="cp-recu-le" placeholder="JJ/MM/AAAA — HH:MM">
+        </div>
+        <div class="cp-field" style="flex:2;">
+          <label for="cp-traite-par">Traité par</label>
+          <input type="text" id="cp-traite-par" placeholder="Nom du responsable CP">
+        </div>
+        <div class="cp-field">
+          <label for="cp-ndossier">N° Dossier CP</label>
+          <input type="text" id="cp-ndossier" placeholder="CP-2026-000" style="font-family: var(--mono);">
+        </div>
+        <div class="cp-field">
+          <label for="cp-statut">Statut dossier</label>
+          <select id="cp-statut" style="height:32px;border:1px solid var(--blue-mid);border-radius:6px;padding:0 9px;font-size:12px;background:var(--white);outline:none;width:100%;">
+            <option value="">— Sélectionner —</option>
+            <option value="En cours">En cours</option>
+            <option value="Récupéré — Clôturé">Récupéré — Clôturé</option>
+            <option value="Partiellement récupéré">Partiellement récupéré</option>
+            <option value="Non récupéré — Sanction engagée">Non récupéré — Sanction engagée</option>
+            <option value="Transmis DRH">Transmis DRH</option>
+            <option value="Clôturé">Clôturé</option>
+          </select>
+        </div>
+      </div>
+      <div class="cp-grid" style="margin-top:10px;">
+        <div class="cp-field">
+          <label for="cp-date-limite-cp">Date limite récupération (J+7)</label>
+          <input type="text" id="cp-date-limite-cp" placeholder="JJ/MM/AAAA" readonly style="background:#EBF3FB;font-family:var(--mono);font-weight:700;color:var(--navy);">
+        </div>
+        <div class="cp-field">
+          <label for="cp-montant-recupere">Montant récupéré (DT)</label>
+          <input type="text" id="cp-montant-recupere" placeholder="0,000 DT" readonly style="background:#F1F8E9;font-family:var(--mono);font-weight:700;color:var(--green);">
+        </div>
+        <div class="cp-field">
+          <label for="cp-solde-restant">Solde restant (DT)</label>
+          <input type="text" id="cp-solde-restant" placeholder="0,000 DT" readonly style="background:#FFF5F5;font-family:var(--mono);font-weight:700;color:var(--red);">
+        </div>
+        <div class="cp-field" style="flex:2;">
+          <label for="cp-sanction-ref">Référence sanction / DRH (si applicable)</label>
+          <input type="text" id="cp-sanction-ref" placeholder="N° décision / référence courrier disciplinaire">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <button class="btn btn-secondary" id="btn-reset">↺ Réinitialiser</button>
+      <button class="btn btn-print" onclick="window.print()">🖨 Imprimer</button>
+      <button class="btn" id="btn-enregistrer" style="background:#1B5E20;color:var(--white);gap:6px;">💾 Enregistrer la déclaration</button>
+      <button class="btn btn-primary" id="btn-valider">✓ Valider et Transmettre</button>
+    </div>
+  </div>
+
+  <!-- PIED DE PAGE -->
+  <div class="form-footer">
+    <div class="footer-left">
+      <div class="footer-ref">Idée et conception de Mahdi Ben Jabeur</div>
+      <div class="footer-note">
+        3 exemplaires obligatoires : Agence (1)  ·  Contrôle Permanent (1)  ·  Caissier (1)<br>
+        Conservation réglementaire : 10 ans  |  Direction du Contrôle Permanent
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-required">
+        <span class="required">*</span>
+        <span>Champs obligatoires</span>
+      </div>
+      
+  </div>
+
+</div><!-- fin page-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     TABLEAU DE BORD — SUIVI DES DÉCLARATIONS
+     ══════════════════════════════════════════════════════════ -->
+<div class="dashboard-wrapper" id="dashboard-wrapper">
+
+  <div class="dashboard-header">
+    <div class="dashboard-header-inner">
+      <div>
+        <div class="dashboard-title">📋 Tableau de Bord — Déclarations de Caisse</div>
+        <div class="dashboard-subtitle">Suivi des différences en cours de récupération · Données stockées localement sur ce poste</div>
+      </div>
+      <div class="dashboard-stats">
+        <div class="dash-stat warn" title="Déclarations en cours">
+          <div class="dash-stat-num" id="dash-count-encours">0</div>
+          <div class="dash-stat-label">En cours</div>
+        </div>
+        <div class="dash-stat danger" title="Délai dépassé — Sanction">
+          <div class="dash-stat-num" id="dash-count-sanction">0</div>
+          <div class="dash-stat-label">Sanction</div>
+        </div>
+        <div class="dash-stat ok" title="Récupérées">
+          <div class="dash-stat-num" id="dash-count-recupere">0</div>
+          <div class="dash-stat-label">Récupérées</div>
+        </div>
+        <div class="dash-stat" title="Total">
+          <div class="dash-stat-num" id="dash-count-total">0</div>
+          <div class="dash-stat-label">Total</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-filters">
+    <span class="dash-filter-label">Filtrer :</span>
+    <button type="button" class="dash-filter-btn active" data-filter="all">Toutes</button>
+    <button type="button" class="dash-filter-btn" data-filter="EN_COURS">⏳ En cours</button>
+    <button type="button" class="dash-filter-btn" data-filter="SANCTION">🔴 Sanction</button>
+    <button type="button" class="dash-filter-btn" data-filter="RECUPERE">✅ Récupérées</button>
+    <button type="button" class="dash-filter-btn" data-filter="BROUILLON">✏ Brouillons</button>
+    <input type="text" class="dash-search" id="dash-search" placeholder="🔍  Rechercher caissier, réf, agence…">
+    <button type="button" class="dash-btn-new" id="dash-btn-new">＋ Nouvelle déclaration</button>
+  </div>
+
+  <div class="dashboard-table-wrap">
+    <table class="dashboard-table" id="dashboard-table">
+      <thead>
+        <tr>
+          <th data-sort="ref">Référence</th>
+          <th data-sort="date">Date constat</th>
+          <th data-sort="caissier">Caissier / Agence</th>
+          <th data-sort="montant">Montant écart</th>
+          <th data-sort="recup">Récupération</th>
+          <th data-sort="delai">Délai J+7</th>
+          <th data-sort="statut">Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="dashboard-tbody">
+        <!-- Rempli dynamiquement -->
+      </tbody>
+    </table>
+    <div class="dashboard-empty" id="dashboard-empty" style="display:none">
+      <div class="dashboard-empty-icon">📂</div>
+      <div class="dashboard-empty-title">Aucune déclaration enregistrée</div>
+      <div class="dashboard-empty-sub">Remplissez le formulaire ci-dessus et cliquez sur « 💾 Enregistrer la déclaration ».</div>
+    </div>
+  </div>
+
+  <div class="dashboard-footer">
+    <span>Stockage local — données conservées sur ce navigateur/poste uniquement</span>
+    <span>Total enregistrements : <strong id="dash-footer-count">0</strong></span>
+  </div>
+
+</div><!-- fin dashboard-wrapper -->
+
+<!-- MODAL ENREGISTREMENT + ENVOI MAIL -->
+<div class="modal-overlay" id="modal-envoi">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon">📄</div>
+      <div class="modal-header-text">
+        <div class="modal-title">Enregistrement &amp; Transmission PDF</div>
+        <div class="modal-subtitle">Déclaration de Différence de Caisse — Contrôle Permanent</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- Confirmation enregistrement -->
+      <div class="modal-saved-badge" id="modal-save-status">
+        <span>✓</span> Déclaration enregistrée — Référence : <strong id="modal-ref-num" style="font-family:var(--mono); margin-left:4px;"></strong>
+      </div>
+
+      <!-- Récapitulatif -->
+      <div class="modal-ref-line" id="modal-recap">
+        <div><span>Agence :</span> <strong id="modal-agence">—</strong></div>
+        <div><span>Montant :</span> <strong id="modal-montant">—</strong></div>
+        <div><span>Nature :</span> <strong id="modal-nature">—</strong></div>
+        <div><span>Niveau :</span> <strong id="modal-niveau">—</strong></div>
+      </div>
+
+      <!-- ÉTAPES PDF + MAIL -->
+      <div class="pdf-steps-wrap">
+        <!-- Étape 1 : Générer le PDF -->
+        <div class="pdf-step" id="pdf-step-1">
+          <div class="pdf-step-num">1</div>
+          <div class="pdf-step-body">
+            <div class="pdf-step-title">Générer le PDF du formulaire</div>
+            <div class="pdf-step-desc">Le formulaire est converti en PDF prêt à être joint au mail. Le fichier sera téléchargé automatiquement.</div>
+            <div class="pdf-preview-bar" id="pdf-preview-bar" style="display:none">
+              <span class="pdf-file-icon">📎</span>
+              <span class="pdf-filename" id="pdf-filename">—</span>
+              <span class="pdf-filesize" id="pdf-filesize">—</span>
+              <button type="button" class="pdf-regen-btn" onclick="genererPDF(true)">↺ Regénérer</button>
+            </div>
+            <div class="pdf-gen-status" id="pdf-gen-status"></div>
+          </div>
+          <button type="button" class="btn btn-pdf" id="btn-generer-pdf" onclick="genererPDF(false)">
+            <span id="btn-pdf-label">⬇ Générer & Télécharger le PDF</span>
+          </button>
+        </div>
+
+        <div class="pdf-step-arrow">↓</div>
+
+        <!-- Étape 2 : Envoyer l'email -->
+        <div class="pdf-step" id="pdf-step-2" style="opacity:0.45;pointer-events:none">
+          <div class="pdf-step-num">2</div>
+          <div class="pdf-step-body">
+            <div class="pdf-step-title">Envoyer l'email avec le PDF en pièce jointe</div>
+            <div class="pdf-step-desc" id="pdf-step-2-desc">Générez d'abord le PDF (étape 1), puis votre client mail s'ouvrira avec les destinataires et l'objet pré-remplis.</div>
+            <!-- Destinataires -->
+            <div class="modal-field" style="margin-top:12px">
+              <label>Destinataire principal <span style="color:var(--red);">*</span> — Contrôle Permanent</label>
+              <input type="email" id="mail-to" placeholder="cp.central@banque.tn" class="auto-filled">
+            </div>
+            <div class="modal-field">
+              <label>Copie (CC) <span style="font-weight:400;text-transform:none;color:var(--gray-300)">— Directeur, superviseur…</span></label>
+              <div class="cc-list" id="cc-list">
+                <div class="cc-row">
+                  <input type="email" placeholder="directeur.agence@banque.tn">
+                </div>
+              </div>
+              <button class="btn-add-cc" id="btn-add-cc" type="button">+ Ajouter un destinataire CC</button>
+            </div>
+            <div class="modal-field">
+              <label>Objet du mail</label>
+              <input type="text" id="mail-objet" class="auto-filled" readonly>
+            </div>
+            <div class="modal-field">
+              <label>Message complémentaire <span style="font-weight:400;text-transform:none;color:var(--gray-300)">— optionnel</span></label>
+              <textarea id="mail-message" placeholder="Observations complémentaires…"></textarea>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btn-envoyer-mail" type="button" style="align-self:flex-end">
+            <span>✉ Ouvrir le client mail</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Statut global -->
+      <div class="modal-send-status" id="modal-send-status"></div>
+
+      <!-- Note intranet -->
+      <div class="pdf-intranet-note" id="pdf-intranet-note">
+        <strong>Mode intranet :</strong> Le PDF est téléchargé sur votre poste. Joignez-le manuellement à l'email dans votre client mail (Outlook, Lotus Notes…).
+        En production avec le backend API, le PDF est envoyé automatiquement en pièce jointe.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="btn-modal-fermer">Fermer</button>
+      <button class="btn btn-print" onclick="window.print()" type="button">🖨 Imprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════
+// UTILITAIRES COMMUNS
+// ═══════════════════════════════════════════════════════════
+
+/** Pad un nombre sur 2 chiffres — fonction centralisée (une seule définition) */
+const pad = n => String(n).padStart(2, '0');
+
+/** Accès sécurisé à un élément par ID */
+const $id = id => document.getElementById(id);
+
+/** Accès sécurisé à la valeur d'un élément */
+const $val = id => { const el = $id(id); return el ? el.value.trim() : ''; };
+
+/** Récupérer la valeur d'un groupe radio */
+const $radio = name => { const el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; };
+
+/** Récupérer les valeurs de checkboxes cochées */
+const $checks = name => Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(el => el.value);
+
+// ═══════════════════════════════════════════════════════════
+// CONVERSION MONTANT EN LETTRES — DINARS TUNISIENS
+// ═══════════════════════════════════════════════════════════
+
+const UNITES  = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf',
+  'dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
+const DIZAINES = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante',
+  'soixante', 'quatre-vingt', 'quatre-vingt'];
+
+function dizerUnites(n) {
+  if (n < 20) return UNITES[n];
+  const d = Math.floor(n / 10), u = n % 10;
+  if (d === 7) return u === 1 ? 'soixante et onze' : 'soixante-' + UNITES[10 + u];
+  if (d === 9) return 'quatre-vingt-' + UNITES[10 + u];
+  if (d === 8) return u === 0 ? 'quatre-vingts' : 'quatre-vingt-' + UNITES[u];
+  if (u === 0) return DIZAINES[d];
+  if (u === 1 && d !== 8) return DIZAINES[d] + ' et un';
+  return DIZAINES[d] + '-' + UNITES[u];
+}
+
+function centaines(n) {
+  if (n === 0) return '';
+  const c = Math.floor(n / 100), r = n % 100;
+  let s = '';
+  if (c === 1) { s = 'cent'; }
+  else if (c > 1) { s = UNITES[c] + ' cent'; if (r === 0) s += 's'; }
+  if (r > 0) { if (c > 0) s += ' '; s += dizerUnites(r); }
+  return s;
+}
+
+function nombreEnLettres(n) {
+  if (n === 0) return 'zéro';
+  if (n < 0)  return 'moins ' + nombreEnLettres(-n);
+  let res = '';
+  const milliards = Math.floor(n / 1e9); n %= 1e9;
+  if (milliards > 0) res += centaines(milliards) + ' milliard' + (milliards > 1 ? 's' : '') + ' ';
+  const millions = Math.floor(n / 1e6); n %= 1e6;
+  if (millions > 0) res += centaines(millions) + ' million' + (millions > 1 ? 's' : '') + ' ';
+  const milliers = Math.floor(n / 1000); n %= 1000;
+  if (milliers > 0) res += (milliers === 1 ? 'mille' : centaines(milliers) + ' mille') + ' ';
+  if (n > 0) res += centaines(n);
+  return res.trim();
+}
+
+function updateLettres() {
+  const chiffresInput = $id('montant-chiffres');
+  const millimesInput = $id('montant-millimes');
+  const lettresInput  = $id('montant-lettres');
+  if (!lettresInput) return;
+
+  const rawDT = chiffresInput ? chiffresInput.value.replace(/[^0-9]/g, '') : '';
+  const rawMM = millimesInput ? millimesInput.value.replace(/[^0-9]/g, '').padEnd(3,'0').slice(0,3) : '';
+  const dt = parseInt(rawDT) || 0;
+  const mm = parseInt(rawMM) || 0;
+
+  if (dt === 0 && mm === 0) { lettresInput.value = ''; return; }
+
+  let lettres = '';
+  if (dt > 0) lettres += nombreEnLettres(dt) + ' dinar' + (dt > 1 ? 's' : '');
+  if (mm > 0) {
+    if (dt > 0) lettres += ' et ';
+    lettres += nombreEnLettres(mm) + ' millime' + (mm > 1 ? 's' : '');
+  }
+  lettresInput.value = lettres.charAt(0).toUpperCase() + lettres.slice(1);
+
+  // Auto-sélection niveau d'alerte selon montant DT
+  autoSelectNiveau(dt);
+  updateProgressBar();
+}
+
+// ─── FIX : millimes — suppression de l'inline handler ────
+function onMillimesInput(el) {
+  el.value = el.value.replace(/[^0-9]/g, '').slice(0, 3);
+  updateLettres();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CONTRÔLE DU NIVEAU D'ALERTE — Logique complète
+// ─────────────────────────────────────────────────────────
+// niveauCalcule  : niveau déduit du montant (source de vérité)
+// niveauManuel   : niveau cliqué par l'utilisateur
+// niveauVerrouille : true si récidive OUI → forcé N4
+// ═══════════════════════════════════════════════════════════
+let niveauCalcule   = 0;   // 0 = pas encore calculé (montant vide)
+let niveauVerrouille = false;  // true = récidive OUI
+
+const NIVEAU_LABELS = {
+  1: 'Niveau 1 — < 20 DT',
+  2: 'Niveau 2 — 20 à 200 DT',
+  3: 'Niveau 3 — 200 à 1 000 DT',
+  4: 'Niveau 4 — > 1 000 DT',
+};
+
+// ── Calculer le niveau selon le montant DT ───────────────
+function calcNiveauDepuisMontant(montantDT) {
+  if (montantDT <= 0)           return 0;
+  if (montantDT < 20)           return 1;
+  if (montantDT < 200)          return 2;
+  if (montantDT <= 1000)        return 3;
+  return 4;
+}
+
+// ── Sélection automatique (depuis updateLettres) ─────────
+function autoSelectNiveau(montantDT) {
+  niveauCalcule = calcNiveauDepuisMontant(montantDT);
+
+  // Afficher l'indicateur de niveau calculé
+  for (let i = 1; i <= 4; i++) {
+    const tag = $id('lv-auto-' + i);
+    if (tag) tag.style.display = (i === niveauCalcule) ? '' : 'none';
+  }
+
+  // Si verrouillé par récidive, ne pas toucher à la sélection
+  if (niveauVerrouille) {
+    updateNiveauStatusBar();
+    return;
+  }
+
+  // Sélectionner automatiquement si le montant est connu
+  if (niveauCalcule > 0) {
+    const radio = $id('niveau' + niveauCalcule);
+    if (radio) {
+      radio.checked = true;
+      updateLevelCards();
+    }
+  }
+
+  updateNiveauStatusBar();
+  checkNiveauCoherence();
+}
+
+// ── Appelée quand l'utilisateur clique manuellement ──────
+function onNiveauManualChange(selectedVal) {
+  if (niveauVerrouille) return; // ignoré si verrouillé
+
+  updateLevelCards();
+  updateNiveauStatusBar();
+  checkNiveauCoherence();
+  updateProgressBar();
+  autoSaveBrouillon();
+}
+
+// ── Vérification de cohérence niveau vs montant ──────────
+function checkNiveauCoherence() {
+  const downAlert   = $id('niveau-downgrade-alert');
+  const upWarn      = $id('niveau-upgrade-warn');
+  const justifBlock = $id('niveau-justif-block');
+  if (!downAlert || !upWarn || !justifBlock) return;
+
+  const checkedRadio = document.querySelector('input[name="niveau"]:checked');
+  const niveauSelectionne = checkedRadio ? parseInt(checkedRadio.value) : 0;
+
+  // Pas de contrôle si montant pas encore saisi ou verrouillé
+  if (niveauCalcule === 0 || niveauVerrouille) {
+    downAlert.style.display   = 'none';
+    upWarn.style.display      = 'none';
+    justifBlock.style.display = 'none';
+    return;
+  }
+
+  if (niveauSelectionne === niveauCalcule) {
+    // ✅ Cohérent — tout masquer
+    downAlert.style.display   = 'none';
+    upWarn.style.display      = 'none';
+    justifBlock.style.display = 'none';
+    return;
+  }
+
+  if (niveauSelectionne < niveauCalcule) {
+    // 🚫 SOUS-CLASSIFICATION — Bloquant
+    downAlert.style.display = '';
+    upWarn.style.display    = 'none';
+    // Réinitialiser l'animation
+    downAlert.style.animation = 'none';
+    void downAlert.offsetWidth; // Reflow
+    downAlert.style.animation = 'alertShake 0.35s ease';
+
+    $id('niveau-downgrade-msg').textContent =
+      ` Le montant de ${$val('montant-chiffres') || '—'} DT impose le ${NIVEAU_LABELS[niveauCalcule]}. ` +
+      `Vous avez sélectionné ${NIVEAU_LABELS[niveauSelectionne]} — cette classification n'est pas autorisée.`;
+
+    // Justification obligatoire (pour trace d'audit)
+    justifBlock.style.display = '';
+    $id('niveau-justification').setAttribute('required', 'required');
+
+  } else if (niveauSelectionne > niveauCalcule) {
+    // ⚠ SUR-CLASSIFICATION — Autorisé avec avertissement
+    downAlert.style.display = 'none';
+    upWarn.style.display    = '';
+
+    $id('niveau-upgrade-title').textContent =
+      `${NIVEAU_LABELS[niveauSelectionne]} — Niveau supérieur au montant`;
+    $id('niveau-upgrade-msg').textContent =
+      `Le montant de ${$val('montant-chiffres') || '—'} DT correspond au ${NIVEAU_LABELS[niveauCalcule]}. ` +
+      `Vous choisissez un niveau plus élevé — une justification est requise.`;
+
+    // Justification obligatoire
+    justifBlock.style.display = '';
+    $id('niveau-justification').setAttribute('required', 'required');
+  }
+}
+
+// ── Mise à jour de la barre de statut ────────────────────
+function updateNiveauStatusBar() {
+  const dot    = $id('niveau-status-dot');
+  const text   = $id('niveau-status-text');
+  const badge  = $id('niveau-calc-badge');
+  if (!dot || !text) return;
+
+  const checkedRadio      = document.querySelector('input[name="niveau"]:checked');
+  const niveauSelectionne = checkedRadio ? parseInt(checkedRadio.value) : 0;
+
+  if (niveauVerrouille) {
+    dot.className   = 'niveau-status-dot locked';
+    text.textContent = '🔒 Niveau 4 verrouillé — Récidive détectée';
+    badge.style.display = 'none';
+  } else if (niveauCalcule === 0) {
+    dot.className   = 'niveau-status-dot empty';
+    text.textContent = 'Saisir le montant pour calcul automatique';
+    badge.style.display = 'none';
+  } else if (niveauSelectionne === niveauCalcule) {
+    dot.className   = 'niveau-status-dot auto';
+    text.textContent = 'Niveau calculé automatiquement selon le montant';
+    badge.style.display = '';
+    badge.textContent   = NIVEAU_LABELS[niveauCalcule];
+  } else if (niveauSelectionne !== niveauCalcule) {
+    dot.className   = 'niveau-status-dot manual';
+    text.textContent = `Niveau modifié manuellement`;
+    badge.style.display = '';
+    badge.textContent   = `Calculé : ${NIVEAU_LABELS[niveauCalcule]} → Sélectionné : N${niveauSelectionne}`;
+  }
+}
+
+// ── Restaurer le niveau calculé (bouton "Restaurer") ─────
+function restoreCalculatedNiveau() {
+  if (niveauCalcule > 0) {
+    const radio = $id('niveau' + niveauCalcule);
+    if (radio) { radio.checked = true; }
+    updateLevelCards();
+    updateNiveauStatusBar();
+    checkNiveauCoherence();
+    const justifTA = $id('niveau-justification');
+    if (justifTA) justifTA.value = '';
+    updateProgressBar();
+  }
+}
+
+// ── updateLevelCards (conservé) ──────────────────────────
+function updateLevelCards() {
+  for (let i = 1; i <= 4; i++) {
+    const card  = $id('lv-card-' + i);
+    const radio = $id('niveau' + i);
+    if (!card || !radio) continue;
+    card.classList.remove('active', 'locked', 'locked-active');
+    if (niveauVerrouille) {
+      if (i === 4) card.classList.add('locked-active');
+      else         card.classList.add('locked');
+    } else {
+      if (radio.checked) card.classList.add('active');
+    }
+  }
+}
+
+// ── Verrouillage N4 récidive ──────────────────────────────
+function verrouillerNiveau4Recidive(actif) {
+  niveauVerrouille = actif;
+  const lockIcon = $id('lv-lock-4');
+  if (lockIcon) lockIcon.style.display = actif ? '' : 'none';
+
+  for (let i = 1; i <= 4; i++) {
+    const radio = $id('niveau' + i);
+    if (radio) radio.disabled = actif && i !== 4;
+  }
+
+  if (actif) {
+    const r4 = $id('niveau4');
+    if (r4) { r4.checked = true; r4.disabled = false; }
+    // Masquer tag AUTO des autres niveaux
+    for (let i = 1; i <= 4; i++) {
+      const tag = $id('lv-auto-' + i);
+      if (tag) tag.style.display = 'none';
+    }
+    // Masquer alertes de cohérence (N4 est obligatoire)
+    const downAlert   = $id('niveau-downgrade-alert');
+    const upWarn      = $id('niveau-upgrade-warn');
+    const justifBlock = $id('niveau-justif-block');
+    if (downAlert)   downAlert.style.display   = 'none';
+    if (upWarn)      upWarn.style.display      = 'none';
+    if (justifBlock) justifBlock.style.display = 'none';
+  } else {
+    // Réactiver et recalculer
+    for (let i = 1; i <= 4; i++) {
+      const radio = $id('niveau' + i);
+      if (radio) radio.disabled = false;
+    }
+    autoSelectNiveau(parseInt($val('montant-chiffres').replace(/[^0-9]/g,'')) || 0);
+  }
+  updateLevelCards();
+  updateNiveauStatusBar();
+}
+
+// ═══════════════════════════════════════════════════════════
+// LISTE DES AGENCES (données de référence)
+// ═══════════════════════════════════════════════════════════
+const AGENCES = [
+  { code: "000", nom: "AV.H.THAMEUR TUNIS" },
+  { code: "001", nom: "R.AL JAZIRA TUNIS" },
+  { code: "002", nom: "SOUSSE" },
+  { code: "003", nom: "MAHDIA" },
+  { code: "004", nom: "AV.H.CHAKER SFAX" },
+  { code: "005", nom: "TUNIS PORT" },
+  { code: "006", nom: "DAR CHAABANE ELFEHRI" },
+  { code: "007", nom: "GABES" },
+  { code: "008", nom: "BEJA" },
+  { code: "009", nom: "KAIROUAN" },
+  { code: "010", nom: "LE KEF" },
+  { code: "011", nom: "BIZERTE" },
+  { code: "012", nom: "TEBOURBA" },
+  { code: "013", nom: "GROMBALIA" },
+  { code: "014", nom: "RADES" },
+  { code: "015", nom: "MENZEL BOURGUIBA" },
+  { code: "016", nom: "JENDOUBA" },
+  { code: "017", nom: "MONASTIR" },
+  { code: "018", nom: "MOKNINE" },
+  { code: "019", nom: "KSAR HELLAL" },
+  { code: "020", nom: "ZARZIS" },
+  { code: "021", nom: "GAFSA" },
+  { code: "022", nom: "MANAR III" },
+  { code: "023", nom: "KASSERINE" },
+  { code: "025", nom: "JERBA" },
+  { code: "026", nom: "HAJEB EL AYOUN" },
+  { code: "027", nom: "EL OUARDANINE" },
+  { code: "028", nom: "MEDENINE" },
+  { code: "029", nom: "HAMMAMET" },
+  { code: "030", nom: "BEN GARDANE" },
+  { code: "031", nom: "NABEUL" },
+  { code: "032", nom: "KORBA" },
+  { code: "033", nom: "KELIBIA" },
+  { code: "034", nom: "BAB SOUIKA" },
+  { code: "035", nom: "R.K.PACHA TUNIS" },
+  { code: "036", nom: "MEDINA TUNIS" },
+  { code: "037", nom: "CITE MAHRAJ.MENZAH" },
+  { code: "038", nom: "SFAX ZITOUNA" },
+  { code: "039", nom: "SFAX HACHED" },
+  { code: "040", nom: "M SAKEN" },
+  { code: "041", nom: "EL-JEM" },
+  { code: "042", nom: "JEMMAL" },
+  { code: "043", nom: "PL.VICTOIRE TUNIS" },
+  { code: "044", nom: "SIDI BOUZID" },
+  { code: "045", nom: "AV.DE FRANCE TUNIS" },
+  { code: "046", nom: "LE KEF II" },
+  { code: "047", nom: "SFAX MENZEL CHAKER" },
+  { code: "048", nom: "TATAOUINE" },
+  { code: "049", nom: "MENZEL TEMIME" },
+  { code: "050", nom: "METLAOUI" },
+  { code: "051", nom: "KALAA KEBIRA" },
+  { code: "052", nom: "CITE EZZOUHOUR" },
+  { code: "053", nom: "CHEBBA" },
+  { code: "054", nom: "ZAGHOUAN" },
+  { code: "055", nom: "EL FAHS" },
+  { code: "056", nom: "ARIANA" },
+  { code: "057", nom: "CITE OLYMPIQUE" },
+  { code: "058", nom: "HOUMET SOUK JERBA" },
+  { code: "059", nom: "AV.J.JAURES TUNIS" },
+  { code: "060", nom: "GARE TUNIS" },
+  { code: "061", nom: "SILIANA" },
+  { code: "062", nom: "R.PALESTINE TUNIS" },
+  { code: "063", nom: "JEBENIANA" },
+  { code: "064", nom: "SOUSSE EL KANTAOUI" },
+  { code: "065", nom: "SOLIMAN" },
+  { code: "066", nom: "KHAZNADAR" },
+  { code: "067", nom: "AIN-DRAHAM" },
+  { code: "068", nom: "SKHIRA" },
+  { code: "069", nom: "SEDJENANE" },
+  { code: "070", nom: "RAS JEBEL" },
+  { code: "071", nom: "TABARKA" },
+  { code: "072", nom: "BIZERTE MEDINA" },
+  { code: "073", nom: "FERIANA" },
+  { code: "074", nom: "MATEUR" },
+  { code: "075", nom: "SAKIET SIDI YOUSSEF" },
+  { code: "076", nom: "KALAAT SENANE" },
+  { code: "077", nom: "EL MANAR" },
+  { code: "078", nom: "MONASTIR II" },
+  { code: "079", nom: "TROCADERO (SOUSSE NR)" },
+  { code: "080", nom: "ENFIDHA" },
+  { code: "081", nom: "CITE ETTADHAMEN" },
+  { code: "082", nom: "FOUCHANA" },
+  { code: "083", nom: "JELMA" },
+  { code: "084", nom: "BOUSALEM" },
+  { code: "085", nom: "HAOUARIA" },
+  { code: "086", nom: "KSIBET EL MEDIOUNI" },
+  { code: "087", nom: "BEN AROUS" },
+  { code: "088", nom: "SFAX MOULINVILLE" },
+  { code: "089", nom: "SOUSSE REPUBLIQUE" },
+  { code: "100", nom: "AGENCE CENTRALE A. MATHARI" },
+  { code: "101", nom: "KEBILI" },
+  { code: "102", nom: "JERBA MIDOUN" },
+  { code: "103", nom: "MARETH" },
+  { code: "104", nom: "SFAX PORT" },
+  { code: "105", nom: "NABEUL II" },
+  { code: "106", nom: "AKOUDA" },
+  { code: "107", nom: "LA CHARGUIA" },
+  { code: "108", nom: "LE BELVEDERE" },
+  { code: "109", nom: "BENI KHALLED" },
+  { code: "110", nom: "AEROPORT TUNIS-CARTH" },
+  { code: "112", nom: "HAMMAM SOUSSE" },
+  { code: "113", nom: "HAMMAMET ETTAHRIR" },
+  { code: "114", nom: "SFAX JEDIDA" },
+  { code: "115", nom: "GABES-CENTER" },
+  { code: "116", nom: "AFRICA" },
+  { code: "118", nom: "EL MOUANSA ZARZIS" },
+  { code: "119", nom: "EL MOUROUJ" },
+  { code: "120", nom: "DOUZ" },
+  { code: "121", nom: "OUED ELLIL" },
+  { code: "122", nom: "NEFZA" },
+  { code: "123", nom: "MSAKEN II" },
+  { code: "124", nom: "CITE DES SCIENCES" },
+  { code: "125", nom: "AV. MOHAMED V" },
+  { code: "126", nom: "EL HRAIRIA" },
+  { code: "127", nom: "HAMMAMET SUD" },
+  { code: "128", nom: "MENZEL KAMEL MOUNAS" },
+  { code: "129", nom: "LA MARSA" },
+  { code: "130", nom: "KERKENNAH" },
+  { code: "131", nom: "LAOUINA" },
+  { code: "132", nom: "SIDI ALOUENE" },
+  { code: "133", nom: "AGENCE SOUSSE INES" },
+  { code: "134", nom: "AGENCE MOKTHAR ATTIA" },
+  { code: "135", nom: "AGENCE LAC II" },
+  { code: "136", nom: "HAMMAMET MEDINA" },
+  { code: "137", nom: "SFAX TYNA" },
+  { code: "138", nom: "SFAX CHIHIA" },
+  { code: "139", nom: "EZZAHRA" },
+  { code: "140", nom: "GAFSA II" },
+  { code: "141", nom: "SOUKRA" },
+  { code: "142", nom: "ENNASR" },
+  { code: "143", nom: "SFAX EL AFRAN" },
+  { code: "144", nom: "CHENINI GABES" },
+  { code: "145", nom: "BENI KHEDACHE" },
+  { code: "146", nom: "REDAYEF" },
+  { code: "147", nom: "BIZERTE CORNICHE" },
+  { code: "148", nom: "JERBA EL MAY" },
+  { code: "149", nom: "MREZGUA" },
+  { code: "150", nom: "JENDOUBA NORD" },
+  { code: "151", nom: "TEBOULBA" },
+  { code: "152", nom: "SOUSSE ERRIADH" },
+  { code: "153", nom: "RIADH EL ANDALOUS" },
+  { code: "154", nom: "AGENCE KALAA EL KEBIRA" },
+  { code: "155", nom: "SAKIET EDDAIER" },
+  { code: "156", nom: "SBEITLA" },
+  { code: "157", nom: "TESTOUR" },
+  { code: "158", nom: "MANOUBA" },
+  { code: "159", nom: "MGHIRA" },
+  { code: "160", nom: "JERBA HOUMET SOUK 2" },
+  { code: "161", nom: "SFAX POUDRIERE" },
+  { code: "162", nom: "EL HAMMA" },
+  { code: "163", nom: "MNIHLA" },
+  { code: "164", nom: "JARDINS DE CARTHAGE" },
+];
+
+// ─── RÉGIONS (doublons corrigés — chaque agence dans une seule région) ─────
+const REGIONS = {
+  "Grand Tunis":        ["000","001","005","034","035","036","037","043","045","052","056","057","059","060","062","066","077","081","082","087","107","108","110","116","119","121","124","125","126","129","131","135","139","141","142","153","158","159","163","164"],
+  "Nabeul / Cap Bon":   ["006","013","029","031","032","033","049","065","085","105","109","113","127","136","149"],
+  "Sousse":             ["002","017","018","019","040","051","053","064","079","086","089","106","112","123","133","152","154"],
+  "Sfax":               ["004","038","039","047","063","088","104","114","130","137","138","143","155","161"],
+  "Gabès":              ["007","068","103","115","144","162"],
+  "Mahdia":             ["003","041","151"],
+  "Monastir":           ["027","042","078","128"],
+  "Bizerte":            ["011","015","069","070","071","072","074","084","122","147"],
+  "Kairouan":           ["009","026","083"],
+  "Gafsa":              ["021","050","073","140","146"],
+  "Kasserine / Le Kef": ["010","023","044","046","076","156"],
+  "Médenine / Jerba":   ["020","025","028","030","048","058","101","102","118","120","145","148","160"],
+  "Jendouba / Béja":    ["008","016","067","075","150","157"],
+  "Siliana / Zaghouan": ["054","055","061"],
+};
+
+// Index inversé pour lookup O(1)
+const AGENCE_REGION_MAP = {};
+Object.entries(REGIONS).forEach(([region, codes]) => {
+  codes.forEach(code => { AGENCE_REGION_MAP[code] = region; });
+});
+
+function getRegionForCode(code) {
+  return AGENCE_REGION_MAP[code] || '';
+}
+
+// ─── POPULATION DES SELECTS ──────────────────────────────
+function populateSelects() {
+  const selCode = $id('sel-code');
+  const selNom  = $id('sel-nom');
+  if (!selCode || !selNom) return;
+
+  const sortedByCode = [...AGENCES].sort((a, b) => a.code.localeCompare(b.code));
+  const sortedByNom  = [...AGENCES].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+
+  const fragCode = document.createDocumentFragment();
+  sortedByCode.forEach(ag => {
+    const opt = document.createElement('option');
+    opt.value = ag.code;
+    opt.textContent = ag.code + ' \u2014 ' + ag.nom;
+    fragCode.appendChild(opt);
+  });
+  selCode.appendChild(fragCode);
+
+  const fragNom = document.createDocumentFragment();
+  sortedByNom.forEach(ag => {
+    const opt = document.createElement('option');
+    opt.value = ag.code;
+    opt.textContent = ag.nom;
+    fragNom.appendChild(opt);
+  });
+  selNom.appendChild(fragNom);
+}
+
+function syncAgence(source) {
+  const selCode = $id('sel-code');
+  const selNom  = $id('sel-nom');
+  if (!selCode || !selNom) return;
+  const val = source === 'code' ? selCode.value : selNom.value;
+
+  if (!val) {
+    selCode.value = '';
+    selNom.value  = '';
+    updateBadge(null);
+    return;
+  }
+  const ag = AGENCES.find(a => a.code === val);
+  if (!ag) return;
+
+  selCode.value = ag.code;
+  selNom.value  = ag.code;
+  updateBadge(ag);
+
+  // Auto-remplir région
+  const regionInput = $id('region-input');
+  if (regionInput) regionInput.value = getRegionForCode(ag.code);
+
+  // Enrichir le N° déclaration avec le code agence
+  updateRefWithAgence(ag.code);
+  updateProgressBar();
+}
+
+function updateBadge(ag) {
+  let badge = $id('agence-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'agence-badge';
+    badge.className = 'agence-badge';
+    $id('sel-nom').closest('.row').insertAdjacentElement('afterend', badge);
+  }
+  if (!ag) { badge.classList.remove('visible'); return; }
+  badge.innerHTML = '<span class="badge-code">' + ag.code + '</span> ' + ag.nom +
+    ' <span style="opacity:0.5;margin-left:6px;font-weight:400;">&#10003; Sélectionnée</span>';
+  badge.classList.add('visible');
+}
+
+// Enrichir le N° déclaration avec le code agence pour garantir l'unicité
+function updateRefWithAgence(codeAgence) {
+  const refEl = $id('ref-declaration');
+  if (!refEl) return;
+  const current = refEl.textContent;
+  if (!current || current.includes('en attente')) return;
+  const parts = current.split('-AG');
+  refEl.textContent = parts[0] + '-AG' + codeAgence;
+}
+
+// ─── TOAST NOTIFICATION — FIX: innerHTML pour les sauts de ligne ──
+function showToast(msg, type = 'error') {
+  const toast = $id('toast');
+  if (!toast) return;
+  // Convertir \n en <br> pour l'affichage HTML
+  toast.innerHTML = msg.replace(/\n/g, '<br>');
+  toast.className = 'toast ' + (type === 'success' ? 'success' : '') + ' visible';
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => { toast.classList.remove('visible'); }, 5000);
+}
+
+// ─── VALIDATION COMPLÈTE ─────────────────────────────────
+function validerFormulaire() {
+  const erreurs = [];
+
+  // Enlever les styles d'erreur précédents
+  document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+
+  // ── Niveau d'alerte — validation renforcée ────────────────
+  const niveauCheck = document.querySelector('input[name="niveau"]:checked');
+  if (!niveauCheck) {
+    erreurs.push('Niveau d\'alerte non sélectionné.');
+  } else {
+    const niveauSel = parseInt(niveauCheck.value);
+
+    // Bloquer la sous-classification (niveau < niveau calculé)
+    if (!niveauVerrouille && niveauCalcule > 0 && niveauSel < niveauCalcule) {
+      erreurs.push(
+        `Niveau d'alerte incorrect : le montant déclaré impose le ${NIVEAU_LABELS[niveauCalcule]}. ` +
+        `Vous avez sélectionné N${niveauSel} — impossible de soumettre avec un niveau inférieur au montant.`
+      );
+      // Mettre en évidence la carte incorrecte
+      const badCard = $id('lv-card-' + niveauSel);
+      if (badCard) badCard.style.outline = '2px solid var(--red)';
+    }
+
+    // Justification obligatoire si niveau ≠ calculé (et montant connu)
+    if (!niveauVerrouille && niveauCalcule > 0 && niveauSel !== niveauCalcule) {
+      const justif = $id('niveau-justification');
+      if (!justif || !justif.value.trim()) {
+        erreurs.push('Justification de la modification du niveau d\'alerte obligatoire.');
+        if (justif) justif.classList.add('error');
+      }
+    }
+  }
+
+  // Section 1 : Agence
+  const selCode = $id('sel-code');
+  if (!selCode || !selCode.value) {
+    erreurs.push('Code Agence obligatoire (Section 1).');
+    if (selCode) selCode.classList.add('error');
+  }
+
+  // Section 2 : Caissier
+  const matricule   = $id('caissier-matricule');
+  const nomCaissier = $id('caissier-nom');
+  if (!matricule || !matricule.value.trim()) {
+    erreurs.push('Matricule du caissier obligatoire (Section 2).');
+    if (matricule) matricule.classList.add('error');
+  }
+  if (!nomCaissier.value.trim()) {
+    erreurs.push('Nom et Prénom du caissier obligatoires (Section 2).');
+    nomCaissier.classList.add('error');
+  }
+  if (!document.querySelector('input[name="fonction"]:checked')) {
+    erreurs.push('Fonction exercée non sélectionnée (Section 2).');
+  }
+
+  // Section 3 : Écart
+  const dateJ = $id('date-jour');
+  const dateM = $id('date-mois');
+  const dateA = $id('date-annee');
+  if (!dateJ.value || !dateM.value || !dateA.value) {
+    erreurs.push('Date du constat incomplète (Section 3).');
+    [dateJ, dateM, dateA].forEach(el => { if (!el.value) el.style.borderColor = 'var(--red)'; });
+  } else {
+    // Validation stricte : utiliser Date object pour détecter les dates invalides (ex: 31 février)
+    const j = parseInt(dateJ.value, 10), m = parseInt(dateM.value, 10), a = parseInt(dateA.value, 10);
+    const testDate = new Date(a, m - 1, j);
+    const aujourdhui = new Date(); aujourdhui.setHours(23, 59, 59, 999);
+    if (
+      isNaN(testDate.getTime()) ||
+      testDate.getDate() !== j ||
+      testDate.getMonth() !== m - 1 ||
+      testDate.getFullYear() !== a ||
+      a < 2000 || a > 2099
+    ) {
+      erreurs.push('Date du constat invalide (vérifier jour/mois/année) — Section 3.');
+      [dateJ, dateM, dateA].forEach(el => el.style.borderColor = 'var(--red)');
+    } else if (testDate > aujourdhui) {
+      erreurs.push('La date du constat ne peut pas être dans le futur — Section 3.');
+      [dateJ, dateM, dateA].forEach(el => el.style.borderColor = 'var(--red)');
+    }
+  }
+  const heureHH = $id('heure-hh');
+  const heureMM = $id('heure-mm');
+  if (!heureHH.value || !heureMM.value) {
+    erreurs.push('Heure du constat incomplète (Section 3).');
+  } else {
+    const hh = parseInt(heureHH.value, 10), mm = parseInt(heureMM.value, 10);
+    if (hh > 23 || mm > 59) erreurs.push("Heure du constat invalide (HH ≤ 23, MM ≤ 59) — Section 3.");
+  }
+
+  const montant = $id('montant-chiffres');
+  const rawMnt  = montant ? montant.value.replace(/[^0-9]/g, '') : '';
+  if (!rawMnt || parseInt(rawMnt) === 0) {
+    erreurs.push('Montant de l\'écart obligatoire et doit être > 0 (Section 3).');
+    if (montant) montant.classList.add('error');
+  }
+  if (!document.querySelector('input[name="nature"]:checked')) {
+    erreurs.push('Nature de l\'écart (Manquant / Excédent) non sélectionnée (Section 3).');
+  }
+  if (!document.querySelector('input[name="type_caisse"]:checked')) {
+    erreurs.push('Type de caisse non sélectionné (Section 3).');
+  }
+
+  // Section 4 : Circonstances
+  const declCaissier = $id('declaration-caissier');
+  const obsSup = $id('observations-superviseur');
+  if (!declCaissier.value.trim()) {
+    erreurs.push('Déclaration du caissier obligatoire (Section 4-A).');
+    declCaissier.classList.add('error');
+  }
+  if (!obsSup.value.trim()) {
+    erreurs.push('Observations du superviseur obligatoires (Section 4-B).');
+    obsSup.classList.add('error');
+  }
+  if (!document.querySelector('input[name="cause"]:checked')) {
+    erreurs.push('Au moins une cause probable doit être cochée (Section 4).');
+  }
+
+  // Section 8 : Récupération
+  if (!document.querySelector('input[name="recup_statut"]:checked')) {
+    erreurs.push('Statut de récupération non sélectionné (Section 8).');
+  } else {
+    // Si SANCTION sélectionné → vérifier que le délai est effectivement dépassé OU montant non récupéré
+    const recupStatut = $radio('recup_statut');
+    const dateLimite  = calcDateLimiteRecup();
+    const now = new Date(); now.setHours(0,0,0,0);
+    const initial = getMontantInitialMillimes();
+    let recupereTotal = 0;
+    document.querySelectorAll('#recup-tbody tr').forEach(tr => {
+      const dtEl = tr.querySelector('.recup-ligne-dt');
+      const mmEl = tr.querySelector('.recup-ligne-mm');
+      const dt = parseInt((dtEl ? dtEl.value : '0').replace(/[^0-9]/g,'')) || 0;
+      const mm = parseInt((mmEl ? mmEl.value : '000').replace(/[^0-9]/g,'').padEnd(3,'0').slice(0,3)) || 0;
+      recupereTotal += dt * 1000 + mm;
+    });
+    const solde = initial - recupereTotal;
+
+    if (recupStatut === 'RECUPERE' && solde > 0) {
+      erreurs.push('Statut "Totalement récupéré" sélectionné, mais le solde restant est de ' + formatMontantMillimes(solde) + '. Enregistrez tous les versements (Section 8).');
+    }
+    if (recupStatut === 'SANCTION' && dateLimite && dateLimite >= now && solde <= 0) {
+      erreurs.push('Statut "Sanction" sélectionné alors que le délai n\'est pas dépassé et l\'écart est récupéré. Vérifier (Section 8).');
+    }
+  }
+
+  if (erreurs.length > 0) {
+    showToast('⚠ ' + erreurs.length + ' erreur(s) :\n• ' + erreurs.slice(0,3).join('\n• ') + (erreurs.length > 3 ? '\n• ... et ' + (erreurs.length - 3) + ' autre(s).' : ''), 'error');
+    const firstError = document.querySelector('.error');
+    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+
+  // ─── ENREGISTREMENT LOCAL ─────────────────────────────────
+  const ref = $id('ref-declaration').textContent;
+  const declaration = collecterDonnees(ref);
+  enregistrerDeclaration(ref, declaration);
+
+  // ─── OUVRIR MODAL ENVOI ───────────────────────────────────
+  ouvrirModalEnvoi(ref, declaration);
+  return true;
+}
+
+// ─── COLLECTE DES DONNÉES DU FORMULAIRE ──────────────────
+function collecterDonnees(ref) {
+  const selCode = $id('sel-code');
+  const agCode  = selCode ? selCode.value : '';
+  const ag      = AGENCES.find(a => a.code === agCode) || {};
+
+  return {
+    ref,
+    horodatage: new Date().toISOString(),
+    agence:   { code: agCode, nom: ag.nom || '', region: $val('region-input') },
+    caissier: {
+      matricule: $val('caissier-matricule'), nom: $val('caissier-nom'),
+      grade: $val('caissier-grade'), fonction: $radio('fonction'),
+      fonctionAutre: $val('fonction-autre')
+    },
+    ecart: {
+      dateJour: $val('date-jour'), dateMois: $val('date-mois'), dateAnnee: $val('date-annee'),
+      heureHH: $val('heure-hh'), heureMM: $val('heure-mm'),
+      arreteHH: $val('arrete-hh'), arreteMM: $val('arrete-mm'),
+      montantDT: $val('montant-chiffres'), montantMM: $val('montant-millimes'),
+      montantLettres: $val('montant-lettres'),
+      nature: $radio('nature'), typeCaisse: $radio('type_caisse'), caisseAutre: $val('caisse-autre'),
+    },
+    niveau: $radio('niveau'),
+    niveauCalcule: niveauCalcule > 0 ? String(niveauCalcule) : null,
+    niveauModifie: (niveauCalcule > 0 && $radio('niveau') && parseInt($radio('niveau')) !== niveauCalcule),
+    niveauJustification: $val('niveau-justification') || null,
+    circonstances: {
+      declarationCaissier: $val('declaration-caissier'),
+      observationsSup: $val('observations-superviseur'),
+      causes: $checks('cause')
+    },
+    mesures: { actions: $checks('mesure'), autres: $val('autres-mesures') },
+    recidive: { oui: $radio('recidive') === 'OUI', nbEcarts: $val('nb-ecarts') },
+    recuperation: {
+      statutStatut: $radio('recup_statut'),
+      dateLimite: ($id('recup-date-limite') ? $id('recup-date-limite').textContent.trim() : ''),
+      montantInitial: $val('montant-chiffres') + ',' + ($val('montant-millimes')||'000') + ' DT',
+      montantRecupere: ($id('recup-montant-recupere') ? $id('recup-montant-recupere').textContent : ''),
+      soldeRestant: ($id('recup-montant-solde') ? $id('recup-montant-solde').textContent : ''),
+      observations: $val('recup-observations'),
+      versements: Array.from(document.querySelectorAll('#recup-tbody tr')).map((tr, i) => ({
+        n: i + 1,
+        date: tr.querySelector('.recup-ligne-date') ? tr.querySelector('.recup-ligne-date').value : '',
+        montantDT: tr.querySelector('.recup-ligne-dt')  ? tr.querySelector('.recup-ligne-dt').value  : '',
+        montantMM: tr.querySelector('.recup-ligne-mm')  ? tr.querySelector('.recup-ligne-mm').value  : '',
+        mode: tr.querySelector('.recup-ligne-mode') ? tr.querySelector('.recup-ligne-mode').value : '',
+        observations: tr.querySelector('.recup-ligne-obs') ? tr.querySelector('.recup-ligne-obs').value : '',
+      })),
+    },
+    signatures: {
+      caissier:    { nom: $val('sig-caissier-nom'), mat: $val('sig-caissier-mat'), date: $val('sig-caissier-date') },
+      superviseur: { nom: $val('sig-sup-nom'),      mat: $val('sig-sup-mat'),      date: $val('sig-sup-date')      },
+      directeur:   { nom: $val('sig-dir-nom'),      date: $val('sig-dir-date'),    delai: $radio('delai')          },
+    },
+    // FIX : inclure les champs CP Central (IDs ajoutés en v3)
+    cpCentral: {
+      recuLe:       $val('cp-recu-le'),
+      traitePar:    $val('cp-traite-par'),
+      nDossier:     $val('cp-ndossier'),
+      statut:       ($id('cp-statut') ? $id('cp-statut').value : ''),
+      dateLimite:   $val('cp-date-limite-cp'),
+      montantRecup: $val('cp-montant-recupere'),
+      soldeRestant: $val('cp-solde-restant'),
+      sanctionRef:  $val('cp-sanction-ref'),
+    }
+  };
+}
+
+// ─── ENREGISTREMENT LOCAL (localStorage) ─────────────────
+function enregistrerDeclaration(ref, data) {
+  try {
+    const key = 'bq_declarations';
+    const declarations = JSON.parse(localStorage.getItem(key) || '{}');
+    declarations[ref] = data;
+    localStorage.setItem(key, JSON.stringify(declarations));
+    console.info('[BQ-CP] Déclaration enregistrée :', ref);
+  } catch(e) {
+    console.warn('[BQ-CP] Enregistrement localStorage impossible :', e);
+  }
+}
+
+// ─── OUVRIR MODAL ENVOI ───────────────────────────────────
+function ouvrirModalEnvoi(ref, data) {
+  document.getElementById('modal-ref-num').textContent = ref;
+  document.getElementById('modal-agence').textContent  = data.agence.code + ' — ' + (data.agence.nom || '');
+  document.getElementById('modal-montant').textContent = (data.ecart.montantDT || '0') + ',' + (data.ecart.montantMM || '000') + ' DT';
+  document.getElementById('modal-nature').textContent  = data.ecart.nature || '—';
+  document.getElementById('modal-niveau').textContent  = data.niveau ? 'Niveau ' + data.niveau : '—';
+
+  const date = data.ecart.dateJour + '/' + data.ecart.dateMois + '/' + data.ecart.dateAnnee;
+  document.getElementById('mail-objet').value =
+    '[BQ-CP] Déclaration Différence de Caisse — Agence ' + data.agence.code +
+    ' ' + (data.agence.nom || '') + ' — ' + date + ' — Réf. ' + ref;
+
+  // Réinitialiser l'état PDF à chaque ouverture
+  pdfBlob = null;
+  pdfNomFichier = '';
+  const labelPdf  = $id('btn-pdf-label');
+  const btnPdf    = $id('btn-generer-pdf');
+  const statusEl  = $id('pdf-gen-status');
+  const previewEl = $id('pdf-preview-bar');
+  const step1     = $id('pdf-step-1');
+  const step2     = $id('pdf-step-2');
+  if (labelPdf)  labelPdf.textContent = '⬇ Générer & Télécharger le PDF';
+  if (btnPdf)    { btnPdf.disabled = false; btnPdf.classList.remove('done'); }
+  if (statusEl)  { statusEl.className = 'pdf-gen-status'; statusEl.innerHTML = ''; }
+  if (previewEl) previewEl.style.display = 'none';
+  if (step1)     { step1.classList.remove('active', 'done'); step1.style.outline = ''; }
+  if (step2)     {
+    step2.classList.remove('active');
+    step2.style.opacity = '0.45';
+    step2.style.pointerEvents = 'none';
+    $id('pdf-step-2-desc').textContent = 'Générez d\'abord le PDF (étape 1), puis votre client mail s\'ouvrira avec les destinataires et l\'objet pré-remplis.';
+  }
+  const mailStatus = $id('modal-send-status');
+  if (mailStatus) { mailStatus.className = 'modal-send-status'; mailStatus.innerHTML = ''; }
+  const btnMail = $id('btn-envoyer-mail');
+  if (btnMail) { btnMail.disabled = false; btnMail.innerHTML = '<span>✉ Ouvrir le client mail</span>'; }
+
+  document.getElementById('modal-envoi').classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════════
+// GÉNÉRATION PDF DU FORMULAIRE
+// Utilise jsPDF + html2canvas pour capturer le formulaire
+// et créer un PDF téléchargeable
+// ═══════════════════════════════════════════════════════════
+let pdfBlob = null;      // Blob du PDF généré
+let pdfNomFichier = '';  // Nom du fichier pour référence
+
+async function genererPDF(regenerer) {
+  const btnPdf    = $id('btn-generer-pdf');
+  const labelPdf  = $id('btn-pdf-label');
+  const statusEl  = $id('pdf-gen-status');
+  const previewEl = $id('pdf-preview-bar');
+  const step1     = $id('pdf-step-1');
+  const step2     = $id('pdf-step-2');
+
+  // Statut : génération en cours
+  if (labelPdf) labelPdf.textContent = '⏳ Génération en cours…';
+  if (btnPdf)   btnPdf.disabled = true;
+  if (statusEl) { statusEl.className = 'pdf-gen-status generating'; statusEl.innerHTML = '<div class="spinner"></div>&nbsp;Capture du formulaire…'; }
+  if (step1)    step1.classList.add('active');
+
+  try {
+    const ref = $id('ref-declaration') ? $id('ref-declaration').textContent : 'DC';
+    pdfNomFichier = 'BQ-CP-CAI-001_' + ref + '.pdf';
+
+    // ── Préparer la page pour la capture ───────────────────
+    // Masquer les éléments non imprimables
+    const masquerElements = [
+      '.action-bar', '.modal-overlay', '.toast', '#modal-envoi',
+      '.progress-bar-wrap', '.autosave-dot', '#autosave-label'
+    ];
+    const caches = [];
+    masquerElements.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        caches.push({ el, display: el.style.display });
+        el.style.display = 'none';
+      });
+    });
+
+    // Attendre le rendu
+    await new Promise(r => setTimeout(r, 150));
+
+    // ── Capture html2canvas ─────────────────────────────────
+    if (statusEl) statusEl.innerHTML = '<div class="spinner"></div>&nbsp;Capture de la page…';
+    const canvas = await html2canvas(document.querySelector('.page-wrapper'), {
+      scale:            2,
+      useCORS:          true,
+      allowTaint:       true,
+      backgroundColor:  '#ffffff',
+      logging:          false,
+      windowWidth:      document.documentElement.scrollWidth,
+      scrollX:          0,
+      scrollY:          0,
+    });
+
+    // Restaurer les éléments masqués
+    caches.forEach(({ el, display }) => el.style.display = display);
+
+    // ── Créer le PDF avec jsPDF ─────────────────────────────
+    if (statusEl) statusEl.innerHTML = '<div class="spinner"></div>&nbsp;Création du PDF…';
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+    const pageW    = pdf.internal.pageSize.getWidth();
+    const pageH    = pdf.internal.pageSize.getHeight();
+    const margin   = 8;
+    const imgW     = pageW - margin * 2;
+    const imgH     = (canvas.height * imgW) / canvas.width;
+    const nbPages  = Math.ceil(imgH / (pageH - margin * 2));
+
+    // Métadonnées PDF
+    const data = collecterDonnees($id('ref-declaration') ? $id('ref-declaration').textContent : ref);
+    pdf.setProperties({
+      title:   'Déclaration Différence de Caisse — ' + ref,
+      subject: 'BQ-CP-CAI-001 — Agence ' + (data.agence.code || '—'),
+      author:  'Contrôle Permanent — ' + (data.caissier.nom || '—'),
+      creator: 'BQ-CP Intranet v3',
+      keywords: 'caisse, déclaration, ' + ref,
+    });
+
+    // Ajouter en-tête confidentiel sur chaque page
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+    for (let page = 0; page < nbPages; page++) {
+      if (page > 0) pdf.addPage();
+
+      // En-tête page
+      pdf.setFillColor(13, 27, 42);
+      pdf.rect(0, 0, pageW, 8, 'F');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(7);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('BQ-CP-CAI-001  |  ' + ref + '  |  CONFIDENTIEL — USAGE INTERNE', margin, 5.5);
+      pdf.setTextColor(0, 180, 216);
+      pdf.text('Direction du Contrôle Permanent', pageW - margin, 5.5, { align: 'right' });
+
+      // Portion de l'image pour cette page
+      const srcY     = page * (canvas.height / nbPages);
+      const srcH     = canvas.height / nbPages;
+      const sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width  = canvas.width;
+      sliceCanvas.height = srcH;
+      const ctx = sliceCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
+      const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.92);
+      pdf.addImage(sliceData, 'JPEG', margin, 10, imgW, pageH - margin - 10);
+
+      // Pied de page
+      pdf.setFillColor(243, 244, 246);
+      pdf.rect(0, pageH - 7, pageW, 7, 'F');
+      pdf.setTextColor(107, 114, 128);
+      pdf.setFontSize(6.5);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Conservation réglementaire : 10 ans  |  3 exemplaires obligatoires', margin, pageH - 2.5);
+      pdf.text('Page ' + (page + 1) + ' / ' + nbPages, pageW - margin, pageH - 2.5, { align: 'right' });
+    }
+
+    // ── Télécharger le PDF ──────────────────────────────────
+    pdfBlob = pdf.output('blob');
+    pdf.save(pdfNomFichier);
+
+    // Calculer la taille
+    const sizeMo = (pdfBlob.size / 1024).toFixed(0) + ' Ko';
+
+    // ── Mise à jour de l'interface ──────────────────────────
+    if (statusEl) { statusEl.className = 'pdf-gen-status ok'; statusEl.innerHTML = '✓ PDF généré et téléchargé avec succès'; }
+    if (labelPdf) labelPdf.textContent = '✓ PDF généré';
+    if (btnPdf)   { btnPdf.disabled = false; btnPdf.classList.add('done'); }
+
+    // Afficher la prévisualisation
+    if (previewEl) {
+      $id('pdf-filename').textContent = pdfNomFichier;
+      $id('pdf-filesize').textContent = sizeMo;
+      previewEl.style.display = 'flex';
+    }
+
+    // Passer à l'étape 2 : activer le bloc mail
+    if (step1) { step1.classList.remove('active'); step1.classList.add('done'); }
+    if (step2) {
+      step2.style.opacity = '1';
+      step2.style.pointerEvents = 'auto';
+      step2.classList.add('active');
+      $id('pdf-step-2-desc').textContent =
+        '✓ PDF "' + pdfNomFichier + '" téléchargé. Votre client mail va s\'ouvrir — joignez ce fichier depuis votre dossier Téléchargements.';
+    }
+
+  } catch (err) {
+    console.error('Erreur génération PDF :', err);
+    if (statusEl) { statusEl.className = 'pdf-gen-status err'; statusEl.innerHTML = '✗ Erreur de génération. Utilisez l\'impression (Ctrl+P → Enregistrer en PDF).'; }
+    if (labelPdf) labelPdf.textContent = '⬇ Réessayer la génération';
+    if (btnPdf)   btnPdf.disabled = false;
+
+    // Restaurer les éléments masqués en cas d'erreur
+    document.querySelectorAll('.action-bar,.modal-overlay,.toast,.progress-bar-wrap').forEach(el => {
+      el.style.display = '';
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// ENVOI MAIL — Ouvre le client mail avec sujet/corps pré-remplis
+// Le PDF a été téléchargé à l'étape 1 — l'utilisateur le joint
+// manuellement (contrainte navigateur : impossible d'attacher
+// un fichier via mailto:)
+// En production avec backend : utiliser l'API POST /declarations
+// ═══════════════════════════════════════════════════════════
+function envoyerMail() {
+  const to     = ($id('mail-to') ? $id('mail-to').value.trim() : '');
+  const objet  = ($id('mail-objet') ? $id('mail-objet').value.trim() : '');
+  const msg    = ($id('mail-message') ? $id('mail-message').value.trim() : '');
+  const status = $id('modal-send-status');
+
+  if (!to) {
+    if (status) { status.className = 'modal-send-status failed'; status.innerHTML = '✗ Veuillez saisir l\'adresse du destinataire principal (Contrôle Permanent).'; }
+    if ($id('mail-to')) $id('mail-to').focus();
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    if (status) { status.className = 'modal-send-status failed'; status.innerHTML = '✗ Adresse email invalide.'; }
+    return;
+  }
+
+  // Avertissement si PDF non encore généré
+  if (!pdfBlob) {
+    if (status) {
+      status.className = 'modal-send-status failed';
+      status.innerHTML = '⚠ Générez d\'abord le PDF (étape 1) avant d\'envoyer l\'email.';
+    }
+    const step1 = $id('pdf-step-1');
+    if (step1) { step1.style.outline = '2px solid var(--orange)'; setTimeout(() => step1.style.outline = '', 2500); }
+    return;
+  }
+
+  const ccInputs = document.querySelectorAll('#cc-list .cc-row input');
+  const cc = Array.from(ccInputs).map(el => el.value.trim()).filter(v => v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  const ccParam = cc.length ? '&cc=' + encodeURIComponent(cc.join(',')) : '';
+
+  // Corps du mail : instructions de pièce jointe + récapitulatif
+  const ref  = $id('ref-declaration') ? $id('ref-declaration').textContent : '—';
+  const data = collecterDonnees(ref);
+  const corps = buildCorpsMail(data, pdfNomFichier);
+
+  const bodyFinal = corps + (msg ? '\n\n─────────────────────\nObservations complémentaires :\n' + msg : '');
+  const mailtoUrl = 'mailto:' + encodeURIComponent(to)
+    + '?subject=' + encodeURIComponent(objet)
+    + ccParam
+    + '&body=' + encodeURIComponent(bodyFinal);
+
+  try {
+    window.location.href = mailtoUrl;
+    if (status) {
+      status.className = 'modal-send-status sent';
+      status.innerHTML = '✓ Client mail ouvert. <strong>Joignez le fichier "' + pdfNomFichier + '"</strong> depuis votre dossier Téléchargements avant d\'envoyer.';
+    }
+    if ($id('btn-envoyer-mail')) {
+      $id('btn-envoyer-mail').innerHTML = '✓ Mail ouvert';
+    }
+  } catch(e) {
+    if (status) { status.className = 'modal-send-status failed'; status.innerHTML = '✗ Impossible d\'ouvrir le client mail. Créez un nouveau mail manuellement et joignez : ' + pdfNomFichier; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// CORPS DU MAIL — texte de rappel avec instruction PJ PDF
+// ═══════════════════════════════════════════════════════════
+function buildCorpsMail(data, nomPdf) {
+  const date  = data.ecart.dateJour + '/' + data.ecart.dateMois + '/' + data.ecart.dateAnnee;
+  const heure = (data.ecart.heureHH || '--') + ':' + (data.ecart.heureMM || '--');
+  const mont  = (data.ecart.montantDT || '0') + ',' + (data.ecart.montantMM || '000') + ' DT';
+  return [
+    '══════════════════════════════════════════════════════',
+    'DÉCLARATION DE DIFFÉRENCE DE CAISSE — BQ-CP-CAI-001',
+    '══════════════════════════════════════════════════════',
+    '',
+    '📎 PIÈCE JOINTE OBLIGATOIRE : ' + (nomPdf || 'BQ-CP-CAI-001_' + data.ref + '.pdf'),
+    '   → Joindre ce fichier depuis votre dossier Téléchargements',
+    '',
+    '── IDENTIFICATION ─────────────────────────────────────',
+    'Référence       : ' + (data.ref || '—'),
+    'Date / Heure    : ' + date + ' à ' + heure,
+    "Niveau d'alerte : Niveau " + (data.niveau || '—'),
+    '',
+    '── AGENCE ─────────────────────────────────────────────',
+    'Code            : ' + (data.agence.code || '—'),
+    'Désignation     : ' + (data.agence.nom  || '—'),
+    'Région          : ' + (data.agence.region || '—'),
+    '',
+    '── CAISSIER ───────────────────────────────────────────',
+    'Matricule       : ' + (data.caissier.matricule || '—'),
+    'Nom & Prénom    : ' + (data.caissier.nom       || '—'),
+    'Fonction        : ' + (data.caissier.fonction  || '—'),
+    '',
+    '── ÉCART ──────────────────────────────────────────────',
+    'Montant         : ' + mont,
+    'En lettres      : ' + (data.ecart.montantLettres || '—'),
+    'Nature          : ' + (data.ecart.nature      || '—'),
+    'Type de caisse  : ' + (data.ecart.typeCaisse  || '—'),
+    'Récidive        : ' + (data.recidive && data.recidive.oui ? 'OUI (' + (data.recidive.nbEcarts || '?') + ' écart(s))' : 'NON'),
+    '',
+    '── SUIVI RÉCUPÉRATION ─────────────────────────────────',
+    'Statut          : ' + (data.recuperation ? (data.recuperation.statutStatut || '—') : '—'),
+    'Date limite J+7 : ' + (data.recuperation ? (data.recuperation.dateLimite || '—') : '—'),
+    'Montant récupéré: ' + (data.recuperation ? (data.recuperation.montantRecupere || '—') : '—'),
+    'Solde restant   : ' + (data.recuperation ? (data.recuperation.soldeRestant || '—') : '—'),
+    '',
+    '══════════════════════════════════════════════════════',
+    'Document généré automatiquement — CONFIDENTIEL — Usage interne',
+    'Direction du Contrôle Permanent | Conservation 10 ans (BCT)',
+    '══════════════════════════════════════════════════════',
+  ].join('\n');
+}
+
+// ─── RÉINITIALISATION COMPLÈTE — FIX v3 ──────────────────
+function resetFormulaire() {
+  if (!confirm('Confirmer la réinitialisation complète du formulaire ?')) return;
+
+  // Réinitialiser TOUS les inputs, selects, textareas (sans exclusion du radio "delai")
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+    else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+    el.classList.remove('error', 'valid');
+    el.style.borderColor = '';
+  });
+
+  // Réinitialiser les cards de niveau d'alerte
+  document.querySelectorAll('.level-card').forEach(c => {
+    c.style.transform = '';
+    c.style.boxShadow = '';
+    c.style.outline   = '';
+    c.classList.remove('active', 'locked', 'locked-active');
+  });
+
+  // Réinitialiser le système de contrôle du niveau
+  niveauCalcule    = 0;
+  niveauVerrouille = false;
+  for (let i = 1; i <= 4; i++) {
+    const tag  = $id('lv-auto-' + i);
+    const lock = $id('lv-lock-' + i);
+    const radio = $id('niveau' + i);
+    if (tag)  tag.style.display  = 'none';
+    if (lock) lock.style.display = 'none';
+    if (radio) radio.disabled = false;
+  }
+  const downAlert   = $id('niveau-downgrade-alert');
+  const upWarn      = $id('niveau-upgrade-warn');
+  const justifBlock = $id('niveau-justif-block');
+  if (downAlert)   downAlert.style.display   = 'none';
+  if (upWarn)      upWarn.style.display      = 'none';
+  if (justifBlock) justifBlock.style.display = 'none';
+  updateNiveauStatusBar();
+
+  // Cacher le badge agence (FIX v3)
+  updateBadge(null);
+
+  // Cacher le bloc de récidive
+  const rcBlock = $id('recidive-count-block');
+  if (rcBlock) rcBlock.classList.remove('visible');
+
+  // Réinitialiser les champs readonly de signature (Section 7)
+  const sigNom = $id('sig-caissier-nom');
+  const sigMat = $id('sig-caissier-mat');
+  if (sigNom) sigNom.value = '';
+  if (sigMat) sigMat.value = '';
+
+  // Regénérer un nouveau N° de déclaration
+  const newRef = genRefDeclaration();
+  const refEl = $id('ref-declaration');
+  if (refEl) refEl.textContent = newRef;
+
+  // Réinitialiser la date du jour
+  initDateJour();
+
+  // Réinitialiser la section récupération
+  recupLigneCounter = 0;
+  const tbody = $id('recup-tbody');
+  if (tbody) tbody.innerHTML = '';
+  const sanctionAlert = $id('sanction-alert');
+  const successAlert  = $id('recup-success-alert');
+  if (sanctionAlert) sanctionAlert.classList.remove('visible');
+  if (successAlert)  successAlert.classList.remove('visible');
+  updateRecupDeadline();
+  updateRecuperationTotaux();
+  updateRecupStatutCards();
+
+  // Réinitialiser barre de progression
+  updateProgressBar();
+
+  // Réinitialiser indicateur autosave
+  setAutosaveStatus('neutral');
+
+  showToast('✓ Formulaire réinitialisé avec succès.', 'success');
+}
+
+// ─── PRÉ-REMPLISSAGE DATE DU JOUR — utilise pad() centralisé ─
+function initDateJour() {
+  const now = new Date();
+  const el = {
+    j: $id('date-jour'),
+    m: $id('date-mois'),
+    a: $id('date-annee')
+  };
+  const heure = {
+    h: $id('heure-hh'),
+    m: $id('heure-mm')
+  };
+  if (el.j) el.j.value = pad(now.getDate());
+  if (el.m) el.m.value = pad(now.getMonth() + 1);
+  if (el.a) el.a.value = now.getFullYear();
+  if (heure.h) heure.h.value = pad(now.getHours());
+  if (heure.m) heure.m.value = pad(now.getMinutes());
+}
+
+// ─── GÉNÉRATION N° DÉCLARATION — avec suffixe aléatoire anti-collision ──
+function genRefDeclaration() {
+  const now = new Date();
+  const yy = now.getFullYear();
+  const mm = pad(now.getMonth() + 1);
+  const dd = pad(now.getDate());
+  const hh = pad(now.getHours());
+  const mi = pad(now.getMinutes());
+  const ss = pad(now.getSeconds());
+  // Suffixe aléatoire 3 chars pour éviter les collisions si 2 déclarations simultanées
+  const sfx = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return 'DC-' + yy + mm + dd + '-' + hh + mi + ss + '-' + sfx;
+}
+
+// ─── NAVIGATION AUTO ENTRE CHAMPS DATE ───────────────────
+function setupDateNavigation() {
+  document.querySelectorAll('.date-part input, .time-row .date-part input').forEach(inp => {
+    inp.addEventListener('input', function() {
+      // Filtrer uniquement les chiffres
+      this.value = this.value.replace(/[^0-9]/g, '');
+      // Avancer vers le champ suivant quand rempli
+      if (this.value.length >= parseInt(this.maxLength)) {
+        // Chercher le prochain input dans le même groupe date/time
+        const allInputs = Array.from(this.closest('.date-row, .time-row').querySelectorAll('input'));
+        const idx = allInputs.indexOf(this);
+        if (idx !== -1 && idx < allInputs.length - 1) {
+          allInputs[idx + 1].focus();
+          allInputs[idx + 1].select();
+        }
+      }
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// SUIVI DE RÉCUPÉRATION — Logique complète (Section 8)
+// ═══════════════════════════════════════════════════════════
+
+let recupLigneCounter = 0;
+
+// ── Calcul de la date limite J+7 depuis la date du constat ──
+function calcDateLimiteRecup() {
+  const j = parseInt($val('date-jour'),  10);
+  const m = parseInt($val('date-mois'),  10);
+  const a = parseInt($val('date-annee'), 10);
+  if (!j || !m || !a || a < 2000 || a > 2099) return null;
+  const dateConstat = new Date(a, m - 1, j);
+  if (isNaN(dateConstat.getTime())) return null;
+  const dateLimite = new Date(dateConstat);
+  dateLimite.setDate(dateLimite.getDate() + 7);
+  return dateLimite;
+}
+
+// ── Mise à jour de la barre de délai ──────────────────────
+function updateRecupDeadline() {
+  const dateLimite   = calcDateLimiteRecup();
+  const limitEl      = $id('recup-date-limite');
+  const badgeEl      = $id('recup-remaining-badge');
+  const cpLimiteEl   = $id('cp-date-limite-cp');
+  if (!limitEl) return;
+
+  if (!dateLimite) {
+    limitEl.textContent = '— / — / ——  (saisir la date du constat §3)';
+    if (badgeEl) { badgeEl.style.display = 'none'; }
+    if (cpLimiteEl) cpLimiteEl.value = '';
+    return;
+  }
+
+  const jj = pad(dateLimite.getDate());
+  const mm = pad(dateLimite.getMonth() + 1);
+  const aa = dateLimite.getFullYear();
+  const strLimite = jj + ' / ' + mm + ' / ' + aa;
+  limitEl.textContent = strLimite;
+  if (cpLimiteEl) cpLimiteEl.value = jj + '/' + mm + '/' + aa;
+
+  // Calcul des jours restants
+  const now = new Date(); now.setHours(0,0,0,0);
+  const diffMs  = dateLimite - now;
+  const diffJ   = Math.ceil(diffMs / 86400000);
+  if (badgeEl) {
+    badgeEl.style.display = '';
+    if (diffJ > 2) {
+      badgeEl.className = 'recup-deadline-remaining ok';
+      badgeEl.textContent = diffJ + ' jour(s) restant(s)';
+    } else if (diffJ > 0) {
+      badgeEl.className = 'recup-deadline-remaining warn';
+      badgeEl.textContent = '⚠ ' + diffJ + ' jour(s) restant(s)';
+    } else if (diffJ === 0) {
+      badgeEl.className = 'recup-deadline-remaining warn';
+      badgeEl.textContent = '⚠ Dernier jour !';
+    } else {
+      badgeEl.className = 'recup-deadline-remaining expired';
+      badgeEl.textContent = '🔴 Délai dépassé de ' + Math.abs(diffJ) + ' j.';
+    }
+  }
+
+  // Auto-sélection sanction si délai dépassé et différence non récupérée
+  const solde = parseFloat(getSoldeRestant());
+  if (diffJ < 0 && solde > 0) {
+    const sanctionRadio = $id('recup-sanction');
+    if (sanctionRadio && !document.querySelector('input[name="recup_statut"]:checked')) {
+      sanctionRadio.checked = true;
+      updateRecupStatutCards();
+    }
+  }
+}
+
+// ── Calcul du montant initial de l'écart (§3) ─────────────
+function getMontantInitialMillimes() {
+  const rawDT = $val('montant-chiffres').replace(/[^0-9]/g, '');
+  const rawMM = $val('montant-millimes').replace(/[^0-9]/g, '').padEnd(3,'0').slice(0,3);
+  const dt = parseInt(rawDT) || 0;
+  const mm = parseInt(rawMM) || 0;
+  return dt * 1000 + mm; // en millimes
+}
+
+function formatMontantMillimes(millimes) {
+  if (isNaN(millimes) || millimes < 0) millimes = 0;
+  const dt = Math.floor(millimes / 1000);
+  const mm = millimes % 1000;
+  return dt.toLocaleString('fr-TN') + ',' + String(mm).padStart(3,'0') + ' DT';
+}
+
+function getSoldeRestant() {
+  const initial = getMontantInitialMillimes();
+  let recupereTotal = 0;
+  document.querySelectorAll('.recup-ligne-dt, .recup-ligne-mm').forEach(inp => {
+    // computed per row
+  });
+  // Iterate per row
+  document.querySelectorAll('#recup-tbody tr').forEach(tr => {
+    const dtEl = tr.querySelector('.recup-ligne-dt');
+    const mmEl = tr.querySelector('.recup-ligne-mm');
+    const dt = parseInt((dtEl ? dtEl.value : '0').replace(/[^0-9]/g,'')) || 0;
+    const mm = parseInt((mmEl ? mmEl.value : '000').replace(/[^0-9]/g,'').padEnd(3,'0').slice(0,3)) || 0;
+    recupereTotal += dt * 1000 + mm;
+  });
+  return Math.max(0, initial - recupereTotal);
+}
+
+// ── Mise à jour des totaux ─────────────────────────────────
+function updateRecuperationTotaux() {
+  const initial = getMontantInitialMillimes();
+  let recupereTotal = 0;
+
+  document.querySelectorAll('#recup-tbody tr').forEach(tr => {
+    const dtEl = tr.querySelector('.recup-ligne-dt');
+    const mmEl = tr.querySelector('.recup-ligne-mm');
+    const dt = parseInt((dtEl ? dtEl.value : '0').replace(/[^0-9]/g,'')) || 0;
+    const mmStr = (mmEl ? mmEl.value : '').replace(/[^0-9]/g,'').padEnd(3,'0').slice(0,3);
+    const mm = parseInt(mmStr) || 0;
+    recupereTotal += dt * 1000 + mm;
+  });
+
+  const solde = Math.max(0, initial - recupereTotal);
+  const pct   = initial > 0 ? Math.min(100, Math.round((recupereTotal / initial) * 100)) : 0;
+
+  // Mise à jour affichage
+  const initEl   = $id('recup-montant-initial');
+  const recupEl  = $id('recup-montant-recupere');
+  const soldeEl  = $id('recup-montant-solde');
+  const fillEl   = $id('recup-progress-fill');
+  const soldeItem = $id('recup-solde-item');
+  const cpRecupEl = $id('cp-montant-recupere');
+  const cpSoldeEl = $id('cp-solde-restant');
+
+  if (initEl)  initEl.textContent  = formatMontantMillimes(initial);
+  if (recupEl) recupEl.textContent = formatMontantMillimes(recupereTotal);
+  if (soldeEl) soldeEl.textContent = formatMontantMillimes(solde);
+  if (fillEl)  fillEl.style.width  = pct + '%';
+  if (cpRecupEl) cpRecupEl.value   = formatMontantMillimes(recupereTotal);
+  if (cpSoldeEl) cpSoldeEl.value   = formatMontantMillimes(solde);
+
+  // Colorer solde
+  if (soldeItem) {
+    soldeItem.classList.toggle('zero', solde === 0);
+  }
+
+  // Auto-déterminer le statut
+  autoUpdateRecupStatut(recupereTotal, solde, initial);
+
+  // Alertes
+  const sanctionAlert = $id('sanction-alert');
+  const successAlert  = $id('recup-success-alert');
+  const statut = $radio('recup_statut');
+
+  if (sanctionAlert) sanctionAlert.classList.toggle('visible', statut === 'SANCTION');
+  if (successAlert)  successAlert.classList.toggle('visible',  statut === 'RECUPERE');
+
+  // Sync CP statut
+  const cpStatutEl = $id('cp-statut');
+  if (cpStatutEl) {
+    if (statut === 'RECUPERE')    { if (cpStatutEl.value === '' || cpStatutEl.value === 'En cours') cpStatutEl.value = 'Récupéré — Clôturé'; }
+    else if (statut === 'SANCTION') { if (cpStatutEl.value === '' || cpStatutEl.value === 'En cours') cpStatutEl.value = 'Non récupéré — Sanction engagée'; }
+    else if (statut === 'EN_COURS') { if (cpStatutEl.value === '') cpStatutEl.value = 'En cours'; }
+  }
+
+  updateProgressBar();
+  autoSaveBrouillon();
+}
+
+// ── Auto-mise à jour du statut selon les totaux ───────────
+function autoUpdateRecupStatut(recupereTotal, solde, initial) {
+  if (initial === 0) return;
+  const dateLimite = calcDateLimiteRecup();
+  const now = new Date(); now.setHours(0,0,0,0);
+  const delaiDepasse = dateLimite && dateLimite < now;
+  const currentStatut = $radio('recup_statut');
+
+  // Si utilisateur a déjà sélectionné manuellement → respecter son choix
+  // sauf si le solde = 0 (forcer RECUPERE) ou délai dépassé et solde>0 (forcer SANCTION)
+  if (solde === 0 && recupereTotal >= initial && initial > 0) {
+    const r = $id('recup-total');
+    if (r) { r.checked = true; }
+  } else if (delaiDepasse && solde > 0 && currentStatut !== 'SANCTION') {
+    const r = $id('recup-sanction');
+    if (r) { r.checked = true; }
+  } else if (!currentStatut && !delaiDepasse && solde > 0 && recupereTotal > 0) {
+    const r = $id('recup-encours');
+    if (r) { r.checked = true; }
+  }
+  updateRecupStatutCards();
+}
+
+// ── Mise à jour visuelle des cartes de statut ─────────────
+function updateRecupStatutCards() {
+  const statut = $radio('recup_statut');
+  ['recup-card-encours', 'recup-card-total', 'recup-card-sanction'].forEach(id => {
+    const card = $id(id);
+    if (card) card.classList.remove('active');
+  });
+  if (statut === 'EN_COURS')  { const c = $id('recup-card-encours');  if (c) c.classList.add('active'); }
+  if (statut === 'RECUPERE')  { const c = $id('recup-card-total');    if (c) c.classList.add('active'); }
+  if (statut === 'SANCTION')  { const c = $id('recup-card-sanction'); if (c) c.classList.add('active'); }
+
+  const sanctionAlert = $id('sanction-alert');
+  const successAlert  = $id('recup-success-alert');
+  if (sanctionAlert) sanctionAlert.classList.toggle('visible', statut === 'SANCTION');
+  if (successAlert)  successAlert.classList.toggle('visible',  statut === 'RECUPERE');
+}
+
+// ── Ajouter une ligne de versement ─────────────────────────
+function addRecupLigne(dateVal, dtVal, mmVal, modeVal, obsVal) {
+  recupLigneCounter++;
+  const n = recupLigneCounter;
+  const tbody = $id('recup-tbody');
+  if (!tbody) return;
+
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-ligne', n);
+  tr.innerHTML = `
+    <td>${n}</td>
+    <td><input type="text" placeholder="JJ/MM/AAAA" value="${dateVal||''}" class="recup-ligne-date" style="width:110px;" maxlength="10"></td>
+    <td><input type="text" placeholder="0" value="${dtVal||''}" class="recup-ligne-dt mono field-input" style="width:100px;text-align:right;height:32px;"></td>
+    <td><input type="text" placeholder="000" value="${mmVal||''}" class="recup-ligne-mm mono" style="width:60px;" maxlength="3"></td>
+    <td><select class="recup-ligne-mode" style="height:32px;border:1px solid var(--gray-300);border-radius:5px;padding:0 8px;font-size:12px;background:var(--white);outline:none;width:140px;">
+      <option value="">— Mode —</option>
+      <option value="Espèces" ${modeVal==='Espèces'?'selected':''}>Espèces</option>
+      <option value="Virement interne" ${modeVal==='Virement interne'?'selected':''}>Virement interne</option>
+      <option value="Chèque" ${modeVal==='Chèque'?'selected':''}>Chèque</option>
+      <option value="Retenue sur salaire" ${modeVal==='Retenue sur salaire'?'selected':''}>Retenue sur salaire</option>
+      <option value="Autre" ${modeVal==='Autre'?'selected':''}>Autre</option>
+    </select></td>
+    <td><input type="text" placeholder="Observations..." value="${obsVal||''}" class="recup-ligne-obs" style="min-width:140px;"></td>
+    <td><button type="button" class="btn-del-ligne" title="Supprimer cette ligne" onclick="removeRecupLigne(this)">×</button></td>
+  `;
+  tbody.appendChild(tr);
+
+  // Listeners pour mise à jour des totaux
+  tr.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input',  () => { updateRecuperationTotaux(); updateRecupDeadline(); });
+    el.addEventListener('change', () => { updateRecuperationTotaux(); updateRecupDeadline(); });
+  });
+
+  // Filtrer chiffres millimes
+  tr.querySelector('.recup-ligne-mm').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g,'').slice(0,3);
+  });
+  // Filtrer chiffres dinars
+  tr.querySelector('.recup-ligne-dt').addEventListener('input', function() {
+    const v = this.value.replace(/[^0-9]/g,'');
+    this.value = v ? parseInt(v).toLocaleString('fr-TN') : '';
+    updateRecuperationTotaux();
+  });
+
+  updateRecuperationTotaux();
+}
+
+// ── Supprimer une ligne ────────────────────────────────────
+function removeRecupLigne(btn) {
+  const tr = btn.closest('tr');
+  if (tr) tr.remove();
+  updateRecuperationTotaux();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BARRE DE PROGRESSION — calcul du taux de complétion
+// ═══════════════════════════════════════════════════════════
+function updateProgressBar() {
+  const champs = [
+    // §1 Agence
+    () => !!($id('sel-code') && $id('sel-code').value),
+    // §2 Caissier
+    () => !!$val('caissier-matricule'),
+    () => !!$val('caissier-nom'),
+    () => !!document.querySelector('input[name="fonction"]:checked'),
+    // §3 Écart
+    () => !!($val('date-jour') && $val('date-mois') && $val('date-annee')),
+    () => !!($val('heure-hh') && $val('heure-mm')),
+    () => !!($val('montant-chiffres') && $val('montant-chiffres').replace(/[^0-9]/g,'') !== '0'),
+    () => !!document.querySelector('input[name="nature"]:checked'),
+    () => !!document.querySelector('input[name="type_caisse"]:checked'),
+    // §4 Circonstances
+    () => !!$val('declaration-caissier'),
+    () => !!$val('observations-superviseur'),
+    () => !!document.querySelector('input[name="cause"]:checked'),
+    // §5 Mesures
+    () => !!document.querySelector('input[name="mesure"]:checked'),
+    // §6 Récidive
+    () => !!document.querySelector('input[name="recidive"]:checked'),
+    // §7 Récupération
+    () => !!document.querySelector('input[name="recup_statut"]:checked'),
+    // §8 Signatures
+    () => !!$val('sig-caissier-date'),
+    () => !!$val('sig-sup-nom'),
+    () => !!$val('sig-dir-nom'),
+    // Niveau
+    () => !!document.querySelector('input[name="niveau"]:checked'),
+  ];
+  const remplis = champs.filter(fn => { try { return fn(); } catch(e) { return false; } }).length;
+  const pct = Math.round((remplis / champs.length) * 100);
+
+  const fill  = $id('progress-fill');
+  const label = $id('progress-label');
+  if (fill)  fill.style.width = pct + '%';
+  if (label) label.textContent = pct + ' %';
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUTO-SAVE BROUILLON (localStorage)
+// ═══════════════════════════════════════════════════════════
+let _autoSaveTimer = null;
+
+function setAutosaveStatus(state) {
+  const dot   = $id('autosave-dot');
+  const label = $id('autosave-label');
+  if (!dot || !label) return;
+  dot.className = 'autosave-dot' + (state === 'saving' ? ' saving' : state === 'saved' ? ' saved' : '');
+  label.textContent = state === 'saving' ? 'Sauvegarde…' : state === 'saved' ? 'Brouillon sauvegardé' : 'Brouillon non sauvegardé';
+}
+
+function autoSaveBrouillon() {
+  clearTimeout(_autoSaveTimer);
+  setAutosaveStatus('saving');
+  _autoSaveTimer = setTimeout(() => {
+    try {
+      const ref = $id('ref-declaration') ? $id('ref-declaration').textContent : 'brouillon';
+      const data = collecterDonnees(ref);
+      localStorage.setItem('bq_brouillon', JSON.stringify({ ts: Date.now(), data }));
+      setAutosaveStatus('saved');
+    } catch(e) {
+      setAutosaveStatus('neutral');
+    }
+  }, 1200);
+}
+
+// ─── INIT PRINCIPALE ─────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// TABLEAU DE BORD — GESTION DES DÉCLARATIONS SAUVEGARDÉES
+// ═══════════════════════════════════════════════════════════
+
+const DB_KEY = 'bq_declarations_v5';
+let dashFilter  = 'all';
+let dashSort    = { col: 'date', asc: false };
+let editingRef  = null;   // réf en cours d'édition dans le formulaire
+
+// ─── Lire toutes les déclarations ─────────────────────────
+function lireDeclarations() {
+  try {
+    return JSON.parse(localStorage.getItem(DB_KEY) || '{}');
+  } catch(e) { return {}; }
+}
+
+// ─── Écrire toutes les déclarations ───────────────────────
+function ecrireDeclarations(data) {
+  try { localStorage.setItem(DB_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+// ─── Sauvegarder la déclaration courante ──────────────────
+function sauvegarderDeclaration() {
+  const ref = $id('ref-declaration') ? $id('ref-declaration').textContent.trim() : genRefDeclaration();
+  if (!ref || ref.includes('en attente')) {
+    showToast('⚠ Impossible de sauvegarder : référence non générée.', 'error');
+    return;
+  }
+
+  const data = collecterDonnees(ref);
+  data.statut_suivi = $radio('recup_statut') || 'BROUILLON';
+  data.ts_sauvegarde = new Date().toISOString();
+  // Préserver la date de création initiale si la déclaration existe déjà
+  const declarations = lireDeclarations();
+  data.ts_creation = (declarations[ref] && declarations[ref].ts_creation) || data.ts_sauvegarde;
+  data.ref_editeur = ref;
+
+  declarations[ref] = data;
+  ecrireDeclarations(declarations);
+
+  editingRef = ref;
+  showToast('✅ Déclaration ' + ref + ' sauvegardée avec succès.', 'success');
+  chargerTableauDeBord();
+}
+
+// ─── Calcul jours restants depuis date constat ──────────
+function calcJoursRestants(data) {
+  if (!data || !data.ecart) return null;
+  const j = parseInt(data.ecart.dateJour, 10);
+  const m = parseInt(data.ecart.dateMois, 10);
+  const a = parseInt(data.ecart.dateAnnee, 10);
+  if (!j || !m || !a) return null;
+  const constat  = new Date(a, m - 1, j);
+  const limite   = new Date(constat); limite.setDate(limite.getDate() + 7);
+  const now      = new Date(); now.setHours(0,0,0,0);
+  return Math.ceil((limite - now) / 86400000);
+}
+
+// ─── Badge délai ─────────────────────────────────────────
+function badgeDelai(data) {
+  const statut = data.statut_suivi || 'BROUILLON';
+  if (statut === 'RECUPERE') return '<span class="dash-delai closed">Clôturé</span>';
+  const j = calcJoursRestants(data);
+  if (j === null) return '<span class="dash-delai closed">—</span>';
+  if (j > 2)  return '<span class="dash-delai ok">' + j + ' j.</span>';
+  if (j > 0)  return '<span class="dash-delai warn">⚠ ' + j + ' j. restant</span>';
+  if (j === 0) return '<span class="dash-delai warn">⚠ Dernier jour</span>';
+  return '<span class="dash-delai expired">🔴 Dépassé ' + Math.abs(j) + ' j.</span>';
+}
+
+// ─── Badge statut ─────────────────────────────────────────
+function badgeStatut(statut) {
+  const labels = {
+    EN_COURS:  '⏳ En cours',
+    RECUPERE:  '✅ Récupéré',
+    SANCTION:  '🔴 Sanction',
+    BROUILLON: '✏ Brouillon',
+  };
+  return '<span class="dash-badge ' + (statut || 'BROUILLON') + '">' + (labels[statut] || 'Brouillon') + '</span>';
+}
+
+// ─── Calcul pourcentage récupération ─────────────────────
+function calcPctRecup(data) {
+  if (!data || !data.ecart) return 0;
+  const rawDT = (data.ecart.montantDT || '0').replace(/[^0-9]/g,'');
+  const rawMM = (data.ecart.montantMM || '000').replace(/[^0-9]/g,'').padEnd(3,'0').slice(0,3);
+  const initial = parseInt(rawDT) * 1000 + parseInt(rawMM || '0');
+  if (!initial) return 0;
+
+  let recupere = 0;
+  if (data.recuperation && data.recuperation.versements) {
+    data.recuperation.versements.forEach(v => {
+      const vDT = parseInt((v.montantDT || '0').replace(/[^0-9]/g,'')) || 0;
+      const vMM = parseInt((v.montantMM || '000').replace(/[^0-9]/g,'').padEnd(3,'0').slice(0,3)) || 0;
+      recupere += vDT * 1000 + vMM;
+    });
+  }
+  return Math.min(100, Math.round((recupere / initial) * 100));
+}
+
+// ─── Filtrage et tri ──────────────────────────────────────
+function filtrerDeclarations(declarations, filtre, recherche) {
+  let list = Object.values(declarations);
+
+  // Filtre statut
+  if (filtre && filtre !== 'all') {
+    list = list.filter(d => (d.statut_suivi || 'BROUILLON') === filtre);
+  }
+
+  // Recherche texte
+  if (recherche && recherche.trim()) {
+    const q = recherche.trim().toLowerCase();
+    list = list.filter(d => {
+      const caissier = ((d.caissier && d.caissier.nom) || '').toLowerCase();
+      const ref      = (d.ref || '').toLowerCase();
+      const agNom    = (d.agence && d.agence.nom || '').toLowerCase();
+      const agCode   = (d.agence && d.agence.code || '').toLowerCase();
+      return caissier.includes(q) || ref.includes(q) || agNom.includes(q) || agCode.includes(q);
+    });
+  }
+
+  // Tri
+  list.sort((a, b) => {
+    let va, vb;
+    switch (dashSort.col) {
+      case 'ref':     va = a.ref || ''; vb = b.ref || ''; break;
+      case 'caissier':va = (a.caissier && a.caissier.nom || ''); vb = (b.caissier && b.caissier.nom || ''); break;
+      case 'statut':  va = a.statut_suivi || ''; vb = b.statut_suivi || ''; break;
+      case 'montant':
+        va = parseInt(((a.ecart && a.ecart.montantDT || '0')).replace(/[^0-9]/g,'')) || 0;
+        vb = parseInt(((b.ecart && b.ecart.montantDT || '0')).replace(/[^0-9]/g,'')) || 0;
+        return dashSort.asc ? va - vb : vb - va;
+      case 'delai':
+        va = calcJoursRestants(a) !== null ? calcJoursRestants(a) : 999;
+        vb = calcJoursRestants(b) !== null ? calcJoursRestants(b) : 999;
+        return dashSort.asc ? va - vb : vb - va;
+      default:        va = a.ts_sauvegarde || ''; vb = b.ts_sauvegarde || '';
+    }
+    if (va < vb) return dashSort.asc ? -1 : 1;
+    if (va > vb) return dashSort.asc ?  1 : -1;
+    return 0;
+  });
+
+  return list;
+}
+
+// ─── Rendre le tableau de bord ────────────────────────────
+function chargerTableauDeBord() {
+  const declarations = lireDeclarations();
+  const list = Object.values(declarations);
+
+  // Compteurs
+  const encours  = list.filter(d => d.statut_suivi === 'EN_COURS').length;
+  const sanction = list.filter(d => d.statut_suivi === 'SANCTION').length;
+  const recupere = list.filter(d => d.statut_suivi === 'RECUPERE').length;
+  const total    = list.length;
+
+  const setTxt = (id, v) => { const el = $id(id); if (el) el.textContent = v; };
+  setTxt('dash-count-encours',  encours);
+  setTxt('dash-count-sanction', sanction);
+  setTxt('dash-count-recupere', recupere);
+  setTxt('dash-count-total',    total);
+  setTxt('dash-footer-count',   total);
+
+  // Filtre + recherche
+  const recherche = $id('dash-search') ? $id('dash-search').value : '';
+  const filtered  = filtrerDeclarations(declarations, dashFilter, recherche);
+
+  const tbody  = $id('dashboard-tbody');
+  const emptyEl = $id('dashboard-empty');
+  if (!tbody) return;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    if (emptyEl) emptyEl.style.display = '';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(d => {
+    const ref       = d.ref || '—';
+    const isEditing = ref === editingRef;
+    const caissier  = (d.caissier && d.caissier.nom) || '—';
+    const matricule = (d.caissier && d.caissier.matricule) || '';
+    const agNom     = (d.agence && d.agence.nom) || '—';
+    const agCode    = (d.agence && d.agence.code) || '';
+    const dateConstat = d.ecart
+      ? pad(parseInt(d.ecart.dateJour)||1) + '/' + pad(parseInt(d.ecart.dateMois)||1) + '/' + (d.ecart.dateAnnee || '—')
+      : '—';
+    const montant   = d.ecart ? (d.ecart.montantDT || '0') + ',' + (d.ecart.montantMM || '000') + ' DT' : '—';
+    const nature    = d.ecart && d.ecart.nature === 'MANQUANT' ? '▼ Manquant' : '▲ Excédent';
+    const statut    = d.statut_suivi || 'BROUILLON';
+    const pct       = calcPctRecup(d);
+    const recupInfo = d.recuperation
+      ? (d.recuperation.montantRecupere || '0,000 DT') + ' récupéré'
+      : '—';
+    const tsSave    = d.ts_sauvegarde ? new Date(d.ts_sauvegarde).toLocaleDateString('fr-TN') + ' ' + new Date(d.ts_sauvegarde).toLocaleTimeString('fr-TN',{hour:'2-digit',minute:'2-digit'}) : '—';
+
+    const btnClose  = (statut !== 'RECUPERE')
+      ? `<button type="button" class="dash-btn close" onclick="cloturerDeclaration('${ref}')" title="Marquer comme récupéré">✅</button>`
+      : '';
+
+    return `<tr class="${isEditing ? 'row-editing' : ''}" data-ref="${ref}">
+      <td>
+        <div class="dash-ref">${ref}</div>
+        <div style="font-size:9px;color:var(--gray-300);margin-top:2px;">Niv. ${d.niveau || '—'} · Sauvé ${tsSave}</div>
+      </td>
+      <td class="dash-date">${dateConstat}</td>
+      <td>
+        <div class="dash-caissier">${caissier}${matricule ? ' <span style="font-family:var(--mono);font-size:10px;color:var(--gray-500);">[' + matricule + ']</span>' : ''}</div>
+        <div class="dash-agence">${agCode ? agCode + ' — ' : ''}${agNom}</div>
+      </td>
+      <td>
+        <div class="dash-montant">${montant}</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:2px;">${nature}</div>
+      </td>
+      <td>
+        <div style="font-size:11px;color:var(--gray-700);">${recupInfo}</div>
+        <div class="dash-recup-bar"><div class="dash-recup-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:9px;color:var(--gray-500);margin-top:2px;">${pct}% récupéré</div>
+      </td>
+      <td>${badgeDelai(d)}</td>
+      <td>${badgeStatut(statut)}</td>
+      <td>
+        <div class="dash-actions">
+          <button type="button" class="dash-btn edit" onclick="ouvrirDeclaration('${ref}')" title="Ouvrir / modifier">✏ Ouvrir</button>
+          ${btnClose}
+          <button type="button" class="dash-btn del" onclick="supprimerDeclaration('${ref}')" title="Supprimer">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── Ouvrir / charger une déclaration dans le formulaire ──
+function ouvrirDeclaration(ref) {
+  const declarations = lireDeclarations();
+  const data = declarations[ref];
+  if (!data) { showToast('⚠ Déclaration introuvable : ' + ref, 'error'); return; }
+
+  if (editingRef && editingRef !== ref) {
+    if (!confirm('Un formulaire est en cours de saisie (réf : ' + editingRef + ').\nSauvegarder avant de charger cette déclaration ?')) {
+      // On ne sauvegarde pas, on ouvre quand même
+    } else {
+      sauvegarderDeclaration();
+    }
+  }
+
+  // Réinitialiser le formulaire (silencieux)
+  resetFormulaireInterne();
+
+  // ── Restaurer les données ────────────────────────────────
+
+  // §1 Agence
+  if (data.agence && data.agence.code) {
+    const selCode = $id('sel-code');
+    const selNom  = $id('sel-nom');
+    if (selCode) { selCode.value = data.agence.code; syncAgence('code'); }
+    if (selNom)  selNom.value   = data.agence.code;
+    const ri = $id('region-input');
+    if (ri && data.agence.region) ri.value = data.agence.region;
+  }
+
+  // §2 Caissier
+  if (data.caissier) {
+    setVal('caissier-matricule', data.caissier.matricule);
+    setVal('caissier-nom',       data.caissier.nom);
+    setVal('caissier-grade',     data.caissier.grade);
+    selectRadio('fonction',      data.caissier.fonction);
+    setVal('fonction-autre',     data.caissier.fonctionAutre);
+    // Sync signatures
+    const sigNom = $id('sig-caissier-nom');
+    const sigMat = $id('sig-caissier-mat');
+    if (sigNom) sigNom.value = data.caissier.nom || '';
+    if (sigMat) sigMat.value = data.caissier.matricule || '';
+  }
+
+  // §3 Écart
+  if (data.ecart) {
+    setVal('date-jour',  data.ecart.dateJour);
+    setVal('date-mois',  data.ecart.dateMois);
+    setVal('date-annee', data.ecart.dateAnnee);
+    setVal('heure-hh',   data.ecart.heureHH);
+    setVal('heure-mm',   data.ecart.heureMM);
+    setVal('arrete-hh',  data.ecart.arreteHH);
+    setVal('arrete-mm',  data.ecart.arreteMM);
+    const rawDT = (data.ecart.montantDT || '').replace(/[^0-9]/g,'');
+    const mntInput = $id('montant-chiffres');
+    if (mntInput) mntInput.value = rawDT ? parseInt(rawDT).toLocaleString('fr-TN') : '';
+    setVal('montant-millimes', data.ecart.montantMM);
+    selectRadio('nature',      data.ecart.nature);
+    selectRadio('type_caisse', data.ecart.typeCaisse);
+    setVal('caisse-autre',     data.ecart.caisseAutre);
+    updateLettres();
+  }
+
+  // Niveau d'alerte
+  if (data.niveau) {
+    const r = $id('niveau' + data.niveau);
+    if (r) { r.checked = true; }
+    updateLevelCards(); updateNiveauStatusBar();
+  }
+  if (data.niveauJustification) setVal('niveau-justification', data.niveauJustification);
+
+  // §4 Circonstances
+  if (data.circonstances) {
+    setVal('declaration-caissier',    data.circonstances.declarationCaissier);
+    setVal('observations-superviseur', data.circonstances.observationsSup);
+    if (data.circonstances.causes) {
+      data.circonstances.causes.forEach(v => {
+        const el = document.querySelector('input[name="cause"][value="' + v + '"]');
+        if (el) el.checked = true;
+      });
+    }
+  }
+
+  // §5 Mesures
+  if (data.mesures) {
+    if (data.mesures.actions) {
+      data.mesures.actions.forEach(v => {
+        const el = document.querySelector('input[name="mesure"][value="' + v + '"]');
+        if (el) el.checked = true;
+      });
+    }
+    setVal('autres-mesures', data.mesures.autres);
+  }
+
+  // §6 Récidive
+  if (data.recidive) {
+    selectRadio('recidive', data.recidive.oui ? 'OUI' : 'NON');
+    const block = $id('recidive-count-block');
+    if (block) block.classList.toggle('visible', data.recidive.oui);
+    setVal('nb-ecarts', data.recidive.nbEcarts);
+    verrouillerNiveau4Recidive(data.recidive.oui);
+  }
+
+  // §7 Récupération
+  if (data.recuperation) {
+    selectRadio('recup_statut', data.recuperation.statutStatut);
+    updateRecupStatutCards();
+    setVal('recup-observations', data.recuperation.observations);
+    // Lignes de versement
+    recupLigneCounter = 0;
+    const tbody = $id('recup-tbody');
+    if (tbody) tbody.innerHTML = '';
+    if (data.recuperation.versements) {
+      data.recuperation.versements.forEach(v => {
+        addRecupLigne(v.date, v.montantDT, v.montantMM, v.mode, v.observations);
+      });
+    }
+  }
+
+  // §8 Signatures
+  if (data.signatures) {
+    if (data.signatures.caissier) {
+      setVal('sig-caissier-date', data.signatures.caissier.date);
+    }
+    if (data.signatures.superviseur) {
+      setVal('sig-sup-nom',  data.signatures.superviseur.nom);
+      setVal('sig-sup-mat',  data.signatures.superviseur.mat);
+      setVal('sig-sup-date', data.signatures.superviseur.date);
+    }
+    if (data.signatures.directeur) {
+      setVal('sig-dir-nom',  data.signatures.directeur.nom);
+      setVal('sig-dir-date', data.signatures.directeur.date);
+      selectRadio('delai',   data.signatures.directeur.delai);
+    }
+  }
+
+  // CP Central
+  if (data.cpCentral) {
+    setVal('cp-recu-le',   data.cpCentral.recuLe);
+    setVal('cp-traite-par', data.cpCentral.traitePar);
+    setVal('cp-ndossier',  data.cpCentral.nDossier);
+    const cpStat = $id('cp-statut');
+    if (cpStat && data.cpCentral.statut) cpStat.value = data.cpCentral.statut;
+    setVal('cp-sanction-ref', data.cpCentral.sanctionRef);
+  }
+
+  // Mettre à jour la référence dans le formulaire
+  const refEl = $id('ref-declaration');
+  if (refEl) refEl.textContent = ref;
+
+  // Mise à jour UI
+  editingRef = ref;
+  updateRecupDeadline();
+  updateRecuperationTotaux();
+  updateProgressBar();
+  chargerTableauDeBord();
+
+  // Scroll vers le formulaire
+  const pw = document.querySelector('.page-wrapper');
+  if (pw) pw.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  showToast('✅ Déclaration ' + ref + ' chargée. Vous pouvez maintenant la modifier.', 'success');
+}
+
+// ─── Helpers ──────────────────────────────────────────────
+function setVal(id, val) {
+  const el = $id(id);
+  if (el && val !== undefined && val !== null) el.value = val;
+}
+
+function selectRadio(name, value) {
+  if (!value) return;
+  const els = document.querySelectorAll('input[name="' + name + '"]');
+  els.forEach(el => { el.checked = el.value === value; });
+}
+
+// ─── Reset interne (sans confirm) ─────────────────────────
+function resetFormulaireInterne() {
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+    else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+    el.classList.remove('error', 'valid');
+    el.style.borderColor = '';
+  });
+  document.querySelectorAll('.level-card').forEach(c => {
+    c.style.transform = ''; c.style.boxShadow = ''; c.style.outline = '';
+    c.classList.remove('active', 'locked', 'locked-active');
+  });
+  niveauCalcule    = 0;
+  niveauVerrouille = false;
+  for (let i = 1; i <= 4; i++) {
+    const tag  = $id('lv-auto-' + i);
+    const lock = $id('lv-lock-' + i);
+    const radio = $id('niveau' + i);
+    if (tag)  tag.style.display  = 'none';
+    if (lock) lock.style.display = 'none';
+    if (radio) radio.disabled = false;
+  }
+  ['niveau-downgrade-alert','niveau-upgrade-warn','niveau-justif-block'].forEach(id => {
+    const el = $id(id);
+    if (el) el.style.display = 'none';
+  });
+  updateNiveauStatusBar();
+  updateBadge(null);
+  const rcBlock = $id('recidive-count-block');
+  if (rcBlock) rcBlock.classList.remove('visible');
+  const sigNom = $id('sig-caissier-nom');
+  const sigMat = $id('sig-caissier-mat');
+  if (sigNom) sigNom.value = '';
+  if (sigMat) sigMat.value = '';
+  recupLigneCounter = 0;
+  const tbody = $id('recup-tbody');
+  if (tbody) tbody.innerHTML = '';
+  ['sanction-alert','recup-success-alert'].forEach(id => {
+    const el = $id(id);
+    if (el) el.classList.remove('visible');
+  });
+  updateNiveauStatusBar();
+  updateProgressBar();
+  setAutosaveStatus('neutral');
+}
+
+// ─── Supprimer une déclaration ─────────────────────────────
+function supprimerDeclaration(ref) {
+  if (!confirm('Supprimer définitivement la déclaration ' + ref + ' ?\nCette action est irréversible.')) return;
+  const declarations = lireDeclarations();
+  delete declarations[ref];
+  ecrireDeclarations(declarations);
+  if (editingRef === ref) {
+    editingRef = null;
+    resetFormulaireInterne();
+    const refEl = $id('ref-declaration');
+    if (refEl) refEl.textContent = genRefDeclaration();
+    initDateJour();
+  }
+  showToast('🗑 Déclaration ' + ref + ' supprimée.', 'success');
+  chargerTableauDeBord();
+}
+
+// ─── Clôturer (marquer comme récupéré) ────────────────────
+function cloturerDeclaration(ref) {
+  if (!confirm('Marquer la déclaration ' + ref + ' comme totalement récupérée et clôturée ?')) return;
+  const declarations = lireDeclarations();
+  if (!declarations[ref]) return;
+  declarations[ref].statut_suivi = 'RECUPERE';
+  declarations[ref].ts_cloture   = new Date().toISOString();
+  if (!declarations[ref].recuperation) declarations[ref].recuperation = {};
+  declarations[ref].recuperation.statutStatut = 'RECUPERE';
+  ecrireDeclarations(declarations);
+  // Si c'est la déclaration en cours d'édition, mettre à jour le radio
+  if (editingRef === ref) {
+    const r = $id('recup-total');
+    if (r) { r.checked = true; updateRecupStatutCards(); updateRecuperationTotaux(); }
+  }
+  showToast('✅ Déclaration ' + ref + ' clôturée.', 'success');
+  chargerTableauDeBord();
+}
+
+// ─── Nouvelle déclaration (depuis tableau de bord) ────────
+function nouvelleDéclaration() {
+  if (editingRef) {
+    if (!confirm('Abandonner la déclaration en cours (' + editingRef + ') et créer une nouvelle ?')) return;
+  }
+  editingRef = null;
+  resetFormulaireInterne();
+  const refEl = $id('ref-declaration');
+  if (refEl) refEl.textContent = genRefDeclaration();
+  initDateJour();
+  updateRecupDeadline();
+  updateRecuperationTotaux();
+  const pw = document.querySelector('.page-wrapper');
+  if (pw) pw.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  chargerTableauDeBord();
+  showToast('✏ Nouveau formulaire prêt.', 'success');
+}
+
+// ─── Init filtres / recherche du tableau de bord ──────────
+function initDashboardEvents() {
+  // Filtres
+  document.querySelectorAll('.dash-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      dashFilter = this.getAttribute('data-filter');
+      chargerTableauDeBord();
+    });
+  });
+
+  // Recherche
+  const searchEl = $id('dash-search');
+  if (searchEl) {
+    searchEl.addEventListener('input', () => chargerTableauDeBord());
+  }
+
+  // Tri colonnes
+  document.querySelectorAll('.dashboard-table thead th[data-sort]').forEach(th => {
+    th.addEventListener('click', function() {
+      const col = this.getAttribute('data-sort');
+      if (dashSort.col === col) dashSort.asc = !dashSort.asc;
+      else { dashSort.col = col; dashSort.asc = true; }
+      chargerTableauDeBord();
+    });
+  });
+
+  // Nouvelle déclaration
+  const btnNew = $id('dash-btn-new');
+  if (btnNew) btnNew.addEventListener('click', nouvelleDéclaration);
+}
+
+// ─── INIT PRINCIPALE ─────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ─── TABLEAU DE BORD — initialisation ───────────────────
+  initDashboardEvents();
+  chargerTableauDeBord();
+
+  // Bouton Enregistrer
+  const btnEnreg = $id('btn-enregistrer');
+  if (btnEnreg) btnEnreg.addEventListener('click', sauvegarderDeclaration);
+
+  // Génération du N° de déclaration
+  const ref = genRefDeclaration();
+  const refEl = $id('ref-declaration');
+  if (refEl) refEl.textContent = ref;
+
+  // Date de création affichée
+  const now = new Date();
+  const refDate = $id('ref-date');
+  if (refDate) refDate.textContent = pad(now.getDate()) + '/' + pad(now.getMonth()+1) + '/' + now.getFullYear() + ' — ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+
+  // Pré-remplissage date (utilise pad() centralisé)
+  initDateJour();
+
+  // Sélects agences
+  populateSelects();
+
+  // Navigation date/heure
+  setupDateNavigation();
+
+  // Millimes — addEventListener (suppression inline handler)
+  const millimesInput = $id('montant-millimes');
+  if (millimesInput) {
+    millimesInput.addEventListener('input', function() { onMillimesInput(this); });
+  }
+
+  // Niveaux d'alerte — mise à jour visuelle
+  document.querySelectorAll('.level-card input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => { updateLevelCards(); updateProgressBar(); autoSaveBrouillon(); });
+  });
+
+  // Montant — formatage + auto-niveau
+  const mntInput = $id('montant-chiffres');
+  if (mntInput) {
+    mntInput.addEventListener('input', function() {
+      const v = this.value.replace(/[^0-9]/g, '');
+      this.value = v ? parseInt(v).toLocaleString('fr-TN') : '';
+      updateLettres();
+      autoSaveBrouillon();
+    });
+  }
+
+  // ── Niveau d'alerte — listener sur chaque card ───────────
+  document.querySelectorAll('input[name="niveau"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (!this.disabled) onNiveauManualChange(parseInt(this.value));
+    });
+  });
+
+  // Récidive — afficher/masquer le compteur + verrouiller N4
+  document.querySelectorAll('input[name="recidive"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const block = $id('recidive-count-block');
+      if (block) block.classList.toggle('visible', this.value === 'OUI');
+      verrouillerNiveau4Recidive(this.value === 'OUI');
+      updateProgressBar();
+      autoSaveBrouillon();
+    });
+  });
+
+  // Auto-remplissage signature caissier (Section 2 → Section 7)
+  const caissierNom = $id('caissier-nom');
+  const caissierMat = $id('caissier-matricule');
+  const sigNom      = $id('sig-caissier-nom');
+  const sigMat      = $id('sig-caissier-mat');
+
+  if (caissierNom && sigNom) {
+    caissierNom.addEventListener('input', () => { sigNom.value = caissierNom.value; autoSaveBrouillon(); });
+  }
+  if (caissierMat && sigMat) {
+    caissierMat.addEventListener('input', () => { sigMat.value = caissierMat.value; autoSaveBrouillon(); });
+  }
+
+  // Champs readonly Section 7
+  if (sigNom) {
+    sigNom.readOnly = true;
+    Object.assign(sigNom.style, { background: '#EBF3FB', color: 'var(--navy)', fontWeight: '600' });
+    sigNom.title = 'Repris automatiquement de la Section 2';
+  }
+  if (sigMat) {
+    sigMat.readOnly = true;
+    Object.assign(sigMat.style, { background: '#EBF3FB', color: 'var(--navy)', fontWeight: '600', fontFamily: 'var(--mono)' });
+    sigMat.title = 'Repris automatiquement de la Section 2';
+  }
+
+  // Auto-save sur tous les champs texte / select / checkbox (générique)
+  document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea, select').forEach(el => {
+    el.addEventListener('change', () => { updateProgressBar(); autoSaveBrouillon(); });
+    el.addEventListener('input',  () => { updateProgressBar(); });
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    el.addEventListener('change', () => { updateProgressBar(); autoSaveBrouillon(); });
+  });
+
+  // Bouton Réinitialiser
+  const btnReset = $id('btn-reset');
+  if (btnReset) btnReset.addEventListener('click', resetFormulaire);
+
+  // ─── SECTION 7 : Récupération ────────────────────────────
+  // Bouton ajouter versement
+  const btnAddRecup = $id('btn-add-recup-ligne');
+  if (btnAddRecup) {
+    btnAddRecup.addEventListener('click', function() {
+      const now = new Date();
+      const defDate = pad(now.getDate()) + '/' + pad(now.getMonth()+1) + '/' + now.getFullYear();
+      addRecupLigne(defDate, '', '', '', '');
+    });
+  }
+
+  // Listeners statut récupération
+  document.querySelectorAll('input[name="recup_statut"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      updateRecupStatutCards();
+      updateRecuperationTotaux();
+      updateProgressBar();
+      autoSaveBrouillon();
+    });
+  });
+
+  // Lier les champs date du constat (§3) à la mise à jour de la date limite
+  ['date-jour','date-mois','date-annee'].forEach(id => {
+    const el = $id(id);
+    if (el) el.addEventListener('input', () => { updateRecupDeadline(); updateRecuperationTotaux(); });
+  });
+
+  // Lier les champs montant (§3) à la mise à jour des totaux récupération
+  const mntInputRecup = $id('montant-chiffres');
+  if (mntInputRecup) mntInputRecup.addEventListener('input', () => { updateRecuperationTotaux(); });
+  const mmInputRecup = $id('montant-millimes');
+  if (mmInputRecup) mmInputRecup.addEventListener('input', () => { updateRecuperationTotaux(); });
+
+  // Initialiser la date limite
+  updateRecupDeadline();
+  updateRecuperationTotaux();
+
+  // Bouton Valider → enregistrement + modal envoi
+  const btnValider = $id('btn-valider');
+  if (btnValider) btnValider.addEventListener('click', validerFormulaire);
+
+  // ─── MODAL : boutons ──────────────────────────────────────
+  const btnFermer = $id('btn-modal-fermer');
+  if (btnFermer) btnFermer.addEventListener('click', function() {
+    $id('modal-envoi').classList.remove('visible');
+  });
+
+  const modalEnvoi = $id('modal-envoi');
+  if (modalEnvoi) modalEnvoi.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+
+  const btnEnvMail = $id('btn-envoyer-mail');
+  if (btnEnvMail) btnEnvMail.addEventListener('click', envoyerMail);
+
+  const btnAddCC = $id('btn-add-cc');
+  if (btnAddCC) btnAddCC.addEventListener('click', function() {
+    const list = $id('cc-list');
+    const row  = document.createElement('div');
+    row.className = 'cc-row';
+    row.innerHTML = '<input type="email" placeholder="adresse@banque.tn"><button class="btn-del-cc" title="Supprimer" type="button">×</button>';
+    row.querySelector('.btn-del-cc').addEventListener('click', () => row.remove());
+    list.appendChild(row);
+    row.querySelector('input').focus();
+  });
+
+  // Initialiser barre de progression
+  updateProgressBar();
+});
+
+</script>
+</body>
+</html>
